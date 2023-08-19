@@ -1,3 +1,9 @@
+/*Hello*/
+
+html {
+    scroll-behavior: smooth;
+}
+
 #tracks-section p{
     min-height: 10vh;
 }
