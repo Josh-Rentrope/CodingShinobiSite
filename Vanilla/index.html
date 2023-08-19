@@ -8,7 +8,76 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="CodingShinobi.css">
   </head>
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2YQZN2XT4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2YQZN2XT4');
+</script>
   <body>
+
+    <section class="pt-24 min-h-screen" id="intro-section">
+        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+            <!--Left Col-->
+            <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
+                <p class="uppercase tracking-loose w-full">Looking for a Problem Solver?</p>
+                <h1 class="my-4 text-5xl font-bold leading-tight">
+                    You've found the right person!
+                </h1>
+                <p class="leading-normal text-2xl mb-8">
+                    From front to back end, Developer to Director, my diverse experiences can help you.
+                </p>
+                <button class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                    Find out more
+                </button>
+            </div>
+            <!--Right Col-->
+            <div class="w-full md:w-3/5 py-6 text-center hidden md:block">
+                <img class="w-full md:w-4/5 z-50 float-right" src="assets/images/placeholder.png" />
+            </div>
+        </div>
+    </section>
+    <section class="pt-24 min-h-screen" id="tracks-section">
+        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+            <!--Left Col-->
+            <div class="flex flex-col w-full md:w-1/3 justify-center items-start text-center  items-center">
+                <h2 class="text-4xl w-full  text-center">Developer, Engineer</h2>
+                <img alt="Developer writing code" class="w-full md:w-4/5 my-5 mx-auto" src="assets/images/placeholder.png"></img>
+                <p class="text-left mx-3">My experience as an IC, shipping code in tight deadlines, cleaning up codebases and documentation</p>
+                <button class="pure-button my-3">View More</button>
+            </div>
+            <!--Middle Col-->
+            <div class="flex flex-col w-full md:w-1/3 justify-center items-start text-center  items-center">
+           
+                <h2 class="text-4xl w-full  text-center">Architect, Manager</h2>
+                <img  class="w-full md:w-4/5 my-5 mx-auto"  alt="Developer writing code" src="assets/images/placeholder.png"></img>
+                <p class="text-left mx-3">Stacks, People, and Solutions. Managing and bringing out the best to complete projects on time</p>
+                <button class="pure-button my-3">View More</button>
+
+            </div>
+            <!--Right Col-->
+            <div class="flex flex-col w-full md:w-1/3 justify-center items-start text-center  items-center">
+           
+                <h2 class="text-4xl w-full  text-center">CTO, Director</h2>
+                <img  class="w-full md:w-4/5 my-5 mx-auto"  alt="Developer writing code" src="assets/images/placeholder.png"></img>
+                <p class="text-left mx-3">How I operate on a C-level basis; budgeting, requirements gathering, and maintaining solutions and teams at scale</p>
+                <button class="pure-button my-3">View More</button>
+           
+            </div>
+        </div>
+    </section>
+    <section class="pt-24 min-h-screen" id="projects-section">
+        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+            <div class="w-full justify-center items-center text-center">
+                <h1 class="text-5xl w-full  text-center">Projects Listing</h2>
+            </div>
+        </div>
+    </section>
+
 	<script src="CodingShinobi.js"></script>
   </body>
 </html>
