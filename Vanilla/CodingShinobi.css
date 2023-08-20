@@ -7,3 +7,6 @@ html {
 #tracks-section p{
     min-height: 10vh;
 }
+.ProjectCarouselCard .mainCard{
+    min-height: 650px;
+}

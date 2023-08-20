@@ -78,21 +78,558 @@
                 <h1 class="text-5xl w-full  text-center">Projects Listing</h2>
             </div>
         </div>
-        <div class="w-screen px-0 mx-0 flex flex-grow items-center mt-16  overflow-x-auto space-x-8 items-center justify-center py-4">
-            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard">
-                <img class="w-full" src="assets/images/placeholder.png" alt="Sunset in the mountains">
-                <div class="px-6 py-4">
-                <div class="font-bold text-xl mb-2">Phoenix Nest</div>
-                <p class="text-gray-700 text-base">
-                    This was definitely a project
-                </p>
+        <div class="w-screen px-0 mx-0 flex flex-grow items-center mt-16  overflow-x-auto space-x-8  py-4">
+            <!-- Card 1 Start -->
+            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer pl-4">
+                <div class=" max-w-sm mainCard">
+                    <img class="w-full" src="assets/images/placeholder.png" alt="Sunset in the mountains" />
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">War Zone Heat Map</div>
+                        <p class="text-gray-700 text-base">
+                            Extended our no-code platform for geospatial heat mapping of Twitter activities, aiding intelligence during the onset of the Ukraine war.
+                        </p>
+                    </div>
+                    <div class="px-6 pt-4 pb-2">
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">OSINT</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Geospatial</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Twitter</span>
+                    </div>
                 </div>
-                <div class="px-6 pt-4 pb-2">
-                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <!--
+                      Background backdrop, show/hide based on modal state.
+                  
+                      Entering: "ease-out duration-300"
+                        From: "opacity-0"
+                        To: "opacity-100"
+                      Leaving: "ease-in duration-200"
+                        From: "opacity-100"
+                        To: "opacity-0"
+                    -->
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
+                  
+                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <!--
+                          Modal panel, show/hide based on modal state.
+                  
+                          Entering: "ease-out duration-300"
+                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            To: "opacity-100 translate-y-0 sm:scale-100"
+                          Leaving: "ease-in duration-200"
+                            From: "opacity-100 translate-y-0 sm:scale-100"
+                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        -->
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                              
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
+                                    <img class="w-full" src="assets/images/placeholder.png">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  
+                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                                        War Zone Heat Map
+                                    </h3>
+                                    <div class="mt-2">
+                                      <p class="text-sm text-gray-500">
+                                        We extended our no-code platform to provide a no-code tool for officials and 
+                                        intelligence officers. Harnessing the power of open-source intelligence (OSINT), 
+                                        our platform enhanced geospatial with Twitter activity, creating heat maps 
+                                        that visualized real-time and historical events. This insight allowed officers
+                                        to discern patterns, track conflict progressions, and establish a comprehensive 
+                                        common operating picture, ensuring they stayed a step ahead in decision-making.
+
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Demo live in 6 days</button>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
+            <!-- Card End -->
+            
+            <!-- Card 2 Start -->
+            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
+                <div class=" max-w-sm mainCard">
+                    <img class="w-full" src="assets/images/placeholder.png" alt="Sunset in the mountains" />
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">High-Volume Camera Data Processing</div>
+                        <p class="text-gray-700 text-base">
+                            Developed a live feed analysis system for cameras, processing an astounding 31 terabytes of on-prem client data in just a year.
+                        </p>
+                    </div>
+                    <div class="px-6 pt-4 pb-2">
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Camera Analytics</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">High Throughput</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Computer Vision</span>
+                    </div>
+                </div>
+                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <!--
+                      Background backdrop, show/hide based on modal state.
+                  
+                      Entering: "ease-out duration-300"
+                        From: "opacity-0"
+                        To: "opacity-100"
+                      Leaving: "ease-in duration-200"
+                        From: "opacity-100"
+                        To: "opacity-0"
+                    -->
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
+                  
+                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <!--
+                          Modal panel, show/hide based on modal state.
+                  
+                          Entering: "ease-out duration-300"
+                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            To: "opacity-100 translate-y-0 sm:scale-100"
+                          Leaving: "ease-in duration-200"
+                            From: "opacity-100 translate-y-0 sm:scale-100"
+                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        -->
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                              
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
+                                    <img class="w-full" src="assets/images/placeholder.png">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  
+                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                                        High-Volume Camera Data Processing
+                                    </h3>
+                                    <div class="mt-2">
+                                      <p class="text-sm text-gray-500">
+                                        Building on the success of our drone-based project, 
+                                        we turned our expertise to camera feeds. 
+                                        We engineered a state-of-the-art analytics system that 
+                                        could handle vast amounts of data, evidenced by our 
+                                        processing of a whopping 31 terabytes for a single 
+                                        client within a year. Much like our drone project, 
+                                        this system was designed with a user-centric approach, 
+                                        providing operators with intuitive tools to derive insights 
+                                        from live feeds. Our commitment to efficient data processing 
+                                        and seamless user experience has cemented our reputation in 
+                                        the realm of real-time video analytics.
+
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Demo live in 6 days</button>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card End -->
+            
+            <!-- Card 3 Start -->
+            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
+                <div class=" max-w-sm mainCard">
+                    <img class="w-full" src="assets/images/placeholder.png" alt="Sunset in the mountains" />
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">Drag-and-Drop Drone Surveillance for DoD</div>
+                        <p class="text-gray-700 text-base">
+                            Delivered a no-code drone positioning prototype for the DoD and SOCOM, enabling swift object detection and insights through a user-friendly interface.
+                        </p>
+                    </div>
+                    <div class="px-6 pt-4 pb-2">
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">No-Code </span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Drone Automation</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Real-time Assets</span>
+                    </div>
+                </div>
+                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <!--
+                      Background backdrop, show/hide based on modal state.
+                  
+                      Entering: "ease-out duration-300"
+                        From: "opacity-0"
+                        To: "opacity-100"
+                      Leaving: "ease-in duration-200"
+                        From: "opacity-100"
+                        To: "opacity-0"
+                    -->
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
+                  
+                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <!--
+                          Modal panel, show/hide based on modal state.
+                  
+                          Entering: "ease-out duration-300"
+                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            To: "opacity-100 translate-y-0 sm:scale-100"
+                          Leaving: "ease-in duration-200"
+                            From: "opacity-100 translate-y-0 sm:scale-100"
+                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        -->
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                              
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
+                                    <img class="w-full" src="assets/images/placeholder.png">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  
+                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                                        Drag-and-Drop Drone Surveillance for DoD
+                                    </h3>
+                                    <div class="mt-2">
+                                      <p class="text-sm text-gray-500">
+                                        In collaboration with the DoD and SOCOM, our startup unveiled a cutting-edge prototype designed for drone positioning coupled with live data feeds. What sets our system apart is its intuitive no-code interface. This ensures that operators, even without a background in computer science, can swiftly deploy pipelines, achieving quick insights. By harnessing the power of Node.js, Python, and React, and being versatile with cloud services like AWS and GCP based on vendor preference, we've pioneered a solution that democratizes advanced drone surveillance, making it accessible and efficient.
+
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Demo live in 6 days</button>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card End -->
+            
+            <!-- Card 4 Start -->
+            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
+                <div class=" max-w-sm mainCard">
+                    <img class="w-full" src="assets/images/placeholder.png" alt="Sunset in the mountains" />
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">Self-Service ERP Platform for Logistics</div>
+                        <p class="text-gray-700 text-base">
+                            Developed a PaaS tailored for logistics companies, facilitating self-service Enterprise Resource Planning with advanced integrations.
+                        </p>
+                    </div>
+                    <div class="px-6 pt-4 pb-2">
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">ERP </span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Logistics Integration</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Real-time assets</span>
+                    </div>
+                </div>
+                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <!--
+                      Background backdrop, show/hide based on modal state.
+                  
+                      Entering: "ease-out duration-300"
+                        From: "opacity-0"
+                        To: "opacity-100"
+                      Leaving: "ease-in duration-200"
+                        From: "opacity-100"
+                        To: "opacity-0"
+                    -->
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
+                  
+                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <!--
+                          Modal panel, show/hide based on modal state.
+                  
+                          Entering: "ease-out duration-300"
+                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            To: "opacity-100 translate-y-0 sm:scale-100"
+                          Leaving: "ease-in duration-200"
+                            From: "opacity-100 translate-y-0 sm:scale-100"
+                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        -->
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                              
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
+                                    <img class="w-full" src="assets/images/placeholder.png">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  
+                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                                        Self-Service ERP Platform for Logistics
+                                    </h3>
+                                    <div class="mt-2">
+                                      <p class="text-sm text-gray-500">
+                                        Our team ventured into creating a unique Platform-as-a-Service (PaaS) specifically designed for logistics enterprises. This ERP solution is not just any platform; it's tailored for companies demanding sophisticated features like real-time asset management, integrations with inventory systems, and traffic insights. One of its crowning achievements is the self-hosted algorithm developed in C++ for optimal truck routing. Using a robust stack including Django, Redis, WebSockets, REST APIs, and Ionic, we've provided logistics firms with a comprehensive, adaptable, and powerful tool, setting a new benchmark in the domain of logistics management software.
+
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Demo live in 6 days</button>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card End -->
+            
+            <!-- Card 5 Start -->
+            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
+                <div class=" max-w-sm mainCard">
+                    <img class="w-full" src="assets/images/placeholder.png" alt="Sunset in the mountains" />
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2"> Lane Drift Detection Algorithm</div>
+                        <p class="text-gray-700 text-base">
+                            Crafted a C++ computer vision algorithm using OpenCV for lane drift detection without neural nets, catching the interest of major insurance firms."
+                        </p>
+                    </div>
+                    <div class="px-6 pt-4 pb-2">
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Computer Vision</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Autonomous Driving</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Microservices</span>
+                    </div>
+                </div>
+                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <!--
+                      Background backdrop, show/hide based on modal state.
+                  
+                      Entering: "ease-out duration-300"
+                        From: "opacity-0"
+                        To: "opacity-100"
+                      Leaving: "ease-in duration-200"
+                        From: "opacity-100"
+                        To: "opacity-0"
+                    -->
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
+                  
+                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <!--
+                          Modal panel, show/hide based on modal state.
+                  
+                          Entering: "ease-out duration-300"
+                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            To: "opacity-100 translate-y-0 sm:scale-100"
+                          Leaving: "ease-in duration-200"
+                            From: "opacity-100 translate-y-0 sm:scale-100"
+                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        -->
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                              
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
+                                    <img class="w-full" src="assets/images/placeholder.png">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  
+                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                                        Lane Drift Detection Algorithm
+                                    </h3>
+                                    <div class="mt-2">
+                                      <p class="text-sm text-gray-500">
+                                        I embarked on the challenging task of creating a computer vision algorithm in C++ with the support of OpenCV, specifically designed for lane drift detection in the realm of autonomous driving. Remarkably, this algorithm operates without the dependency on neural networks. Its precision lies in its capability to accurately pinpoint lanes, even under conditions of notable degradation. Employing a microservices architecture, the system seamlessly communicates with diverse peripherals. Our groundbreaking work not only advanced the field of autonomous driving but also captured the attention of prominent insurance companies, solidifying our startup's reputation in the industry.
+
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Demo live in 6 days</button>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card End -->
+            
+            <!-- Card 6 Start -->
+            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
+                <div class=" max-w-sm mainCard">
+                    <img class="w-full" src="assets/images/placeholder.png" alt="Sunset in the mountains" />
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">Salesforce & SEO Mastery</div>
+                        <p class="text-gray-700 text-base">
+                            Optimized Salesforce integrations, identified sales pipeline leaks, and enhanced SEO, achieving a 23% reduction in customer acquisition cost.
+                        </p>
+                    </div>
+                    <div class="px-6 pt-4 pb-2">
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Salesforce</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Wordpress</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">SEO Enhancement</span>
+                    </div>
+                </div>
+                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <!--
+                      Background backdrop, show/hide based on modal state.
+                  
+                      Entering: "ease-out duration-300"
+                        From: "opacity-0"
+                        To: "opacity-100"
+                      Leaving: "ease-in duration-200"
+                        From: "opacity-100"
+                        To: "opacity-0"
+                    -->
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
+                  
+                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <!--
+                          Modal panel, show/hide based on modal state.
+                  
+                          Entering: "ease-out duration-300"
+                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            To: "opacity-100 translate-y-0 sm:scale-100"
+                          Leaving: "ease-in duration-200"
+                            From: "opacity-100 translate-y-0 sm:scale-100"
+                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        -->
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                              
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
+                                    <img class="w-full" src="assets/images/placeholder.png">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  
+                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                                        Streamlining Salesforce & SEO Mastery
+                                    </h3>
+                                    <div class="mt-2">
+                                      <p class="text-sm text-gray-500">
+                                        In a strategic move to refine customer acquisition, I collaborated with a website owner to optimize their Salesforce integrations. Through a thorough analysis of the Salesforce CRM, I identified and rectified leaks in the sales pipeline, effectively funneling more potential customers. Simultaneously, I employed advanced SEO techniques on the website, significantly enhancing its visibility and organic reach. These combined efforts culminated in a commendable 23% reduction in customer acquisition cost, marking a pivotal success in cost-efficiency and operational excellence.
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Demo live in 6 days</button>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card End -->
+
+            <!-- Card 7 Start -->
+            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer pr-4">
+                <div class=" max-w-sm mainCard">
+                    <img class="w-full" src="assets/images/placeholder.png" alt="Sunset in the mountains" />
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">Dynamic Live Streaming Webapp</div>
+                        <p class="text-gray-700 text-base">
+                            Built a robust live streaming platform using a modern tech stack. Features include multi-user support and interactive chat.
+                        </p>
+                    </div>
+                    <div class="px-6 pt-4 pb-2">
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Live Streaming</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">WebSockets</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Interactive Chat</span>
+                    </div>
+                </div>
+                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <!--
+                      Background backdrop, show/hide based on modal state.
+                  
+                      Entering: "ease-out duration-300"
+                        From: "opacity-0"
+                        To: "opacity-100"
+                      Leaving: "ease-in duration-200"
+                        From: "opacity-100"
+                        To: "opacity-0"
+                    -->
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
+                  
+                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <!--
+                          Modal panel, show/hide based on modal state.
+                  
+                          Entering: "ease-out duration-300"
+                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            To: "opacity-100 translate-y-0 sm:scale-100"
+                          Leaving: "ease-in duration-200"
+                            From: "opacity-100 translate-y-0 sm:scale-100"
+                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        -->
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                              
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
+                                    <img class="w-full" src="assets/images/placeholder.png">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  
+                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                                        Dynamic Live Streaming Webapp
+                                    </h3>
+                                    <div class="mt-2">
+                                      <p class="text-sm text-gray-500">
+                                        In 2017, I spearheaded the development of a state-of-the-art live streaming web application leveraging Django, Tornado, WebSockets, and Nginx. By integrating HTML, CSS, JS, and jQuery, the platform boasts a user-friendly interface, allowing seamless streaming experiences for multiple users concurrently. One of its standout features is the interactive chat function, facilitating real-time communication among viewers. This project stands as a testament to my proficiency in web development and real-time data handling.
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Demo live in 6 days</button>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card End -->
         </div>
     </section>
     <section class="pt-24 min-h-screen" id="contact-section">
