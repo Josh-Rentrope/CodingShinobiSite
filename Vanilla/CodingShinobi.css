@@ -10,3 +10,7 @@ html {
 .ProjectCarouselCard .mainCard{
     min-height: 650px;
 }
+
+.d-none{
+    display:none;
+}
