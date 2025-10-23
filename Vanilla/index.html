@@ -56,7 +56,7 @@
                 <div class="bg-gray-900 text-white rounded-md px-2 py-2 text-sm font-medium" aria-current="page">
                   Home
                   <a class="px-2 mx-0 py-2 bg-gray-900" href="#intro-section">Top</a>
-                  <a class="px-2 mx-0 py-2 bg-gray-900" href="#tracks-section">Roles</a>
+                  <!-- <a class="px-2 mx-0 py-2 bg-gray-900" href="#tracks-section">Roles</a> -->
                   <a class="px-2 mx-0 py-2 bg-gray-900" href="#projects-section">Projects</a>
                   <a class="px-2 mx-0 py-2 bg-gray-900" href="#contact-section">Contact</a>
                 </div>
@@ -180,7 +180,7 @@
                             From: "opacity-100 translate-y-0 sm:scale-100"
                             To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
                               
                               <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
@@ -224,6 +224,115 @@
             <!-- Card 2 Start -->
             <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
                 <div class=" max-w-sm mainCard">
+                    <img class="w-full aspect-video" src="assets/images/tokaze.png" alt="Tokaze Project" />
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">Tokaze</div>
+                        <p class="text-gray-700 text-base">
+                            A full-stack application demonstrating modern web technologies, featuring a responsive frontend and a powerful backend API.
+                        </p>
+                    </div>
+                    <div class="px-6 pt-4 pb-2">
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Svelte</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Node</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Python</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">FastAPI</span>
+                    </div>
+                </div>
+                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
+                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 ">
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
+                                    <iframe title="vimeo-player" src="https://player.vimeo.com/video/1127560765?h=ea87043bf3" width="480" height="270" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                                        Tokaze
+                                    </h3>
+                                    <div class="mt-2">
+                                      <p class="text-sm text-gray-500">
+                                        Tokaze is a comprehensive full-stack project built with a Svelte frontend for a reactive user experience, and a robust backend powered by Node.js, Python, and FastAPI. This combination allows for high-performance asynchronous tasks and a flexible API architecture, showcasing a modern approach to web application development.
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <a href="https://frontend.tokaze.codingshinobi.com/" target="_blank" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Live Demo</a>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card End -->
+
+            <!-- Card 3 Start -->
+            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
+                <div class=" max-w-sm mainCard">
+                    <img class="w-full aspect-video" src="assets/images/healthapp.png" alt="Health App Project" />
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">Health App</div>
+                        <p class="text-gray-700 text-base">
+                            A sophisticated health application leveraging a powerful tech stack for data processing and delivery, including a scalable infrastructure with Nginx.
+                        </p>
+                    </div>
+                    <div class="px-6 pt-4 pb-2">
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Next JS</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Node</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">FastAPI</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Nginx</span>
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Data Fusion</span>
+                    </div>
+                </div>
+                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
+                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 ">
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
+                                    <img class="w-full" src="assets/images/healthapp.png" alt="Health App Project">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                                        Health App
+                                    </h3>
+                                    <div class="mt-2">
+                                      <p class="text-sm text-gray-500">
+                                        This health application is built with a Next.js frontend for server-side rendering and a static site generation, ensuring optimal performance. The backend utilizes Node.js, Python, and FastAPI, served through Nginx for scalability and reliability. It features advanced capabilities like Data Fusion for complex data integration and an OpenAPI-compliant interface for standardized API communication.
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <a href="https://healthapp.codingshinobi.com/" target="_blank" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Live Demo</a>
+                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card End -->
+
+            <!-- Card 2 Start -->
+            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
+                <div class=" max-w-sm mainCard">
                     <img class="w-full aspect-video" src="assets/images/CameraAnalytics.png" alt="" />
                     <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">High-Volume Image Processing</div>
@@ -262,7 +371,7 @@
                             From: "opacity-100 translate-y-0 sm:scale-100"
                             To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
                               
                               <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
@@ -308,7 +417,7 @@
             </div>
             <!-- Card End -->
             
-            <!-- Card 3 Start -->
+            <!-- Card 4 Start -->
             <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
                 <div class=" max-w-sm mainCard">
                     <img class="w-full  aspect-video" src="assets/images/draganddrop.png" />
@@ -349,7 +458,7 @@
                             From: "opacity-100 translate-y-0 sm:scale-100"
                             To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
                               
                               <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
@@ -385,7 +494,7 @@
             </div>
             <!-- Card End -->
             
-            <!-- Card 4 Start -->
+            <!-- Card 5 Start -->
             <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
                 <div class=" max-w-sm mainCard">
                     <img class="w-full aspect-video" src="assets/images/infodao.png" alt="Sunset in the mountains" />
@@ -426,7 +535,7 @@
                             From: "opacity-100 translate-y-0 sm:scale-100"
                             To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
                               
                               <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
@@ -462,7 +571,7 @@
             </div>
             <!-- Card End -->
             
-            <!-- Card 5 Start -->
+            <!-- Card 6 Start -->
             <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
                 <div class=" max-w-sm mainCard">
                     <img class="w-full aspect-video" src="assets/images/infodao.png" alt="Sunset in the mountains" />
@@ -503,7 +612,7 @@
                             From: "opacity-100 translate-y-0 sm:scale-100"
                             To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
                               
                               <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
@@ -539,7 +648,7 @@
             </div>
             <!-- Card End -->
             
-            <!-- Card 6 Start -->
+            <!-- Card 7 Start -->
             <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
                 <div class=" max-w-sm mainCard">
                     <img class="w-full aspect-video" src="assets/images/garito.png" alt="Sunset in the mountains" />
@@ -580,7 +689,7 @@
                             From: "opacity-100 translate-y-0 sm:scale-100"
                             To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
                               
                               <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
@@ -615,7 +724,7 @@
             </div>
             <!-- Card End -->
 
-            <!-- Card 7 Start -->
+            <!-- Card 8 Start -->
             <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer pr-4">
                 <div class=" max-w-sm mainCard">
                     <img class="w-full aspect-video" src="assets/images/infodao.png" alt="Sunset in the mountains" />
@@ -656,7 +765,7 @@
                             From: "opacity-100 translate-y-0 sm:scale-100"
                             To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
                               
                               <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <div class="sm:flex sm:items-start">
