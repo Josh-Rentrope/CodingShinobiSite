@@ -14,3 +14,14 @@ html {
 .d-none{
     display:none !important;
 }
+
+.glowing-card {
+    animation: glowing-border 3s ease-in-out infinite;
+    border-radius: 0.5rem; /* Corresponds to Tailwind's rounded-lg */
+}
+
+@keyframes glowing-border {
+    0% { box-shadow: 0 0 3px rgba(2, 156, 253, 0.4); }
+    50% { box-shadow: 0 0 12px rgba(2, 156, 253, 0.8); }
+    100% { box-shadow: 0 0 3px rgba(2, 156, 253, 0.4); }
+}
