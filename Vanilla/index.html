@@ -1,948 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>CodingShinobi Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="CodingShinobi.css">
-  </head>
-  
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2YQZN2XT4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <title>Animus Project Archive</title>
+    <style>
+        body { margin: 0; background: #020205; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; color: white; }
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; cursor: grab; }
+        canvas:active { cursor: grabbing; }
+        
+        /* Removed fixed 800vh height here. It is now set dynamically in JS */
+        #scroll-container { pointer-events: none; }
+        
+        header, footer {
+            position: fixed; left: 0; width: 100%; height: 60px;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+            z-index: 5; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; box-sizing: border-box;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.15);
+        }
+        header { top: 0; }
+        footer { bottom: 0; border-top: 1px solid rgba(0, 255, 255, 0.15); border-bottom: none; justify-content: flex-end; }
+        .ui-text { color: #00ffff; font-family: monospace; letter-spacing: 2px; font-size: 14px; text-transform: uppercase; }
 
-  gtag('config', 'G-R2YQZN2XT4');
-</script>
-  <body class="overflow-x-hidden">
-    <nav class="bg-indigo-950 sticky fixed top-0 z-10 mt-0 p-2 hidden">
-      <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div class="relative flex h-16 items-center justify-between">
-          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            <!-- Mobile menu button-->
-            <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
-              <span class="absolute -inset-0.5"></span>
-              <span class="sr-only">Open main menu</span>
-              <!--
-                Icon when menu is closed.
-    
-                Menu open: "hidden", Menu closed: "block"
-              -->
-              <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-              <!--
-                Icon when menu is open.
-    
-                Menu open: "block", Menu closed: "hidden"
-              -->
-              <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div class="flex flex-shrink-0 items-center">
-              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
-            </div>
-            <div class="hidden sm:ml-6 sm:block">
-              <div class="flex space-x-4">
-                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        #overlay.active { opacity: 1; visibility: visible; }
+        
+        #carousel-container {
+            position: relative; width: 80%; max-width: 1000px; height: 60vh;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 30px;
+        }
+        #overlay-img { 
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            border: 1px solid rgba(0, 255, 255, 0.3); box-shadow: 0 0 40px rgba(0, 255, 255, 0.1);
+        }
+        
+        .nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5); border: 1px solid #00ffff; color: #00ffff;
+            font-size: 30px; padding: 15px 25px; cursor: pointer; transition: 0.2s; z-index: 11;
+        }
+        .nav-btn:hover { background: #00ffff; color: #000; box-shadow: 0 0 20px #00ffff; }
+        .nav-btn.left { left: -80px; }
+        .nav-btn.right { right: -80px; }
 
-                <div class="bg-gray-900 text-white rounded-md px-2 py-2 text-sm font-medium" aria-current="page">
-                  Home
-                  <a class="px-2 mx-0 py-2 bg-gray-900" href="#intro-section">Top</a>
-                  <!-- <a class="px-2 mx-0 py-2 bg-gray-900" href="#tracks-section">Roles</a> -->
-                  <a class="px-2 mx-0 py-2 bg-gray-900" href="#projects-section">Projects</a>
-                  <a class="px-2 mx-0 py-2 bg-gray-900" href="#contact-section">Contact</a>
-                </div>
-                <!-- <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Team</a>
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Projects</a>
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Calendar</a> -->
-              </div>
-            </div>
-          </div>
+        .text-group { text-align: center; max-width: 800px; }
+        .text-group h2 { margin: 0 0 10px 0; font-size: 36px; font-weight: 300; letter-spacing: 1px; }
+        .text-group p { margin: 0 0 25px 0; color: #aaa; font-size: 18px; line-height: 1.5; }
+
+        .btn {
+            border: 1px dashed #4488aa; padding: 12px 24px; text-decoration: none; font-size: 18px; display: inline-block;
+            background: linear-gradient(120deg, #4488aa 0%, #4488aa 40%, #ffffff 50%, #4488aa 60%, #4488aa 100%);
+            background-size: 200% auto; color: #4488aa; background-clip: text; -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; animation: textShine 2.5s linear infinite; cursor: pointer;
+        }
+        @keyframes textShine { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+        .close { position: absolute; top: 30px; right: 40px; font-size: 40px; cursor: pointer; color: #555; font-weight: 300; transition: 0.2s; }
+        .close:hover { color: #00ffff; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span class="ui-text">Coding Shinobi</span>
+        <span class="ui-text">April Demos</span>
+    </header>
+
+    <div id="scroll-container"></div>
+
+    <div id="overlay" >
+        <span class="close" onclick="closeOverlay()">X</span>
+        
+        <div id="carousel-container">
+            <button class="nav-btn left" onclick="changeImage(-1)">&#10094;</button>
+            <img id="overlay-img" src="" alt="Snapshot">
+            <button class="nav-btn right" onclick="changeImage(1)">&#10095;</button>
         </div>
-      </div>
-    
-      <!-- Mobile menu, show/hide based on menu state. -->
-      <div class="sm:hidden" id="mobile-menu">
-        <div class="space-y-1 px-2 pb-3 pt-2">
-          <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-          <a href="#" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Dashboard</a>
-          <!-- <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Team</a>
-          <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Projects</a>
-          <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Calendar</a> -->
-        </div>
-      </div>
-    </nav>
-    <section class="pt-24 pb-24 bg-sky-100" id="intro-section">
-        <div class="container px-12 mx-auto flex flex-wrap flex-col md:flex-row items-center">
-            <!--Left Col-->
-            <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
-                <p class="uppercase tracking-loose w-full">Looking for a Problem Solver?</p>
-                <h1 class="my-4 text-5xl font-bold leading-tight">
-                    You've found the right person!
-                </h1>
-                <p class="leading-normal text-2xl mb-8">
-                    From front to back end, Developer to Director, my diverse experiences can help you.
-                </p>
-                <a href="#tracks-section">
-                </a>
-            </div>
-            <!--Right Col-->
-            <div class="w-full md:w-3/5 py-6 text-center hidden md:block">
-                <img class="w-full md:w-4/5 z-50 float-right" src="assets/images/introspiral.jpg" alt="Photo by Frank Cone: https://www.pexels.com/photo/cloth-with-artistic-design-3573555/"/>
-            </div>
-        </div>
-    </section>
-    <section class="pt-24 d-none" id="tracks-section">
-        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
-            <!--Left Col-->
-            <div class="flex flex-col w-full md:w-1/3 justify-center items-start text-center  items-center">
-                <h2 class="text-4xl w-full  text-center">Developer, Engineer</h2>
-                <img class="w-full md:w-4/5 my-5 mx-auto aspect-video" src="assets/images/developer.jpg" alt="Photo by Lukas: https://www.pexels.com/photo/person-encoding-in-laptop-574071/"></img>
-                <p class="text-left mx-3">My experience as an IC, shipping code in tight deadlines, cleaning up codebases and documentation</p>
-                <button class="pure-button my-3">Coming Soon</button>
-            </div>
-            <!--Middle Col-->
-            <div class="flex flex-col w-full md:w-1/3 justify-center items-start text-center  items-center">
-           
-                <h2 class="text-4xl w-full  text-center">Architect, Manager</h2>
-                <img  class="w-full md:w-4/5 my-5 mx-auto aspect-video" src="assets/images/architect.jpg" alt="Photo by Kindel Media: https://www.pexels.com/photo/office-team-having-discussion-in-the-room-6774141/"></img>
-                <p class="text-left mx-3">Stacks, People, and Solutions. Managing and bringing out the best to complete projects on time</p>
-                <button class="pure-button my-3">Coming Soon</button>
 
-            </div>
-            <!--Right Col-->
-            <div class="flex flex-col w-full md:w-1/3 justify-center items-start text-center  items-center">
-           
-                <h2 class="text-4xl w-full  text-center">CTO, Director</h2>
-                <img  class="w-full md:w-4/5 my-5 mx-auto aspect-video" src="assets/images/CTO.jpg" alt="Photo by fauxels: https://www.pexels.com/photo/photo-of-three-people-smiling-while-having-a-meeting-3184338/"></img>
-                <p class="text-left mx-3">How I operate on a C-level basis; budgeting, requirements gathering, and maintaining solutions and teams at scale</p>
-                <button class="pure-button my-3">Coming Soon</button>
-           
-            </div>
+        <div class="text-group">
+            <h2 id="proj-title">Title</h2>
+            <p id="proj-desc">Sub title/Caption</p>
+            <a id="proj-link" class="btn" target="_blank">Access Demo &rarr;</a>
         </div>
-    </section>
-    <section class="pt-24 min-h-screen" id="projects-section">
-        <div class="container  mx-auto flex flex-wrap flex-col md:flex-row items-center ">
-            <div class="w-full justify-center items-center text-center">
-                <h1 class="text-5xl w-full  text-center">Projects Listing</h2>
-            </div>
-        </div>
-        <div class="w-screen px-0 mx-0 flex flex-grow items-center mt-16  overflow-x-auto space-x-8  py-4">
-            <!-- New Card 1 Start -->
-            <div class="flex-shrink-0  max-w-sm rounded-lg overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer pl-4 glowing-card">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full aspect-video" src="assets/images/vr_simulation.jpg" alt="VR Digital Twins" />
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">VR Digital Twins for Simulation & Analysis</div>
-                        <p class="text-gray-700 text-base">
-                            Integrated SGP4, Inverse Kinematics, and FEA into Unreal Engine for advanced simulation and digital twins, helping secure 3 deals and a Phase II SBIR.
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Unreal Engine</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Digital Twin</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">VR</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <img class="w-full" src="assets/images/vr_simulation.jpg" alt="VR Digital Twins">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        VR Digital Twins for Simulation & Analysis
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        Integrated SGP4 (Orbit calculation), Inverse Kinematics, and other Finite Element Analyses into Unreal Engine for creating Digital Twins. This work was pivotal for simulation and analysis, directly contributing to securing 3 new deals and completing a Phase II SBIR contract.
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- New Card 1 End -->
+    </div>
 
-            <!-- New Card 2 Start -->
-            <div class="flex-shrink-0  max-w-sm rounded-lg overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer glowing-card">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full aspect-video" src="assets/images/hpc_platform.jpg" alt="HPC Data Platform" />
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">Analyst Software & HPC Data Platform</div>
-                        <p class="text-gray-700 text-base">
-                            Built scalable data platforms and self-serve software for analysts, saving an estimated $100k per year and processing 1TB/minute of data on an HPC cluster.
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">HPC</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Apache Spark</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Python</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">QT</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <img class="w-full" src="assets/images/hpc_platform.jpg" alt="HPC Data Platform">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        Analyst Software & HPC Data Platform
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        Designed and implemented self-serve software solutions that saved an estimated $100k per year by reducing time and user errors for data analysts. This involved building and automating scalable data platforms using QT, Python, Apache Spark, and Linux Daemons. The system was capable of transforming approximately 1TB per minute of simulation and ML data on an HPC cluster, with parallel workflows supporting over 64 simultaneous processes without errors.
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- New Card 2 End -->
+    <footer>
+        <span class="ui-text">Projects</span>
+    </footer>
 
-            <!-- Card 1 Start -->
-            <div class="flex-shrink-0 hidden max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer pl-4">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full aspect-video" src="assets/images/twitterview.png" alt="" />
-                    <div class="px-6 py-4"> 
-                        <div class="font-bold text-xl mb-2">War Zone Heat Map</div>
-                        <p class="text-gray-700 text-base">
-                            Extended our no-code platform for geospatial heat mapping of Twitter activities, aiding intelligence during the onset of the Ukraine war.
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">OSINT</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Geospatial</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Twitter</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <!--
-                      Background backdrop, show/hide based on modal state.
-                  
-                      Entering: "ease-out duration-300"
-                        From: "opacity-0"
-                        To: "opacity-100"
-                      Leaving: "ease-in duration-200"
-                        From: "opacity-100"
-                        To: "opacity-0"
-                    -->
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                  
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <!--
-                          Modal panel, show/hide based on modal state.
-                  
-                          Entering: "ease-out duration-300"
-                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            To: "opacity-100 translate-y-0 sm:scale-100"
-                          Leaving: "ease-in duration-200"
-                            From: "opacity-100 translate-y-0 sm:scale-100"
-                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <img class="w-full" src="assets/images/twitterview.png">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        War Zone Heat Map
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        We extended our no-code platform to provide a no-code tool for officials and 
-                                        intelligence officers. Harnessing the power of open-source intelligence (OSINT), 
-                                        our platform enhanced geospatial with Twitter activity, creating heat maps 
-                                        that visualized real-time and historical events. This insight allowed officers
-                                        to discern patterns, track conflict progressions, and establish a comprehensive 
-                                        common operating picture, ensuring they stayed a step ahead in decision-making.
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
 
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto d-none">Demo live in 6 days</button>
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card End -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+        import { RGBShiftShader } from 'three/addons/shaders/RGBShiftShader.js';
+
+        // --- Setup ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x020205); 
+        scene.fog = new THREE.FogExp2(0x020205, 0.04); 
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        const pixelRatio = Math.min(window.devicePixelRatio, 2);
+        const renderer = new THREE.WebGLRenderer({ antialias: false }); 
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(pixelRatio);
+        renderer.toneMapping = THREE.ReinhardToneMapping; 
+        document.body.appendChild(renderer.domElement);
+
+        // --- Post-Processing ---
+        const composer = new EffectComposer(renderer);
+        composer.setPixelRatio(pixelRatio); 
+        composer.addPass(new RenderPass(scene, camera));
+
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 1.5; 
+        bloomPass.strength = 1.2; 
+        bloomPass.radius = 0.8;
+        composer.addPass(bloomPass);
+
+        const rgbShiftPass = new ShaderPass(RGBShiftShader);
+        rgbShiftPass.uniforms['amount'].value = 0.0025; 
+        composer.addPass(rgbShiftPass);
+
+        // --- Data ---
+        const projectData = [
+            { title: "Unity Game Demo April 2026", desc: "Unity based experience, showcasing data driven gameplay.", images: ["assets/images/April-2026-Unity-1.png","assets/images/vr_simulation.jpg"], link: "#" },
+            { title: "This Site", desc: "Three JS with animations handled in javascript.", images: ["assets/images/thissite.png"], link: "/" },
+            { title: "High-Perf Compute", desc: "Scientific data processing handling 1 TB/min.", images: ["assets/images/hpc_platform.jpg"], link: "#" },            
+        ];
+
+        // --- DYNAMIC SCALING LOGIC ---
+        // Calculate points based on exactly how many projects exist
+        const projectSpacing = 10;
+        const helixPoints = (projectData.length * projectSpacing) + 30; // 30 adds a nice trailing tail
+        const heightStep = 1.2;
+        
+        // Dynamically set the scroll container height (approx 100vh per project + 200vh padding)
+        document.getElementById('scroll-container').style.height = `${(projectData.length * 100) + 200}vh`;
+
+        // --- Composited Text Texture ---
+        function getTexture(data) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 600; canvas.height = 300;
+            const ctx = canvas.getContext('2d');
+            const texture = new THREE.CanvasTexture(canvas);
+
+            function drawLayer(imgElement) {
+                if (imgElement) {
+                    ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                } else {
+                    ctx.fillStyle = '#0a0a0d'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                ctx.strokeStyle = '#00ffff'; ctx.lineWidth = 8; ctx.strokeRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ffffff'; ctx.font = 'bold 36px "Segoe UI"'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(data.title, canvas.width / 2, canvas.height / 2);
+                texture.needsUpdate = true; 
+            }
+
+            if (data.images && data.images.length > 0) {
+                const img = new Image(); img.crossOrigin = "Anonymous";
+                img.onload = () => drawLayer(img); img.onerror = () => drawLayer(null);
+                img.src = data.images[0];
+            } else { drawLayer(null); }
+
+            return texture;
+        }
+
+        // --- DNA Helixes ---
+        function createHelix(radius, hexColor, isMain = false, isCurved = false) {
+            const group = new THREE.Group();
+            const glowColor = new THREE.Color(hexColor).multiplyScalar(3.0);
+
+            for (let i = -20; i < helixPoints; i++) {
+                const angle = i * 0.4;
+                const y = -(i * heightStep); 
+                
+                let offsetX = 0, offsetZ = 0;
+                if (isCurved) {
+                    offsetX = Math.sin(y * 0.03) * 20; offsetZ = Math.cos(y * 0.03) * 20;
+                }
+
+                const dotMat = new THREE.MeshBasicMaterial({ color: glowColor, transparent: true, opacity: isMain ? 0.9 : 0.4, depthWrite: false, blending: THREE.AdditiveBlending });
+                const dotA = new THREE.Mesh(new THREE.SphereGeometry(isMain ? 0.15 : 0.08, 16, 16), dotMat);
+                dotA.position.set(offsetX + Math.cos(angle) * radius, y, offsetZ + Math.sin(angle) * radius);
+                group.add(dotA);
+
+                const dotB = dotA.clone();
+                dotB.position.set(offsetX + Math.cos(angle + Math.PI) * radius, y, offsetZ + Math.sin(angle + Math.PI) * radius);
+                group.add(dotB);
+
+                const rungGeo = new THREE.CylinderGeometry(0.015, 0.015, radius * 2); rungGeo.rotateZ(Math.PI / 2);
+                const rungMat = new THREE.MeshBasicMaterial({ color: glowColor, transparent: true, opacity: isMain ? 0.6 : 0.15, depthWrite: false, blending: THREE.AdditiveBlending });
+                const rung = new THREE.Mesh(rungGeo, rungMat);
+                rung.position.set(offsetX, y, offsetZ); rung.rotation.y = -angle; 
+                group.add(rung);
+
+                // STRICT PROJECT PANELS LOGIC (No looping)
+                if (isMain && i > 0 && i % projectSpacing === 0) {
+                    const dataIndex = (i / projectSpacing) - 1; // Map i=10 to index 0, i=20 to index 1, etc.
+                    
+                    if (dataIndex < projectData.length) {
+                        const data = projectData[dataIndex];
+                        const planeMat = new THREE.MeshBasicMaterial({ map: getTexture(data), side: THREE.DoubleSide });
+                        const plane = new THREE.Mesh(new THREE.PlaneGeometry(4, 2), planeMat);
+                        
+                        const planeX = Math.cos(angle) * (radius + 4);
+                        const planeZ = Math.sin(angle) * (radius + 4);
+                        plane.position.set(planeX, y, planeZ);
+                        plane.lookAt(planeX * 2, y, planeZ * 2); 
+                        
+                        plane.userData = data;
+                        group.add(plane);
+                    }
+                }
+            }
+            return group;
+        }
+
+        const mainStrandGroup = new THREE.Group();
+        const mainStrand = createHelix(3, 0x00ffff, true, false);
+        mainStrandGroup.add(mainStrand);
+        mainStrandGroup.position.set(15, 0, 0); 
+        scene.add(mainStrandGroup);
+
+        const bgGroup = new THREE.Group();
+        bgGroup.add(createHelix(2, 0x008888, false, true).translateY(0).translateX(-15).translateZ(-10));
+        bgGroup.add(createHelix(2.5, 0x225577, false, true).translateY(0).translateX(10).translateZ(-20));
+        scene.add(bgGroup);
+
+        // --- Interaction & Carousel State ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let isDragging = false, previousMouseX = 0, dragDist = 0; 
+        
+        window.activeProject = null; window.activeImageIndex = 0;
+
+        window.addEventListener('mousedown', (e) => { if(e.target.tagName !== 'CANVAS') return; isDragging = true; dragDist = 0; previousMouseX = e.clientX; });
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) { const deltaX = e.clientX - previousMouseX; mainStrandGroup.rotation.y += deltaX * 0.008; dragDist += Math.abs(deltaX); previousMouseX = e.clientX; }
+        });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+        window.addEventListener('click', (event) => {
+            if (dragDist > 5) return; 
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1; mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(mainStrand.children);
+            if (intersects.length > 0 && intersects[0].object.userData.title) { openOverlay(intersects[0].object.userData); }
+        });
+
+        function openOverlay(data) {
+            window.activeProject = data; window.activeImageIndex = 0;
+            document.getElementById('proj-title').innerText = data.title; document.getElementById('proj-desc').innerText = data.desc; document.getElementById('proj-link').href = data.link;
+            updateCarouselImage(); document.getElementById('overlay').classList.add('active');
+        }
+
+        window.changeImage = (direction) => {
+            if (!window.activeProject || !window.activeProject.images || window.activeProject.images.length === 0) return;
+            window.activeImageIndex += direction;
+            if (window.activeImageIndex < 0) { window.activeImageIndex = window.activeProject.images.length - 1; } 
+            else if (window.activeImageIndex >= window.activeProject.images.length) { window.activeImageIndex = 0; }
+            updateCarouselImage();
+        }
+
+        function updateCarouselImage() {
+            const data = window.activeProject; const imgElement = document.getElementById('overlay-img');
+            const leftBtn = document.querySelector('.nav-btn.left'); const rightBtn = document.querySelector('.nav-btn.right');
             
-            <!-- Card 2 Start -->
-            <div class="flex-shrink-0  max-w-sm rounded-lg overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer glowing-card">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full aspect-video" src="assets/images/tokaze.png" alt="Tokaze Project" />
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">Tokaze</div>
-                        <p class="text-gray-700 text-base">
-                            A full-stack application demonstrating modern web technologies, featuring a responsive frontend and a powerful backend API.
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Svelte</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Node</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Python</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">FastAPI</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 ">
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <iframe title="vimeo-player" src="https://player.vimeo.com/video/1127560765?h=ea87043bf3" width="480" height="270" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        Tokaze
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        Tokaze is a comprehensive full-stack project built with a Svelte frontend for a reactive user experience, and a robust backend powered by Node.js, Python, and FastAPI. This combination allows for high-performance asynchronous tasks and a flexible API architecture, showcasing a modern approach to web application development.
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <a href="https://frontend.tokaze.codingshinobi.com/demo" target="_blank" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Live Demo</a>
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card End -->
+            if (data.images && data.images.length > 0) {
+                imgElement.src = data.images[window.activeImageIndex]; imgElement.style.display = 'block';
+                if (data.images.length === 1) { leftBtn.style.display = 'none'; rightBtn.style.display = 'none'; } 
+                else { leftBtn.style.display = 'block'; rightBtn.style.display = 'block'; }
+            } else {
+                imgElement.src = 'https://via.placeholder.com/1200x600/111111/00ffff?text=NO+DATA+FOUND';
+                leftBtn.style.display = 'none'; rightBtn.style.display = 'none';
+            }
+        }
 
-            <!-- Card 3 Start -->
-            <div class="flex-shrink-0  max-w-sm rounded-lg overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer glowing-card">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full aspect-video" src="assets/images/healthapp.png" alt="Health App Project" />
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">Health App</div>
-                        <p class="text-gray-700 text-base">
-                            A sophisticated health application leveraging a powerful tech stack for data processing and delivery, including a scalable infrastructure with Nginx.
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Next JS</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Node</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">FastAPI</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Nginx</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Data Fusion</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 ">
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <a href="https://healthapp.codingshinobi.com/" target="_blank" class="inline-flex w-full justify-center  text-sm font-semibold text-white shadow-sm ">
-                                      <img class="w-full" src="assets/images/healthapp.png" alt="Health App Project">
-                                    </a>
-                                    
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        Health App
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        This health application is built with a Next.js frontend for server-side rendering and a static site generation, ensuring optimal performance. The backend utilizes Node.js, Python, and FastAPI, served through Nginx for scalability and reliability. It features advanced capabilities like Data Fusion for complex data integration and an OpenAPI-compliant interface for standardized API communication.
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <a href="https://healthapp.codingshinobi.com/" target="_blank" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Live Demo</a>
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card End -->
+        window.closeOverlay = () => { document.getElementById('overlay').classList.remove('active'); }
 
-            <!-- Card 2 Start -->
-            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full aspect-video" src="assets/images/CameraAnalytics.png" alt="" />
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">High-Volume Image Processing</div>
-                        <p class="text-gray-700 text-base">
-                            Developed a live feed analysis system for cameras, processing an astounding 31 terabytes of on-prem client data in just a year.
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Camera Analytics</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">High Throughput</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Computer Vision</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <!--
-                      Background backdrop, show/hide based on modal state.
-                  
-                      Entering: "ease-out duration-300"
-                        From: "opacity-0"
-                        To: "opacity-100"
-                      Leaving: "ease-in duration-200"
-                        From: "opacity-100"
-                        To: "opacity-0"
-                    -->
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                  
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <!--
-                          Modal panel, show/hide based on modal state.
-                  
-                          Entering: "ease-out duration-300"
-                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            To: "opacity-100 translate-y-0 sm:scale-100"
-                          Leaving: "ease-in duration-200"
-                            From: "opacity-100 translate-y-0 sm:scale-100"
-                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <img class="w-full" src="assets/images/CameraAnalytics.png">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        High-Volume Camera Data Processing
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        Building on the success of our drone-based project, 
-                                        we turned our expertise to camera feeds. 
-                                        We engineered a state-of-the-art analytics system that 
-                                        could handle vast amounts of data, evidenced by our 
-                                        processing of a whopping 31 terabytes for a single 
-                                        client within a year. Much like our drone project, 
-                                        this system was designed with a user-centric approach, 
-                                        providing operators with intuitive tools to derive insights 
-                                        from live feeds. Our commitment to efficient data processing 
-                                        and seamless user experience has cemented our reputation in 
-                                        the realm of real-time video analytics.
+        // --- Animation Loop ---
+        let targetCameraY = 0;
 
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto d-none">Demo live in 6 days</button>
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card End -->
+        function animate() {
+            requestAnimationFrame(animate);
             
-            <!-- Card 4 Start -->
-            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full  aspect-video" src="assets/images/draganddrop.png" />
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">Drag-and-Drop Software for DoD</div>
-                        <p class="text-gray-700 text-base">
-                            Delivered a no-code drone positioning prototype for the DoD and SOCOM, enabling swift object detection and insights through a user-friendly interface.
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">No-Code </span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Drone Automation</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Real-time Assets</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <!--
-                      Background backdrop, show/hide based on modal state.
-                  
-                      Entering: "ease-out duration-300"
-                        From: "opacity-0"
-                        To: "opacity-100"
-                      Leaving: "ease-in duration-200"
-                        From: "opacity-100"
-                        To: "opacity-0"
-                    -->
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                  
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <!--
-                          Modal panel, show/hide based on modal state.
-                  
-                          Entering: "ease-out duration-300"
-                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            To: "opacity-100 translate-y-0 sm:scale-100"
-                          Leaving: "ease-in duration-200"
-                            From: "opacity-100 translate-y-0 sm:scale-100"
-                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <img class="w-full" src="assets/images/draganddrop.png">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        Drag-and-Drop Drone Surveillance for DoD
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        In collaboration with the DoD and SOCOM, our startup unveiled a cutting-edge prototype designed for drone positioning coupled with live data feeds. What sets our system apart is its intuitive no-code interface. This ensures that operators, even without a background in computer science, can swiftly deploy pipelines, achieving quick insights. By harnessing the power of Node.js, Python, and React, and being versatile with cloud services like AWS and GCP based on vendor preference, we've pioneered a solution that democratizes advanced drone surveillance, making it accessible and efficient.
-
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto d-none">Demo live in 6 days</button>
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card End -->
+            // Dynamic max depth based on exactly how long the DNA generated
+            const maxDepth = (helixPoints * heightStep) - 30; 
+            const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
             
-            <!-- Card 5 Start -->
-            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full aspect-video" src="assets/images/infodao.png" alt="Sunset in the mountains" />
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">Self-Service ERP Platform</div>
-                        <p class="text-gray-700 text-base">
-                            Developed a Enterprise Resource Planning (ERP) PaaS tailored for logistics companies, facilitating self-service Enterprise Resource Planning with advanced integrations.
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">ERP </span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Logistics Integration</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Real-time assets</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <!--
-                      Background backdrop, show/hide based on modal state.
-                  
-                      Entering: "ease-out duration-300"
-                        From: "opacity-0"
-                        To: "opacity-100"
-                      Leaving: "ease-in duration-200"
-                        From: "opacity-100"
-                        To: "opacity-0"
-                    -->
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                  
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <!--
-                          Modal panel, show/hide based on modal state.
-                  
-                          Entering: "ease-out duration-300"
-                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            To: "opacity-100 translate-y-0 sm:scale-100"
-                          Leaving: "ease-in duration-200"
-                            From: "opacity-100 translate-y-0 sm:scale-100"
-                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <img class="w-full" src="assets/images/infodao.png">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        Self-Service ERP Platform for Logistics
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        Our team ventured into creating a unique Platform-as-a-Service (PaaS) specifically designed for logistics enterprises. This ERP solution is not just any platform; it's tailored for companies demanding sophisticated features like real-time asset management, integrations with inventory systems, and traffic insights. One of its crowning achievements is the self-hosted algorithm developed in C++ for optimal truck routing. Using a robust stack including Django, Redis, WebSockets, REST APIs, and Ionic, we've provided logistics firms with a comprehensive, adaptable, and powerful tool, setting a new benchmark in the domain of logistics management software.
-
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto d-none">Demo live in 6 days</button>
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card End -->
+            targetCameraY = -(scrollPercent * maxDepth);
+            camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetCameraY, 0.05); 
             
-            <!-- Card 6 Start -->
-            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full aspect-video" src="assets/images/infodao.png" alt="Sunset in the mountains" />
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2"> Lane Drift Detection Algorithm</div>
-                        <p class="text-gray-700 text-base">
-                            Crafted a C++ computer vision algorithm using OpenCV for lane drift detection without neural nets, catching the interest of major insurance firms."
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Computer Vision</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Autonomous Driving</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Microservices</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <!--
-                      Background backdrop, show/hide based on modal state.
-                  
-                      Entering: "ease-out duration-300"
-                        From: "opacity-0"
-                        To: "opacity-100"
-                      Leaving: "ease-in duration-200"
-                        From: "opacity-100"
-                        To: "opacity-0"
-                    -->
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                  
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <!--
-                          Modal panel, show/hide based on modal state.
-                  
-                          Entering: "ease-out duration-300"
-                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            To: "opacity-100 translate-y-0 sm:scale-100"
-                          Leaving: "ease-in duration-200"
-                            From: "opacity-100 translate-y-0 sm:scale-100"
-                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <img class="w-full" src="assets/images/infodao.png">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        Lane Drift Detection Algorithm
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        I embarked on the challenging task of creating a computer vision algorithm in C++ with the support of OpenCV, specifically designed for lane drift detection in the realm of autonomous driving. Remarkably, this algorithm operates without the dependency on neural networks. Its precision lies in its capability to accurately pinpoint lanes, even under conditions of notable degradation. Employing a microservices architecture, the system seamlessly communicates with diverse peripherals. Our groundbreaking work not only advanced the field of autonomous driving but also captured the attention of prominent insurance companies, solidifying our startup's reputation in the industry.
+            camera.position.x = 0; camera.position.z = 15; camera.lookAt(6, camera.position.y - 2, 0);
+            bgGroup.rotation.y += 0.0005;
 
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto d-none">Demo live in 6 days</button>
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card End -->
-            
-            <!-- Card 7 Start -->
-            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full aspect-video" src="assets/images/garito.png" alt="Sunset in the mountains" />
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">Salesforce & SEO Mastery</div>
-                        <p class="text-gray-700 text-base">
-                            Optimized Salesforce integrations, identified sales pipeline leaks, and enhanced SEO, achieving a 23% reduction in customer acquisition cost.
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Salesforce</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Wordpress</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">SEO Enhancement</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <!--
-                      Background backdrop, show/hide based on modal state.
-                  
-                      Entering: "ease-out duration-300"
-                        From: "opacity-0"
-                        To: "opacity-100"
-                      Leaving: "ease-in duration-200"
-                        From: "opacity-100"
-                        To: "opacity-0"
-                    -->
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                  
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <!--
-                          Modal panel, show/hide based on modal state.
-                  
-                          Entering: "ease-out duration-300"
-                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            To: "opacity-100 translate-y-0 sm:scale-100"
-                          Leaving: "ease-in duration-200"
-                            From: "opacity-100 translate-y-0 sm:scale-100"
-                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <img class="w-full" src="assets/images/garito.png">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        Streamlining Salesforce & SEO Mastery
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        In a strategic move to refine customer acquisition, I collaborated with a website owner to optimize their Salesforce integrations. Through a thorough analysis of the Salesforce CRM, I identified and rectified leaks in the sales pipeline, effectively funneling more potential customers. Simultaneously, I employed advanced SEO techniques on the website, significantly enhancing its visibility and organic reach. These combined efforts culminated in a commendable 23% reduction in customer acquisition cost, marking a pivotal success in cost-efficiency and operational excellence.
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto d-none">Demo live in 6 days</button>
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card End -->
+            if (!isDragging) { mainStrandGroup.rotation.y += 0.0015; }
+            composer.render();
+        }
+        animate();
 
-            <!-- Card 8 Start -->
-            <div class="flex-shrink-0  max-w-sm rounded overflow-hidden shadow-lg ProjectCarouselCard cursor-pointer pr-4">
-                <div class=" max-w-sm mainCard">
-                    <img class="w-full aspect-video" src="assets/images/infodao.png" alt="Sunset in the mountains" />
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">Dynamic Live Streaming Webapp</div>
-                        <p class="text-gray-700 text-base">
-                            Built a robust live streaming platform using a modern tech stack. Features include multi-user support and interactive chat.
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Live Streaming</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">WebSockets</span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Interactive Chat</span>
-                    </div>
-                </div>
-                <div class="relative z-10 hidden opacity-0 ProjectModal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <!--
-                      Background backdrop, show/hide based on modal state.
-                  
-                      Entering: "ease-out duration-300"
-                        From: "opacity-0"
-                        To: "opacity-100"
-                      Leaving: "ease-in duration-200"
-                        From: "opacity-100"
-                        To: "opacity-0"
-                    -->
-                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdropPanel"></div>
-                  
-                    <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <!--
-                          Modal panel, show/hide based on modal state.
-                  
-                          Entering: "ease-out duration-300"
-                            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            To: "opacity-100 translate-y-0 sm:scale-100"
-                          Leaving: "ease-in duration-200"
-                            From: "opacity-100 translate-y-0 sm:scale-100"
-                            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        -->
-                        <div class="pointer-events-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-0">
-                              
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  <div class="mt-3 text-center sm:mx-auto sm:mt-0 sm:text-left">
-                                    <img class="w-full" src="assets/images/infodao.png">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                  
-                                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        Dynamic Live Streaming Webapp
-                                    </h3>
-                                    <div class="mt-2">
-                                      <p class="text-sm text-gray-500">
-                                        In 2017, I spearheaded the development of a state-of-the-art live streaming web application leveraging Django, Tornado, WebSockets, and Nginx. By integrating HTML, CSS, JS, and jQuery, the platform boasts a user-friendly interface, allowing seamless streaming experiences for multiple users concurrently. One of its standout features is the interactive chat function, facilitating real-time communication among viewers. This project stands as a testament to my proficiency in web development and real-time data handling.
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                            <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto d-none">Demo live in 6 days</button>
-                            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card End -->
-        </div>
-    </section>
-    <section class="py-24 hidden" id="contact-section">
-        <div class="container pl-4 px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
-            <!--Left Col-->
-            <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
-              <p class="uppercase tracking-loose w-full">Want to learn more?</p>
-              <h1 class="my-4 text-5xl font-bold leading-tight">
-                  Feel free to contact me for more information!
-              </h1>
-              <p class="leading-normal text-2xl mb-8">
-                  Start a new project?<br/>
-                  Manage an existing one?<br/>
-                  Need advice on an emerging tech stack?<br/>
-                  Want a project like one above?<br/>
-              </p>
-          </div>
-          <div class="flex flex-col w-full md:w-3/5 justify-center items-start text-center md:text-left md:px-16">
-            <a href="mailto:contact@codingshinobi.com?subject=Hello from CodingShinobi&body=Hello, my name is " class="w-full bg-indigo-800 p-8 my-4">
-              <h1 class="text-3xl text-sky-100 font-bold leading-tight text-center">
-                Click here to email me
-              </h1>
-            </a>
-            <a href="https://calendly.com/" class="w-full bg-indigo-800 p-8 my-4 d-none">
-              <h1 class="text-3xl text-sky-100 font-bold leading-tight text-center">
-                Set up a Calender call
-              </h1>
-            </a>
-          </div>
-            <!--Right Col-->
-            
-        </div>
-    </section>
-    <!-- <section class="pt-12" id="footer-section">
-        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
-            
-        </div>
-    </section> -->
-
-	<script src="CodingShinobi.js"></script>
-  </body>
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight); composer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
 </html>
