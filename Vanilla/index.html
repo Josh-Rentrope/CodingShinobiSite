@@ -108,6 +108,7 @@
         import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
         import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+		import { CopyShader } from 'three/addons/shaders/CopyShader.js';
         import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
         import { RGBShiftShader } from 'three/addons/shaders/RGBShiftShader.js';
 
@@ -119,7 +120,7 @@
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
         const pixelRatio = Math.min(window.devicePixelRatio, 2);
-        const renderer = new THREE.WebGLRenderer({ antialias: false }); 
+        const renderer = new THREE.WebGLRenderer({ antialias: true }); 
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(pixelRatio);
         renderer.toneMapping = THREE.ReinhardToneMapping; 
@@ -140,6 +141,9 @@
         rgbShiftPass.uniforms['amount'].value = 0.0025; 
         composer.addPass(rgbShiftPass);
 
+		const copyPass = new ShaderPass(CopyShader);
+		composer.addPass(copyPass);
+		
         // --- Data ---
         const projectData = [
             { title: "Unity Game Demo April 2026", desc: "Unity based experience, showcasing data driven gameplay.", images: ["assets/images/April-2026-Unity-1.png","assets/images/vr_simulation.jpg"], link: "#" },

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Games Impact on my Tastes, Experiences</title>
+    <style>
+        :root {
+            --nav-height: 60px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            background-color: #0d0d12;
+        }
+        
+        body.modal-open {
+            overflow: hidden; /* Prevent background scrolling when modal is open */
+        }
+
+        #bg-layer {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; background-color: #101820;
+        }
+
+        #bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height);
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            gap: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link {
+            color: #aaa; text-decoration: none; text-transform: uppercase;
+            font-size: 13px; letter-spacing: 2px; transition: color 0.3s; cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        /* Split Hero Section */
+        #hero {
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0 5vw;
+            box-sizing: border-box;
+        }
+
+        .hero-text {
+            max-width: 600px;
+            z-index: 10;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem; margin: 0 0 20px 0; font-weight: 300; letter-spacing: 2px;
+        }
+
+        .hero-text p {
+            color: #ccc; font-size: 1.2rem; line-height: 1.6;
+        }
+
+        .hero-orbit-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #orbit-center {
+            width: 180px; height: 180px; border-radius: 50%;
+            background: url('https://via.placeholder.com/180x180/222/fff?text=Avatar') center/cover;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 200; /* Updated z-index baseline */
+            box-shadow: 0 0 40px rgba(0,0,0,0.8); border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .orb-wrapper {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); cursor: pointer;
+        }
+
+        .orb {
+            width: 60px; height: 60px; border-radius: 50%;
+            background-size: cover; background-position: center; border: 2px solid rgba(255,255,255,0.4);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s;
+            position: relative;
+        }
+        .orb:hover { transform: scale(1.4); border-color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+
+        .orb-tooltip {
+            position: absolute; top: -35px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.8); padding: 5px 10px; border-radius: 4px;
+            font-size: 12px; white-space: nowrap; opacity: 0; visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s; pointer-events: none; border: 1px solid rgba(255,255,255,0.2);
+        }
+        .orb:hover .orb-tooltip { opacity: 1; visibility: visible; }
+
+        /* Dynamic Sections */
+        main { position: relative; z-index: 10; padding-bottom: 100px; }
+
+        .category-section {
+            min-height: 80vh; padding: 100px 5vw; display: flex; flex-direction: column;
+            justify-content: center; opacity: 0; transform: translateY(40px);
+        }
+
+        .section-header {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 50px;
+        }
+
+        .section-desc h2 { font-size: 3rem; margin: 0 0 15px 0; font-weight: 300; border-left: 4px solid #fff; padding-left: 20px; }
+        .section-desc p { color: #aaa; line-height: 1.6; font-size: 1.1rem; margin: 0; }
+        
+        .section-impact {
+            background: rgba(0,0,0,0.3); padding: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section-impact h3 { margin: 0 0 15px 0; color: #fff; font-weight: 400; letter-spacing: 1px; font-size: 1.2rem; }
+        .section-impact p { color: #ccc; line-height: 1.6; margin: 0; }
+
+        /* Placards */
+        .placard-grid { display: flex; flex-wrap: wrap; gap: 30px; }
+        .placard { width: 220px; display: flex; flex-direction: column; cursor: pointer; }
+        .placard-img {
+            width: 100%; aspect-ratio: 3/4; background-color: #222; background-size: cover;
+            background-position: center; border-radius: 6px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden;
+        }
+        .placard-img::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); border-radius: 6px; transition: box-shadow 0.3s ease;
+        }
+        .placard:hover .placard-img { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.7); }
+        .placard:hover .placard-img::after { box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5); }
+        .placard-title { margin-top: 12px; font-size: 14px; font-weight: 600; letter-spacing: 0.5px; color: #ccc; transition: color 0.3s; }
+        .placard:hover .placard-title { color: #fff; }
+
+        /* Game Modal */
+        #game-modal {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #game-modal.active { opacity: 1; visibility: visible; }
+        
+        .modal-content {
+            background: #111; width: 90%; max-width: 900px; display: grid; grid-template-columns: 1fr 1.5fr;
+            border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        #game-modal.active .modal-content { transform: scale(1); }
+        
+        .modal-close {
+            position: absolute; top: 15px; right: 20px; font-size: 30px; color: #aaa; cursor: pointer; transition: color 0.2s; z-index: 10;
+        }
+        .modal-close:hover { color: #fff; }
+        
+        .modal-image {
+            background-color: #222; background-size: cover; background-position: center; min-height: 400px;
+        }
+        .modal-text { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .modal-text h2 { margin: 0 0 15px 0; font-size: 2.5rem; font-weight: 300; }
+        .modal-text p { color: #ccc; line-height: 1.7; font-size: 1.1rem; }
+
+    </style>
+</head>
+<body>
+
+    <div id="bg-layer"></div>
+    <div id="bg-overlay"></div>
+
+    <nav id="navbar"></nav>
+
+    <header id="hero">
+        <div class="hero-text">
+            <h1>Aesthetics/ Experiences</h1>
+            <p>While there's a plethora of games that have also shaped how I see the world. Here's a short list of categories that impacted me, personally.</p>
+			<p style="font-size: 0.8em;"><i>Currently Updating: text, visuals</i></p>
+        </div>
+        <div class="hero-orbit-container">
+            <div id="orbit-center"></div>
+            </div>
+    </header>
+
+    <main id="content"></main>
+
+    <div id="game-modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div class="modal-image" id="modal-img"></div>
+            <div class="modal-text">
+                <h2 id="modal-title">Game Title</h2>
+                <p id="modal-desc">Game description goes here...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
+
+        // --- 1. Master Data Configuration ---
+        const categories = [
+            { 
+                id: 'aura', 
+                name: 'Aura / Aesthetic', 
+                color: '#12253a', 
+                desc: 'Themes focusing on serene environments, boundless skies, and specific emotional resonances tied to freedom and observation.',
+                impact: 'These titles fundamentally rewired my appreciation for details in atmosphere and movement. They both have strong design and environmental storytelling, even through low-poly stylizations.',
+                games: [
+                    { title: 'Sky', img: 'game-images/sky.jpg', desc: 'A masterclass in non-verbal narrative and collaborative aesthetics. The visual language relies heavily on light, silhouette, and sweeping cloudscapes.' },
+                    { title: 'Aer', img: 'game-images/aer.webp', desc: 'A minimalist exploration of shattered floating islands. The low-poly clouds and fluid flight mechanics create an unparalleled sense of momentum and peace.' }
+                ],
+                orbColor: '#3a82e6'
+            },
+            { 
+                id: 'story', 
+                name: 'Story Focus', 
+                color: '#1f122b', 
+                desc: 'Narrative-driven experiences prioritizing character arcs, branching dialogue, and immersive world-building over pure mechanics.',
+                impact: 'Interacting with these worlds solidified my belief in systemic narrative. The realization that UI, color palettes, and even menu interactions can carry as much storytelling weight as the script itself was a paradigm shift.',
+                games: [
+                    { title: 'Song of Farca', img: 'game-images/farca.webp', desc: 'A dystopian hacker narrative that blends puzzle mechanics with branching dialogue, set against a stark, cyberpunk aesthetic.' },
+                    { title: 'Dreamfall', img: 'game-images/9b59b6?text=DREAMFALL', desc: 'A defining adventure game that proved pacing and environmental design are crucial for emotional resonance.' }
+                ],
+                orbColor: '#9b59b6'
+            },
+            { 
+                id: 'crafting', 
+                name: 'Crafting / Building', 
+                color: '#0b2015', 
+                desc: 'Systems centered around survival, resource gathering, base construction, and taming hostile biomes.',
+                impact: 'These games highlighted the beauty of player-driven architecture. Witnessing a bruised, purple sunset over a meticulously hand-crafted Viking longhouse established my appreciation for organic, systemic lighting and weather engines.',
+                games: [
+                    { title: 'Valheim', img: 'game-images/27ae60?text=VALHEIM', desc: 'Low-res textures paired with cutting-edge lighting logic. The contrast creates an atmosphere that is simultaneously nostalgic and brutally modern.' },
+                    { title: 'Greenhell', img: 'game-images/27ae60?text=GREENHELL', desc: 'A hyper-realistic dive into the Amazon basin, focusing on the psychological and physical weight of survival mechanics.' }
+                ],
+                orbColor: '#27ae60'
+            },
+            { 
+                id: 'factory', 
+                name: 'Factory Games', 
+                color: '#2c1b10', 
+                desc: 'Logistics, automation, and optimization. The aesthetic of endless belts and the satisfaction of perfect ratios.',
+                impact: 'The ultimate lesson in UI and macro-scale organization. Watching a chaotic web of conveyors evolve into a unified, mathematically perfect grid deeply influenced my approach to systemic architecture and data flow.',
+                games: [
+                    { title: 'Factorio', img: 'game-images/e67e22?text=FACTORIO', desc: 'The industrial grimdark aesthetic perfectly mirrors the unrelenting necessity for optimization and expansion.' },
+                    { title: 'Satisfactory', img: 'game-images/e67e22?text=SATISFACTORY', desc: 'Translating isometric logistics into a lush, hand-crafted 3D world. A study in scale and verticality.' },
+                    { title: 'Mindustry', img: 'game-images/e67e22?text=MINDUSTRY', desc: 'A minimalist blend of tower defense and supply chain management. Pure, distilled logic mechanics.' }
+                ],
+                orbColor: '#e67e22'
+            },
+            { 
+                id: 'strategy', 
+                name: 'Strategic Thinking', 
+                color: '#151522', 
+                desc: 'Calculated risks, grid-based combat, and punishing permadeath. Games that demand forethought and punish mistakes.',
+                impact: 'These titles stripped away reflex-based gameplay to expose pure decision-making. The UI in these games—how they display probability, sightlines, and action points—is a masterclass in conveying complex data instantly.',
+                games: [
+                    { title: 'Battle Brothers', img: 'game-images/e74c3c?text=BROTHERS', desc: 'A gritty, low-fantasy tactical RPG. The tabletop aesthetic forces the imagination to fill in the brutal blanks.' },
+                    { title: 'Banners of Ruin', img: 'game-images/e74c3c?text=BANNERS', desc: 'Deck-building strategy that uses distinct character positioning and a beautiful, muted medieval art style.' },
+                    { title: 'Invisible Inc', img: 'game-images/e74c3c?text=INVISIBLE', desc: 'Flawless execution of stealth tactics. The high-contrast, cel-shaded art style ensures critical information is never lost in visual noise.' },
+                    { title: 'XCom', img: 'game-images/e74c3c?text=XCOM', desc: 'The gold standard for translating probability and grid mechanics into a cinematic, high-stakes experience.' }
+                ],
+                orbColor: '#e74c3c'
+            }
+        ];
+
+        // --- 2. Dynamic DOM Generation ---
+        const nav = document.getElementById('navbar');
+        const orbitContainer = document.querySelector('.hero-orbit-container');
+        const main = document.getElementById('content');
+
+        categories.forEach((cat, index) => {
+            const navLink = document.createElement('a');
+            navLink.className = 'nav-link';
+            navLink.innerText = cat.name;
+            navLink.onclick = () => gsap.to(window, { scrollTo: `#${cat.id}`, duration: 1, ease: "power2.inOut" });
+            nav.appendChild(navLink);
+
+            const orbWrapper = document.createElement('div');
+            orbWrapper.className = 'orb-wrapper';
+            orbWrapper.dataset.index = index;
+            
+            const orb = document.createElement('div');
+            orb.className = 'orb';
+            orb.style.backgroundColor = cat.orbColor; 
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'orb-tooltip';
+            tooltip.innerText = cat.name;
+            
+            orb.appendChild(tooltip);
+            orbWrapper.appendChild(orb);
+            orb.onclick = () => gsap.to(window, { scrollTo: `#${cat.id}`, duration: 1, ease: "power2.inOut" });
+            orbitContainer.appendChild(orbWrapper);
+
+            const section = document.createElement('section');
+            section.id = cat.id;
+            section.className = 'category-section';
+            section.dataset.color = cat.color;
+
+            let placardsHTML = '';
+            cat.games.forEach((game, gameIndex) => {
+                // Pass game data to modal function via JSON stringification
+                const gameDataStr = JSON.stringify(game).replace(/"/g, '&quot;');
+                placardsHTML += `
+                    <div class="placard" onclick="openModal('${gameDataStr}')">
+                        <div class="placard-img" style="background-image: url('${game.img}')"></div>
+                        <div class="placard-title">${game.title}</div>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = `
+                <div class="section-header">
+                    <div class="section-desc">
+                        <h2>${cat.name}</h2>
+                        <p>${cat.desc}</p>
+                    </div>
+                    <div class="section-impact">
+                        <h3>Aesthetic Impact</h3>
+                        <p>${cat.impact}</p>
+                    </div>
+                </div>
+                <div class="placard-grid">
+                    ${placardsHTML}
+                </div>
+            `;
+            main.appendChild(section);
+        });
+
+        // --- 3. Pseudo-3D Orbit Logic ---
+        const orbWrappers = document.querySelectorAll('.orb-wrapper');
+        let orbitTime = 0;
+        let isOrbitPaused = false;
+        
+        const orbitRadiusX = 250; // Slightly narrower to fit right-side container
+        const orbitRadiusY = 80;
+
+        orbWrappers.forEach(wrap => {
+            wrap.addEventListener('mouseenter', () => isOrbitPaused = true);
+            wrap.addEventListener('mouseleave', () => isOrbitPaused = false);
+        });
+
+        gsap.ticker.add((time, deltaTime) => {
+            if (!isOrbitPaused) orbitTime += deltaTime * 0.0005; 
+
+            orbWrappers.forEach((wrap, i) => {
+                const angle = orbitTime + (i / categories.length) * Math.PI * 2;
+                const x = Math.cos(angle) * orbitRadiusX;
+                const z = Math.sin(angle) * orbitRadiusY;
+                const scale = 1 + (z / orbitRadiusY) * 0.3; 
+                
+                // Z-index updated to base 200 as requested
+                const zIndex = Math.round(z) + 200; 
+
+                gsap.set(wrap, { x: x, y: z, scale: scale, zIndex: zIndex });
+            });
+        });
+
+        // --- 4. Scroll Animations & Color Transitions ---
+        const sections = gsap.utils.toArray('.category-section');
+        const bgLayer = document.getElementById('bg-layer');
+
+        sections.forEach((sec, i) => {
+            const secColor = sec.dataset.color;
+
+            ScrollTrigger.create({
+                trigger: sec,
+                start: "top 60%", 
+                end: "bottom 60%",
+                onEnter: () => gsap.to(bgLayer, { backgroundColor: secColor, duration: 0.8, ease: "power1.inOut" }),
+                onEnterBack: () => gsap.to(bgLayer, { backgroundColor: secColor, duration: 0.8, ease: "power1.inOut" })
+            });
+
+            gsap.to(sec, {
+                scrollTrigger: { trigger: sec, start: "top 80%" },
+                opacity: 1, y: 0, duration: 1, ease: "power3.out"
+            });
+
+            ScrollTrigger.create({
+                trigger: sec,
+                start: "top center",
+                end: "bottom center",
+                toggleClass: { targets: nav.children[i], className: "active" }
+            });
+        });
+
+        // --- 5. Modal Logic ---
+        const modal = document.getElementById('game-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+
+        window.openModal = function(gameDataStr) {
+            const game = JSON.parse(gameDataStr);
+            modalImg.style.backgroundImage = `url('${game.img}')`;
+            modalTitle.innerText = game.title;
+            modalDesc.innerText = game.desc;
+            
+            modal.classList.add('active');
+            document.body.classList.add('modal-open'); // Prevent background scroll
+        };
+
+        window.closeModal = function() {
+            modal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        };
+
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+    </script>
+</body>
+</html>
