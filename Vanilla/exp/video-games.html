@@ -190,7 +190,7 @@
     <header id="hero">
         <div class="hero-text">
             <h1>Aesthetics/ Experiences</h1>
-            <p>While there's a plethora of games that have also shaped how I see the world. Here's a short list of categories that impacted me, personally.</p>
+            <p>While there's a plethora of games that have also shaped how I see the world and design. Here's a short list of categories that impacted me</p>
 			<p style="font-size: 0.8em;"><i>Currently Updating: text, visuals</i></p>
         </div>
         <div class="hero-orbit-container">
@@ -227,7 +227,8 @@
                 desc: 'Themes focusing on serene environments, boundless skies, and specific emotional resonances tied to freedom and observation.',
                 impact: 'These titles fundamentally rewired my appreciation for details in atmosphere and movement. They both have strong design and environmental storytelling, even through low-poly stylizations.',
                 games: [
-                    { title: 'Sky', img: 'game-images/sky.jpg', desc: 'A masterclass in non-verbal narrative and collaborative aesthetics. The visual language relies heavily on light, silhouette, and sweeping cloudscapes.' },
+                    { title: 'Sky', img: 'game-images/sky.jpg', desc: 'I played this game in 2020, and this game has probably had the strongest sleeper influence on my design choices. From the smooth movement and chill gameplay, to interesting, cozy environments and frankly impeccable cloud rendering; it does a lot to captivate awe while having a relatively low compute footprint' +
+																	  'I remember making a few volumetric cloud shaders in glsl to chase the same feeling, and almost every outdoor virtual experience has needed to include a good cloud rendering model.' },
                     { title: 'Aer', img: 'game-images/aer.webp', desc: 'A minimalist exploration of shattered floating islands. The low-poly clouds and fluid flight mechanics create an unparalleled sense of momentum and peace.' }
                 ],
                 orbColor: '#3a82e6'
@@ -251,7 +252,7 @@
                 desc: 'Systems centered around survival, resource gathering, base construction, and taming hostile biomes.',
                 impact: 'These games highlighted the beauty of player-driven architecture. Witnessing a bruised, purple sunset over a meticulously hand-crafted Viking longhouse established my appreciation for organic, systemic lighting and weather engines.',
                 games: [
-                    { title: 'Valheim', img: 'game-images/27ae60?text=VALHEIM', desc: 'Low-res textures paired with cutting-edge lighting logic. The contrast creates an atmosphere that is simultaneously nostalgic and brutally modern.' },
+                    { title: 'Valheim', img: 'game-images/valheim.webp', desc: 'Low-res textures paired with cutting-edge lighting logic. The contrast creates an atmosphere that is simultaneously nostalgic and brutally modern.' },
                     { title: 'Greenhell', img: 'game-images/27ae60?text=GREENHELL', desc: 'A hyper-realistic dive into the Amazon basin, focusing on the psychological and physical weight of survival mechanics.' }
                 ],
                 orbColor: '#27ae60'
@@ -263,8 +264,8 @@
                 desc: 'Logistics, automation, and optimization. The aesthetic of endless belts and the satisfaction of perfect ratios.',
                 impact: 'The ultimate lesson in UI and macro-scale organization. Watching a chaotic web of conveyors evolve into a unified, mathematically perfect grid deeply influenced my approach to systemic architecture and data flow.',
                 games: [
-                    { title: 'Factorio', img: 'game-images/e67e22?text=FACTORIO', desc: 'The industrial grimdark aesthetic perfectly mirrors the unrelenting necessity for optimization and expansion.' },
-                    { title: 'Satisfactory', img: 'game-images/e67e22?text=SATISFACTORY', desc: 'Translating isometric logistics into a lush, hand-crafted 3D world. A study in scale and verticality.' },
+                    { title: 'Factorio', img: 'game-images/factorio.webp', desc: 'The industrial grimdark aesthetic perfectly mirrors the unrelenting necessity for optimization and expansion.' },
+                    { title: 'Satisfactory', img: 'game-images/satisfactory.webp', desc: 'Translating isometric logistics into a lush, hand-crafted 3D world. A study in scale and verticality.' },
                     { title: 'Mindustry', img: 'game-images/e67e22?text=MINDUSTRY', desc: 'A minimalist blend of tower defense and supply chain management. Pure, distilled logic mechanics.' }
                 ],
                 orbColor: '#e67e22'
@@ -276,10 +277,10 @@
                 desc: 'Calculated risks, grid-based combat, and punishing permadeath. Games that demand forethought and punish mistakes.',
                 impact: 'These titles stripped away reflex-based gameplay to expose pure decision-making. The UI in these games—how they display probability, sightlines, and action points—is a masterclass in conveying complex data instantly.',
                 games: [
-                    { title: 'Battle Brothers', img: 'game-images/e74c3c?text=BROTHERS', desc: 'A gritty, low-fantasy tactical RPG. The tabletop aesthetic forces the imagination to fill in the brutal blanks.' },
-                    { title: 'Banners of Ruin', img: 'game-images/e74c3c?text=BANNERS', desc: 'Deck-building strategy that uses distinct character positioning and a beautiful, muted medieval art style.' },
-                    { title: 'Invisible Inc', img: 'game-images/e74c3c?text=INVISIBLE', desc: 'Flawless execution of stealth tactics. The high-contrast, cel-shaded art style ensures critical information is never lost in visual noise.' },
-                    { title: 'XCom', img: 'game-images/e74c3c?text=XCOM', desc: 'The gold standard for translating probability and grid mechanics into a cinematic, high-stakes experience.' }
+                    { title: 'Battle Brothers', img: 'game-images/battlebrothers.webp', desc: 'A gritty, low-fantasy tactical RPG. The tabletop aesthetic forces the imagination to fill in the brutal blanks.' },
+                    { title: 'Banners of Ruin', img: 'game-images/bannersofruin.webp', desc: 'Deck-building strategy that uses distinct character positioning and a beautiful, muted medieval art style.' },
+                    { title: 'Invisible Inc', img: 'game-images/invisible.webp', desc: 'Flawless execution of stealth tactics. The high-contrast, cel-shaded art style ensures critical information is never lost in visual noise.' },
+                    { title: 'XCom', img: 'game-images/xcom.webp', desc: 'The gold standard for translating probability and grid mechanics into a cinematic, high-stakes experience.' }
                 ],
                 orbColor: '#e74c3c'
             }
@@ -335,10 +336,8 @@
                 <div class="section-header">
                     <div class="section-desc">
                         <h2>${cat.name}</h2>
-                        <p>${cat.desc}</p>
-                    </div>
-                    <div class="section-impact">
-                        <h3>Aesthetic Impact</h3>
+                        <p><i>${cat.desc}</i></p>
+						<br/>
                         <p>${cat.impact}</p>
                     </div>
                 </div>
