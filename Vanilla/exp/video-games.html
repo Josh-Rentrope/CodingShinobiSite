@@ -190,8 +190,9 @@
     <header id="hero">
         <div class="hero-text">
             <h1>Aesthetics/ Experiences</h1>
-            <p>While there's a plethora of games that have also shaped how I see the world and design. Here's a short list of categories that impacted me</p>
+            <p>While there's a plethora of games that have also shaped how I see the world and design. Here's a short list of categories that impacted me.</p>
 			<p style="font-size: 0.8em;"><i>Currently Updating: text, visuals</i></p>
+			<p style="font-size: 0.8em;"><i>Currently Done: Sky, Aer</i></p>
         </div>
         <div class="hero-orbit-container">
             <div id="orbit-center"></div>
@@ -227,9 +228,9 @@
                 desc: 'Themes focusing on serene environments, boundless skies, and specific emotional resonances tied to freedom and observation.',
                 impact: 'These titles fundamentally rewired my appreciation for details in atmosphere and movement. They both have strong design and environmental storytelling, even through low-poly stylizations.',
                 games: [
-                    { title: 'Sky', img: 'game-images/sky.jpg', desc: 'I played this game in 2020, and this game has probably had the strongest sleeper influence on my design choices. From the smooth movement and chill gameplay, to interesting, cozy environments and frankly impeccable cloud rendering; it does a lot to captivate awe while having a relatively low compute footprint' +
-																	  'I remember making a few volumetric cloud shaders in glsl to chase the same feeling, and almost every outdoor virtual experience has needed to include a good cloud rendering model.' },
-                    { title: 'Aer', img: 'game-images/aer.webp', desc: 'A minimalist exploration of shattered floating islands. The low-poly clouds and fluid flight mechanics create an unparalleled sense of momentum and peace.' }
+                    { title: 'Sky', img: 'game-images/sky.jpg', desc: 'I played this game in 2020, and this game has probably had the strongest sleeper influence on my design choices. <br/> <br/> From the smooth movement and chill gameplay; to interesting, cozy environments and frankly impeccable cloud rendering; it does a lot to captivate awe while having a relatively low compute footprint <br/><br/> ' +
+																	  'I also remember making a few volumetric cloud shaders in glsl to chase the same feeling, and almost every outdoor virtual experience has needed to include a good cloud rendering model.' },
+                    { title: 'Aer', img: 'game-images/aer.webp', desc: 'It was around 2023 when I had this title, and it hit the same vein of awesome environment in a low-poly style. <br/> <br/> The movement modes also deserve its own accolades, as I spents a few hours just doing aerial tricks around the varied environments. <br/>'},
                 ],
                 orbColor: '#3a82e6'
             },
@@ -415,7 +416,7 @@
             const game = JSON.parse(gameDataStr);
             modalImg.style.backgroundImage = `url('${game.img}')`;
             modalTitle.innerText = game.title;
-            modalDesc.innerText = game.desc;
+            modalDesc.innerHTML = game.desc;
             
             modal.classList.add('active');
             document.body.classList.add('modal-open'); // Prevent background scroll
