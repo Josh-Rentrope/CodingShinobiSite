@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Architecture - Animus Project Archive</title>
+    <style>
+        body { 
+            margin: 0; 
+            background: #020205; 
+            font-family: 'Segoe UI', sans-serif; 
+            color: white; 
+            padding-top: 100px;
+            padding-bottom: 100px;
+            line-height: 1.6;
+        }
+        
+        header, footer {
+            position: fixed; left: 0; width: 100%; height: 60px;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+            z-index: 5; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; box-sizing: border-box;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.15);
+        }
+        header { top: 0; }
+        footer { bottom: 0; border-top: 1px solid rgba(0, 255, 255, 0.15); border-bottom: none; justify-content: flex-end; }
+        .ui-text { color: #00ffff; font-family: monospace; letter-spacing: 2px; font-size: 14px; text-transform: uppercase; }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 300;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 300;
+            margin-top: 50px;
+            margin-bottom: 15px;
+            color: #00ffff;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 400;
+            color: #4488aa;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #aaa;
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+
+        ul {
+            color: #aaa;
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            color: #00ffff;
+            text-decoration: none;
+            font-family: monospace;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+        
+        .back-link:hover {
+            text-shadow: 0 0 10px #00ffff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span class="ui-text">Coding Shinobi</span>
+        <span class="ui-text">April Demos</span>
+    </header>
+
+    <main>
+        <a href="index.html" class="back-link">&larr; RETURN TO ARCHIVE</a>
+        
+        <h1>How We Architected a Distributed IoT Sensor Network</h1>
+        <h3> (When the Edge Hates You)</h3>
+        
+        <p>In 2018, we set out to build a distributed, multi-modal sensor network for urban and agricultural environments. If you spend enough time building standard cloud applications, you start taking things for granted: reliable network connections, homogenous compute, and ephemeral state.</p>
+        <p>Building a data-fusion system across hostile physical environments completely shatters those assumptions. The physical edge is chaotic, and it forced a permanent mandate for our team: build deterministic, reproducible infrastructure, or fail.</p>
+        <p>This post describes how we built it, where standard cloud paradigms broke down, and how we survived the edge.</p>
+
+        <h2>Lean by Default, Docker by Choice</h2>
+        <p>Some background: at the edge, hardware heterogeneity is the rule, not the exception. Our fleet was a wild mix of Raspberry Pis and Nvidia Jetsons, requiring a multi-architecture approach across ARM and x86_64.</p>
+        <p>We initially designed the node systems to be extremely lean. By default, you could just download the code, set up your Python environment, and run it directly on bare metal. This was actually great for squeezing out maximum performance.</p>
+        <p>But relying on end-users to manually manage environments on a dozen different edge devices is a recipe for dependency hell and endless friction. To mitigate this, we pushed Docker as the primary deployment path to guarantee standardized, conflict-free environments. Bare-metal execution was always an option if overhead constraints demanded it, but containerization was our shield against environment drift.</p>
+
+        <h2>"Trustless" Networking</h2>
+        <p>Standard discovery protocols are great... until you're dealing with line-of-sight drops and physical signal jamming in a field. We knew we needed an SD-WAN solution to traverse networks and find endpoints, so we built our own custom overlay network.</p>
+        <p>We self-hosted a central control endpoint. When a device woke up and caught a WAN connection, it registered with this endpoint, which then dynamically brokered VPN-tunneled connections to geographically proximate nodes.</p>
+        <p>We tested it, made it incredibly robust, and moved on. It ties back to a core engineering ethos: build the foundation so solidly that you don't waste time diagnosing trivial session-layer disconnects later. By building extreme fault-tolerance at the physical and link layers, upper-layer debugging actually became <em>easier</em>. We designed the system from the ground up to be tolerant of errors, whether from the environment or inside the code.</p>
+
+        <h2>Step by step: Data, AI, and Infrastructure</h2>
+        <p>With the networking layer stable, we had to tackle data durability, sensor fusion, and deployments. We broke it down into three phases:</p>
+
+        <h3>1. Data Durability</h3>
+        <p>When the network drops, data cannot simply vanish into a failed queue. We split the job in two:</p>
+        <ul>
+            <li><strong>Live Telemetry:</strong> We used Redis Pub/Sub for real-time queueing and at-least-once message delivery for actively connected clients.</li>
+            <li><strong>Physical Edge Caching:</strong> True persistence lived on the device. Each sensor node maintained a localized copy of its raw telemetry. If a node went dark, it cached everything. Upon reconnection, or if we physically retrieved it for a batch download, the pipeline seamlessly ingested the backlog. No data was lost. </li>
+        </ul>
+
+        <h3>2. Pragmatic AI</h3>
+        <p>Our core objective was generating a "Common Operating Picture" (COP) by fusing Electro-Optical (EO) and Infrared (IR) imagery with NASA SAR data. We used templated language generation to translate complex, multi-modal tensor data into plain-language text strings for rapid human analysis.</p>
+        <p>Then came the language decision. We made a hard architectural call: stick with Python. We explicitly avoided C++ to prevent team bottlenecks (you try finding a specialized C++ edge dev on short notice when it's mainly you building the core).</p>
+        <p>More importantly, we ruled out JavaScript. In 2019, WebGL backends in libraries like TF.js were quantizing weights differently than native runtimes, causing silent precision drift where the exact same inference would yield two different detections. Standardizing on native Python ensured the inference model behaved identically across every single device. We also bypassed workflow tools like Airflow and Node-RED; while powerful, their footprint is simply too massive for resource-constrained edge devices. </p>
+
+        <h3>3. Infrastructure via Bash</h3>
+        <p>Today, the industry defaults to Infrastructure as Code (IaC) like Terraform for everything. Back then, we relied on good, old-fashioned bash and batch scripts.</p>
+        <p>We used these scripts to download images, configure the code, and provision cloud-side coordinating nodes on DigitalOcean Droplets to handle the heavy aggregation. The edge devices (a mix of BYOD/BYOC) were bootstrapped via these scripts to automatically point back to the coordinators.</p>
+        <p>The end result was a highly composable machine learning pipeline. The system automated its own spin-up and teardown, and laid the groundwork for what a robust, drag-and-drop data processing system looks like when properly paired with modern IaC. We even maintained a decentralized UI layer: every edge node hosted a copy of the frontend, allowing engineers to physically connect to a device in the field and reconfigure the ML pipeline locally. </p>
+
+        <h2>A moving target</h2>
+        <p>This project was a crucible that made future software architecture challenges pale in comparison. Building for the edge forces you to respect the physical constraints of your hardware and the hostility of your network.</p>
+        <p>But even with this optimized architecture, the edge is always a moving target. We eventually realized we needed an adapter strategy to handle changes in pipelines across edge, processing, and central nodes... but that's a story for another post.</p>
+    </main>
+
+    <footer>
+        <span class="ui-text">Projects &bull; Architecture</span>
+    </footer>
+</body>
+</html>
