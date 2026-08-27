@@ -1,0 +1,13 @@
+{
+  "name": "codingshinobi",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "record": "node tools/record.mjs",
+    "serve": "node tools/serve.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}

@@ -1,0 +1,161 @@
+/* Command palette — consumes the :root tokens defined in evolution.css. */
+
+.palette-root {
+    position: fixed;
+    inset: 0;
+    z-index: 120; /* above header (100) and grain (90) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+}
+
+.palette-root.is-open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.palette-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 7, 9, 0.58);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.palette-panel {
+    position: relative;
+    width: min(34rem, calc(100vw - 2rem));
+    max-height: min(60vh, 32rem);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--panel, #0d1214);
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    transform: translateY(-10px) scale(0.985);
+    transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.palette-root.is-open .palette-panel {
+    transform: translateY(0) scale(1);
+}
+
+.palette-head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.palette-micro {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    flex: none;
+}
+
+.palette-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 1.05rem;
+    caret-color: var(--acid);
+}
+
+.palette-input::placeholder {
+    color: var(--dim);
+}
+
+.palette-list {
+    margin: 0;
+    padding: 0.5rem;
+    list-style: none;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.palette-group {
+    padding: 0.6rem 0.7rem 0.35rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim);
+}
+
+.palette-opt {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--ink);
+    transition: background 0.12s ease, color 0.12s ease;
+}
+
+.palette-opt .opt-label {
+    font-size: 0.92rem;
+    letter-spacing: 0.02em;
+}
+
+.palette-opt .opt-hint {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+}
+
+.palette-opt kbd {
+    font-family: var(--mono);
+    font-size: 10px;
+    line-height: 1;
+    color: var(--dim);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 3px 6px;
+    flex: none;
+}
+
+.palette-opt.is-highlighted {
+    background: rgba(184, 255, 101, 0.08);
+    color: var(--acid);
+}
+
+.palette-opt.is-highlighted .opt-hint,
+.palette-opt.is-highlighted kbd {
+    color: var(--muted);
+}
+
+.palette-empty {
+    padding: 1.6rem 0.7rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .palette-root,
+    .palette-panel,
+    .palette-opt {
+        transition: none !important;
+    }
+}

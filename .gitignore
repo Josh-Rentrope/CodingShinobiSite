@@ -1,2 +1,4 @@
 *.code-workspace
 /Vanilla/unknown
+node_modules
+test-results
