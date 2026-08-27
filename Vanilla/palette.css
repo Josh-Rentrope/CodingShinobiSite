@@ -1,5 +1,10 @@
 /* Command palette — consumes the :root tokens defined in evolution.css. */
 
+/* Lets the panel and list items transition between fixed heights and `auto`. */
+:root {
+    interpolate-size: allow-keywords;
+}
+
 .palette-root {
     position: fixed;
     inset: 0;
@@ -28,8 +33,10 @@
 }
 
 .palette-panel {
+    --palette-head-h: 3.4rem;
     position: relative;
-    width: min(34rem, calc(100vw - 2rem));
+    width: 0; /* first open animates 0 -> full width */
+    height: var(--palette-head-h); /* header row only until the second stage */
     max-height: min(60vh, 32rem);
     display: flex;
     flex-direction: column;
@@ -38,15 +45,42 @@
     background: var(--panel, #0d1214);
     box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.35);
     overflow: hidden;
-    transform: translateY(-10px) scale(0.985);
-    transition: transform 0.18s ease, opacity 0.18s ease;
+    opacity: 0;
+    transform: translateY(-8px) scale(0.985);
+    transition: width 1.3s cubic-bezier(0.22, 0.61, 0.36, 1),
+                height 1.3s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.15s ease,
+                transform 0.15s ease;
 }
 
+/* Stage 1 of the first open: width expands, height held at the header row. */
 .palette-root.is-open .palette-panel {
+    width: min(34rem, calc(100vw - 2rem));
+    opacity: 1;
     transform: translateY(0) scale(1);
 }
 
+/* Stage 2: height grows from the header row to the natural content size. */
+.palette-root.is-open .palette-panel.palette-expanded {
+    height: auto;
+}
+
+/* Later opens: jump straight to full size, fade in only. */
+.palette-root.is-open .palette-panel.palette-reopen {
+    width: min(34rem, calc(100vw - 2rem));
+    height: auto;
+    transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+/* Closing: collapse size instantly, fade out only. */
+.palette-panel.palette-closing {
+    width: 0;
+    height: var(--palette-head-h);
+    transition: opacity 0.12s ease;
+}
+
 .palette-head {
+    flex: none;
     display: flex;
     align-items: center;
     gap: 0.9rem;
@@ -80,11 +114,32 @@
 }
 
 .palette-list {
+    flex: 1 1 auto;
+    min-height: 0;
     margin: 0;
     padding: 0.5rem;
     list-style: none;
     overflow-y: auto;
     overscroll-behavior: contain;
+}
+
+/* Items and group separators animate height/opacity when filtered out. */
+.palette-group,
+.palette-opt {
+    overflow: hidden;
+    transition: height 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+                padding 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.16s ease,
+                background 0.12s ease,
+                color 0.12s ease;
+}
+
+.palette-group.palette-hidden,
+.palette-opt.palette-hidden {
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
 }
 
 .palette-group {
@@ -104,7 +159,6 @@
     border-radius: 8px;
     cursor: pointer;
     color: var(--ink);
-    transition: background 0.12s ease, color 0.12s ease;
 }
 
 .palette-opt .opt-label {
@@ -155,6 +209,7 @@
 @media (prefers-reduced-motion: reduce) {
     .palette-root,
     .palette-panel,
+    .palette-group,
     .palette-opt {
         transition: none !important;
     }
