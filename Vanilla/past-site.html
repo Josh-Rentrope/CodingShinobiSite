@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animus Project Archive</title>
+    <style>
+        body { margin: 0; background: #020205; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; color: white; }
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; cursor: grab; }
+        canvas:active { cursor: grabbing; }
+        
+        /* Removed fixed 800vh height here. It is now set dynamically in JS */
+        #scroll-container { pointer-events: none; }
+        
+        header, footer {
+            position: fixed; left: 0; width: 100%; height: 60px;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+            z-index: 5; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; box-sizing: border-box;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.15);
+        }
+        header { top: 0; }
+        footer { bottom: 0; border-top: 1px solid rgba(0, 255, 255, 0.15); border-bottom: none; justify-content: flex-end; }
+        .ui-text { color: #00ffff; font-family: monospace; letter-spacing: 2px; font-size: 14px; text-transform: uppercase; }
+
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        #overlay.active { opacity: 1; visibility: visible; }
+        
+        #carousel-container {
+            position: relative; width: 80%; max-width: 1000px; height: 60vh;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 30px;
+        }
+        #overlay-img { 
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            border: 1px solid rgba(0, 255, 255, 0.3); box-shadow: 0 0 40px rgba(0, 255, 255, 0.1);
+        }
+        
+        .nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5); border: 1px solid #00ffff; color: #00ffff;
+            font-size: 30px; padding: 15px 25px; cursor: pointer; transition: 0.2s; z-index: 11;
+        }
+        .nav-btn:hover { background: #00ffff; color: #000; box-shadow: 0 0 20px #00ffff; }
+        .nav-btn.left { left: -80px; }
+        .nav-btn.right { right: -80px; }
+
+        .text-group { text-align: center; max-width: 800px; }
+        .text-group h2 { margin: 0 0 10px 0; font-size: 36px; font-weight: 300; letter-spacing: 1px; }
+        .text-group p { margin: 0 0 25px 0; color: #aaa; font-size: 18px; line-height: 1.5; }
+
+        .btn {
+            border: 1px dashed #4488aa; padding: 12px 24px; text-decoration: none; font-size: 18px; display: inline-block;
+            background: linear-gradient(120deg, #4488aa 0%, #4488aa 40%, #ffffff 50%, #4488aa 60%, #4488aa 100%);
+            background-size: 200% auto; color: #4488aa; background-clip: text; -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; animation: textShine 2.5s linear infinite; cursor: pointer;
+        }
+        @keyframes textShine { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+        .close { position: absolute; top: 30px; right: 40px; font-size: 40px; cursor: pointer; color: #555; font-weight: 300; transition: 0.2s; }
+        .close:hover { color: #00ffff; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span class="ui-text">Coding Shinobi</span>
+        <span class="ui-text">April Demos</span>
+    </header>
+
+    <div id="scroll-container"></div>
+
+    <div id="overlay" >
+        <span class="close" onclick="closeOverlay()">X</span>
+        
+        <div id="carousel-container">
+            <button class="nav-btn left" onclick="changeImage(-1)">&#10094;</button>
+            <img id="overlay-img" src="" alt="Snapshot">
+            <button class="nav-btn right" onclick="changeImage(1)">&#10095;</button>
+        </div>
+
+        <div class="text-group">
+            <h2 id="proj-title">Title</h2>
+            <p id="proj-desc">Sub title/Caption</p>
+            <a id="proj-link" class="btn" target="_blank">Access Demo &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <span class="ui-text">Projects</span>
+    </footer>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+		import { CopyShader } from 'three/addons/shaders/CopyShader.js';
+        import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+        import { RGBShiftShader } from 'three/addons/shaders/RGBShiftShader.js';
+
+        // --- Setup ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x020205); 
+        scene.fog = new THREE.FogExp2(0x020205, 0.04); 
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        const pixelRatio = Math.min(window.devicePixelRatio, 2);
+        const renderer = new THREE.WebGLRenderer({ antialias: true }); 
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(pixelRatio);
+        renderer.toneMapping = THREE.ReinhardToneMapping; 
+        document.body.appendChild(renderer.domElement);
+
+        // --- Post-Processing ---
+        const composer = new EffectComposer(renderer);
+        composer.setPixelRatio(pixelRatio); 
+        composer.addPass(new RenderPass(scene, camera));
+
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 1.5; 
+        bloomPass.strength = 1.2; 
+        bloomPass.radius = 0.8;
+        composer.addPass(bloomPass);
+
+        const rgbShiftPass = new ShaderPass(RGBShiftShader);
+        rgbShiftPass.uniforms['amount'].value = 0.0025; 
+        composer.addPass(rgbShiftPass);
+
+		const copyPass = new ShaderPass(CopyShader);
+		composer.addPass(copyPass);
+		
+        // --- Data ---
+        const projectData = [
+            { title: "Robust IoT Project", desc: "Internet of Things project that made future networking and software problems a cakewalk", actionText:"Blog Entry (Animation Soon)", images: ["assets/images/groupingmap.png"], link: "/posts/iot-entry.html" },
+            { title: "Unity Game Demo April 2026", desc: "Unity based experience, showcasing data driven gameplay.", images: ["assets/images/April-2026-Unity-1.png","assets/images/vr_simulation.jpg"], link: "#" },
+            { title: "This Site", desc: "Three JS with animations handled in javascript.", images: ["assets/images/thissite.png"], link: "/" },
+            { title: "High-Perf Compute", desc: "Scientific data processing handling 1 TB/min.", images: ["assets/images/hpc_platform.jpg"], link: "#" },            
+        ];
+
+        // --- DYNAMIC SCALING LOGIC ---
+        // Calculate points based on exactly how many projects exist
+        const projectSpacing = 10;
+        const helixPoints = (projectData.length * projectSpacing) + 30; // 30 adds a nice trailing tail
+        const heightStep = 1.2;
+        
+        // Dynamically set the scroll container height (approx 100vh per project + 200vh padding)
+        document.getElementById('scroll-container').style.height = `${(projectData.length * 100) + 200}vh`;
+
+        // --- Composited Text Texture ---
+        function getTexture(data) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 600; canvas.height = 300;
+            const ctx = canvas.getContext('2d');
+            const texture = new THREE.CanvasTexture(canvas);
+
+            function drawLayer(imgElement) {
+                if (imgElement) {
+                    ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                } else {
+                    ctx.fillStyle = '#0a0a0d'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                ctx.strokeStyle = '#00ffff'; ctx.lineWidth = 8; ctx.strokeRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ffffff'; ctx.font = 'bold 36px "Segoe UI"'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(data.title, canvas.width / 2, canvas.height / 2);
+                texture.needsUpdate = true; 
+            }
+
+            if (data.images && data.images.length > 0) {
+                const img = new Image(); img.crossOrigin = "Anonymous";
+                img.onload = () => drawLayer(img); img.onerror = () => drawLayer(null);
+                img.src = data.images[0];
+            } else { drawLayer(null); }
+
+            return texture;
+        }
+
+        // --- DNA Helixes ---
+        function createHelix(radius, hexColor, isMain = false, isCurved = false) {
+            const group = new THREE.Group();
+            const glowColor = new THREE.Color(hexColor).multiplyScalar(3.0);
+
+            for (let i = -20; i < helixPoints; i++) {
+                const angle = i * 0.4;
+                const y = -(i * heightStep); 
+                
+                let offsetX = 0, offsetZ = 0;
+                if (isCurved) {
+                    offsetX = Math.sin(y * 0.03) * 20; offsetZ = Math.cos(y * 0.03) * 20;
+                }
+
+                const dotMat = new THREE.MeshBasicMaterial({ color: glowColor, transparent: true, opacity: isMain ? 0.9 : 0.4, depthWrite: false, blending: THREE.AdditiveBlending });
+                const dotA = new THREE.Mesh(new THREE.SphereGeometry(isMain ? 0.15 : 0.08, 16, 16), dotMat);
+                dotA.position.set(offsetX + Math.cos(angle) * radius, y, offsetZ + Math.sin(angle) * radius);
+                group.add(dotA);
+
+                const dotB = dotA.clone();
+                dotB.position.set(offsetX + Math.cos(angle + Math.PI) * radius, y, offsetZ + Math.sin(angle + Math.PI) * radius);
+                group.add(dotB);
+
+                const rungGeo = new THREE.CylinderGeometry(0.015, 0.015, radius * 2); rungGeo.rotateZ(Math.PI / 2);
+                const rungMat = new THREE.MeshBasicMaterial({ color: glowColor, transparent: true, opacity: isMain ? 0.6 : 0.15, depthWrite: false, blending: THREE.AdditiveBlending });
+                const rung = new THREE.Mesh(rungGeo, rungMat);
+                rung.position.set(offsetX, y, offsetZ); rung.rotation.y = -angle; 
+                group.add(rung);
+
+                // STRICT PROJECT PANELS LOGIC (No looping)
+                if (isMain && i > 0 && i % projectSpacing === 0) {
+                    const dataIndex = (i / projectSpacing) - 1; // Map i=10 to index 0, i=20 to index 1, etc.
+                    
+                    if (dataIndex < projectData.length) {
+                        const data = projectData[dataIndex];
+                        const planeMat = new THREE.MeshBasicMaterial({ map: getTexture(data), side: THREE.DoubleSide });
+                        const plane = new THREE.Mesh(new THREE.PlaneGeometry(4, 2), planeMat);
+                        
+                        const planeX = Math.cos(angle) * (radius + 4);
+                        const planeZ = Math.sin(angle) * (radius + 4);
+                        plane.position.set(planeX, y, planeZ);
+                        plane.lookAt(planeX * 2, y, planeZ * 2); 
+                        
+                        plane.userData = data;
+                        group.add(plane);
+                    }
+                }
+            }
+            return group;
+        }
+
+        const mainStrandGroup = new THREE.Group();
+        const mainStrand = createHelix(3, 0x00ffff, true, false);
+        mainStrandGroup.add(mainStrand);
+        mainStrandGroup.position.set(15, 0, 0); 
+        scene.add(mainStrandGroup);
+
+        const bgGroup = new THREE.Group();
+        bgGroup.add(createHelix(2, 0x008888, false, true).translateY(0).translateX(-15).translateZ(-10));
+        bgGroup.add(createHelix(2.5, 0x225577, false, true).translateY(0).translateX(10).translateZ(-20));
+        scene.add(bgGroup);
+
+        // --- Interaction & Carousel State ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let isDragging = false, previousMouseX = 0, dragDist = 0; 
+        
+        window.activeProject = null; window.activeImageIndex = 0;
+
+        window.addEventListener('mousedown', (e) => { if(e.target.tagName !== 'CANVAS') return; isDragging = true; dragDist = 0; previousMouseX = e.clientX; });
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) { const deltaX = e.clientX - previousMouseX; mainStrandGroup.rotation.y += deltaX * 0.008; dragDist += Math.abs(deltaX); previousMouseX = e.clientX; }
+        });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+        window.addEventListener('click', (event) => {
+            if (dragDist > 5) return; 
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1; mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(mainStrand.children);
+            if (intersects.length > 0 && intersects[0].object.userData.title) { openOverlay(intersects[0].object.userData); }
+        });
+
+        function openOverlay(data) {
+            window.activeProject = data; window.activeImageIndex = 0;
+            document.getElementById('proj-title').innerText = data.title; 
+            document.getElementById('proj-desc').innerText = data.desc; 
+            document.getElementById('proj-link').href = data.link;
+            document.getElementById('proj-link').innerText = data.actionText || "More Access";
+            updateCarouselImage(); document.getElementById('overlay').classList.add('active');
+        }
+
+        window.changeImage = (direction) => {
+            if (!window.activeProject || !window.activeProject.images || window.activeProject.images.length === 0) return;
+            window.activeImageIndex += direction;
+            if (window.activeImageIndex < 0) { window.activeImageIndex = window.activeProject.images.length - 1; } 
+            else if (window.activeImageIndex >= window.activeProject.images.length) { window.activeImageIndex = 0; }
+            updateCarouselImage();
+        }
+
+        function updateCarouselImage() {
+            const data = window.activeProject; const imgElement = document.getElementById('overlay-img');
+            const leftBtn = document.querySelector('.nav-btn.left'); const rightBtn = document.querySelector('.nav-btn.right');
+            
+            if (data.images && data.images.length > 0) {
+                imgElement.src = data.images[window.activeImageIndex]; imgElement.style.display = 'block';
+                if (data.images.length === 1) { leftBtn.style.display = 'none'; rightBtn.style.display = 'none'; } 
+                else { leftBtn.style.display = 'block'; rightBtn.style.display = 'block'; }
+            } else {
+                imgElement.src = 'https://via.placeholder.com/1200x600/111111/00ffff?text=NO+DATA+FOUND';
+                leftBtn.style.display = 'none'; rightBtn.style.display = 'none';
+            }
+        }
+
+        window.closeOverlay = () => { document.getElementById('overlay').classList.remove('active'); }
+
+        // --- Animation Loop ---
+        let targetCameraY = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Dynamic max depth based on exactly how long the DNA generated
+            const maxDepth = (helixPoints * heightStep) - 30; 
+            const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            
+            targetCameraY = -(scrollPercent * maxDepth);
+            camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetCameraY, 0.05); 
+            
+            camera.position.x = 0; camera.position.z = 15; camera.lookAt(6, camera.position.y - 2, 0);
+            bgGroup.rotation.y += 0.0005;
+
+            if (!isDragging) { mainStrandGroup.rotation.y += 0.0015; }
+            composer.render();
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight); composer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

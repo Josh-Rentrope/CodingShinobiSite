@@ -3,334 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animus Project Archive</title>
-    <style>
-        body { margin: 0; background: #020205; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; color: white; }
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; cursor: grab; }
-        canvas:active { cursor: grabbing; }
-        
-        /* Removed fixed 800vh height here. It is now set dynamically in JS */
-        #scroll-container { pointer-events: none; }
-        
-        header, footer {
-            position: fixed; left: 0; width: 100%; height: 60px;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
-            z-index: 5; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 40px; box-sizing: border-box;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.15);
-        }
-        header { top: 0; }
-        footer { bottom: 0; border-top: 1px solid rgba(0, 255, 255, 0.15); border-bottom: none; justify-content: flex-end; }
-        .ui-text { color: #00ffff; font-family: monospace; letter-spacing: 2px; font-size: 14px; text-transform: uppercase; }
-
-        #overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-        #overlay.active { opacity: 1; visibility: visible; }
-        
-        #carousel-container {
-            position: relative; width: 80%; max-width: 1000px; height: 60vh;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 30px;
-        }
-        #overlay-img { 
-            max-width: 100%; max-height: 100%; object-fit: contain;
-            border: 1px solid rgba(0, 255, 255, 0.3); box-shadow: 0 0 40px rgba(0, 255, 255, 0.1);
-        }
-        
-        .nav-btn {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5); border: 1px solid #00ffff; color: #00ffff;
-            font-size: 30px; padding: 15px 25px; cursor: pointer; transition: 0.2s; z-index: 11;
-        }
-        .nav-btn:hover { background: #00ffff; color: #000; box-shadow: 0 0 20px #00ffff; }
-        .nav-btn.left { left: -80px; }
-        .nav-btn.right { right: -80px; }
-
-        .text-group { text-align: center; max-width: 800px; }
-        .text-group h2 { margin: 0 0 10px 0; font-size: 36px; font-weight: 300; letter-spacing: 1px; }
-        .text-group p { margin: 0 0 25px 0; color: #aaa; font-size: 18px; line-height: 1.5; }
-
-        .btn {
-            border: 1px dashed #4488aa; padding: 12px 24px; text-decoration: none; font-size: 18px; display: inline-block;
-            background: linear-gradient(120deg, #4488aa 0%, #4488aa 40%, #ffffff 50%, #4488aa 60%, #4488aa 100%);
-            background-size: 200% auto; color: #4488aa; background-clip: text; -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; animation: textShine 2.5s linear infinite; cursor: pointer;
-        }
-        @keyframes textShine { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
-        .close { position: absolute; top: 30px; right: 40px; font-size: 40px; cursor: pointer; color: #555; font-weight: 300; transition: 0.2s; }
-        .close:hover { color: #00ffff; }
-    </style>
+    <meta name="description" content="The evolving portfolio of Coding Shinobi: software, systems, simulation, architecture, and leadership.">
+    <meta name="theme-color" content="#070a0d">
+    <title>Coding Shinobi — An Evolving Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="evolution.css">
 </head>
 <body>
+    <a class="skip-link" href="#story">Skip to the story</a>
 
-    <header>
-        <span class="ui-text">Coding Shinobi</span>
-        <span class="ui-text">April Demos</span>
+    <canvas id="evolution-canvas" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <a class="wordmark" href="#origin" aria-label="Coding Shinobi, return to opening">
+            <span class="wordmark-mark" aria-hidden="true"></span>
+            <span>Coding Shinobi</span>
+        </a>
+        <nav aria-label="Story chapters">
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="chapter-nav">Chapters</button>
+            <ol id="chapter-nav" class="chapter-nav">
+                <li><a href="#lineage" data-chapter-link="lineage"><span>01</span> Lineage</a></li>
+                <li><a href="#systems" data-chapter-link="systems"><span>02</span> Systems</a></li>
+                <li><a href="#worlds" data-chapter-link="worlds"><span>03</span> Worlds</a></li>
+                <li><a href="#architecture" data-chapter-link="architecture"><span>04</span> Scale</a></li>
+                <li><a href="#current" data-chapter-link="current"><span>05</span> Now</a></li>
+            </ol>
+        </nav>
+        <div class="story-progress" aria-hidden="true"><span></span></div>
     </header>
 
-    <div id="scroll-container"></div>
+    <main id="story">
+        <section id="origin" class="hero chapter" data-scene="origin" aria-labelledby="origin-title">
+            <div class="hero-copy">
+                <p class="eyebrow reveal">An evolving practice <span>2000s—Now</span></p>
+                <h1 id="origin-title" class="hero-title" aria-label="Skills do not replace each other. They accumulate.">
+                    <span class="title-line">Skills do not</span>
+                    <span class="title-line outline">replace each other.</span>
+                    <span class="title-line accent">They accumulate.</span>
+                </h1>
+                <p class="hero-intro reveal">From first programs and webpages to distributed platforms, simulated worlds, and technical leadership. Scroll through the traits that stayed.</p>
+            </div>
+            <div class="hero-index" aria-hidden="true">
+                <span>FORM</span><strong data-form-number>00</strong><span>ORIGIN</span>
+            </div>
+            <a class="scroll-cue" href="#lineage"><span>Begin evolution</span><i aria-hidden="true"></i></a>
+        </section>
 
-    <div id="overlay" >
-        <span class="close" onclick="closeOverlay()">X</span>
-        
-        <div id="carousel-container">
-            <button class="nav-btn left" onclick="changeImage(-1)">&#10094;</button>
-            <img id="overlay-img" src="" alt="Snapshot">
-            <button class="nav-btn right" onclick="changeImage(1)">&#10095;</button>
-        </div>
+        <section id="lineage" class="lineage chapter" data-scene="lineage" aria-labelledby="lineage-title">
+            <div class="section-shell lineage-layout">
+                <div class="chapter-heading">
+                    <p class="chapter-number">01 / Lineage</p>
+                    <h2 id="lineage-title">Before depth,<br>there was movement.</h2>
+                    <p>The early work was direct: write the code, make the interface respond, ship the idea. The methods changed. The instinct to build did not.</p>
+                </div>
 
-        <div class="text-group">
-            <h2 id="proj-title">Title</h2>
-            <p id="proj-desc">Sub title/Caption</p>
-            <a id="proj-link" class="btn" target="_blank">Access Demo &rarr;</a>
-        </div>
-    </div>
+                <div class="archive-stage">
+                    <div class="archive-caption" aria-hidden="true">
+                        <span>ARCHIVE SAMPLE</span>
+                        <span>SPRING 2026</span>
+                    </div>
+                    <div class="browser-frame">
+                        <div class="browser-chrome" aria-hidden="true">
+                            <div><i></i><i></i><i></i></div>
+                            <span>codingshinobi.com / archive</span>
+                            <b>↗</b>
+                        </div>
+                        <div class="browser-viewport">
+                            <iframe src="past-site.html" title="Interactive preview of the previous Coding Shinobi portfolio" loading="lazy" tabindex="-1"></iframe>
+                            <div class="archive-shield">
+                                <p>Previous form</p>
+                                <span>A Three.js DNA archive: scroll, bloom, raycasting, and hand-built animation.</span>
+                                <a href="past-site.html" target="_blank" rel="noopener">Explore the archive <b>↗</b></a>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="archive-note"><span>Then</span> A site was a collection of effects.<br><span>Now</span> Motion is part of the narrative.</p>
+                </div>
+            </div>
+        </section>
 
-    <footer>
-        <span class="ui-text">Projects</span>
-    </footer>
+        <section id="systems" class="systems chapter capability" data-scene="systems" aria-labelledby="systems-title">
+            <div class="sticky-scene">
+                <div class="capability-copy">
+                    <p class="chapter-number">02 / Systems</p>
+                    <h2 id="systems-title">Make it work<br>where failure is normal.</h2>
+                    <p>Applications became services. Services met unreliable networks, heterogeneous devices, high-volume data, and real operational constraints.</p>
+                    <ul class="trait-list" aria-label="Systems capabilities">
+                        <li><span>01</span> Software engineering</li>
+                        <li><span>02</span> Distributed systems</li>
+                        <li><span>03</span> Data platforms</li>
+                        <li><span>04</span> Edge resilience</li>
+                    </ul>
+                </div>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
+                <div class="system-visual" aria-hidden="true">
+                    <div class="system-core"><span>RESILIENT<br>CORE</span></div>
+                    <div class="orbit orbit-a"><i data-label="EDGE"></i><i data-label="API"></i><i data-label="DATA"></i></div>
+                    <div class="orbit orbit-b"><i data-label="ARM"></i><i data-label="x86"></i><i data-label="GPU"></i><i data-label="HPC"></i></div>
+                    <svg viewBox="0 0 600 600" role="presentation">
+                        <circle cx="300" cy="300" r="118"></circle>
+                        <circle cx="300" cy="300" r="220"></circle>
+                        <path d="M300 80V520M80 300H520M144 144L456 456M456 144L144 456"></path>
+                    </svg>
+                </div>
+            </div>
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-		import { CopyShader } from 'three/addons/shaders/CopyShader.js';
-        import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
-        import { RGBShiftShader } from 'three/addons/shaders/RGBShiftShader.js';
+            <div class="evidence-strip" aria-label="Systems project evidence">
+                <article class="evidence-card">
+                    <p>FIELD SYSTEMS / 2018+</p>
+                    <h3>Distributed IoT network</h3>
+                    <p>Multi-architecture edge nodes, durable telemetry, custom overlay networking, and reproducible deployments in hostile environments.</p>
+                    <a href="posts/iot-entry.html">Read the architecture story <span>↗</span></a>
+                </article>
+                <article class="evidence-card">
+                    <p>DATA AT SCALE</p>
+                    <h3>HPC data platform</h3>
+                    <p>Self-serve analyst software and scalable pipelines processing up to 1 TB per minute while reducing annual operating cost.</p>
+                    <span class="tech-line">HPC · Spark · Python · Qt</span>
+                </article>
+            </div>
+        </section>
 
-        // --- Setup ---
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x020205); 
-        scene.fog = new THREE.FogExp2(0x020205, 0.04); 
+        <section id="worlds" class="worlds chapter capability" data-scene="worlds" aria-labelledby="worlds-title">
+            <div class="worlds-pin">
+                <div class="worlds-copy">
+                    <p class="chapter-number">03 / Simulated worlds</p>
+                    <h2 id="worlds-title">Systems gained<br><em>space, motion, consequence.</em></h2>
+                    <p>Engineering crossed into real-time simulation: orbital mechanics, inverse kinematics, finite element analysis, shaders, and data-driven gameplay.</p>
+                </div>
+                <div class="world-gallery">
+                    <figure class="world-card world-card-main">
+                        <img src="assets/images/vr_simulation.jpg" alt="Virtual reality digital twin simulation">
+                        <figcaption><span>Digital twins</span><b>Unreal Engine · SGP4 · IK · FEA</b></figcaption>
+                    </figure>
+                    <figure class="world-card">
+                        <img src="assets/images/April-2026-Unity-1.png" alt="Data-driven Unity game demonstration">
+                        <figcaption><span>Interactive worlds</span><b>Unity · Data-driven gameplay</b></figcaption>
+                    </figure>
+                    <figure class="world-card">
+                        <img src="exp/game-images/sky.jpg" alt="A luminous landscape that inspired shader and atmosphere studies">
+                        <figcaption><span>Atmosphere studies</span><b>GLSL · Volumetrics · Environment</b></figcaption>
+                    </figure>
+                </div>
+            </div>
+            <p class="world-impact">Integrated simulation techniques into Unreal Engine for advanced digital twins—work that contributed to three new deals and a Phase II SBIR contract.</p>
+        </section>
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        <section id="architecture" class="architecture chapter capability" data-scene="architecture" aria-labelledby="architecture-title">
+            <div class="architecture-intro section-shell">
+                <p class="chapter-number">04 / Architecture & leadership</p>
+                <h2 id="architecture-title">The unit of work<br>kept getting larger.</h2>
+                <p>First a function. Then a service. Then a platform, a team, a budget, a roadmap, and the responsibility to keep them aligned.</p>
+            </div>
 
-        const pixelRatio = Math.min(window.devicePixelRatio, 2);
-        const renderer = new THREE.WebGLRenderer({ antialias: true }); 
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(pixelRatio);
-        renderer.toneMapping = THREE.ReinhardToneMapping; 
-        document.body.appendChild(renderer.domElement);
+            <div class="scale-stage section-shell">
+                <div class="scale-rings" aria-hidden="true">
+                    <div class="scale-ring ring-code"><span>CODE</span></div>
+                    <div class="scale-ring ring-system"><span>SYSTEM</span></div>
+                    <div class="scale-ring ring-platform"><span>PLATFORM</span></div>
+                    <div class="scale-ring ring-org"><span>ORGANIZATION</span></div>
+                </div>
+                <ol class="scale-copy">
+                    <li><span>01</span><div><h3>Developer / Engineer</h3><p>Ship under pressure. Improve codebases. Document the decisions.</p></div></li>
+                    <li><span>02</span><div><h3>Architect / Manager</h3><p>Choose stacks, shape solutions, unblock people, and design for change.</p></div></li>
+                    <li><span>03</span><div><h3>CTO / Director</h3><p>Balance requirements, budgets, delivery, maintenance, and teams at scale.</p></div></li>
+                </ol>
+            </div>
+        </section>
 
-        // --- Post-Processing ---
-        const composer = new EffectComposer(renderer);
-        composer.setPixelRatio(pixelRatio); 
-        composer.addPass(new RenderPass(scene, camera));
+        <section id="gallery" class="gallery chapter" data-scene="gallery" aria-labelledby="gallery-title">
+            <div class="gallery-heading section-shell">
+                <p class="chapter-number">Selected evidence</p>
+                <h2 id="gallery-title">Artifacts from<br>the adaptation.</h2>
+                <p>Not a complete inventory. A cross-section of problems, domains, and forms.</p>
+            </div>
+            <div class="gallery-track" role="list">
+                <article class="project" role="listitem">
+                    <div class="project-image"><img src="assets/images/groupingmap.png" alt="Sensor grouping map from the distributed IoT project" loading="lazy"></div>
+                    <p>Architecture / Edge</p><h3>Robust IoT</h3><span>Networking · Data fusion · AI</span>
+                    <a href="posts/iot-entry.html" aria-label="Read about Robust IoT"></a>
+                </article>
+                <article class="project" role="listitem">
+                    <div class="project-image"><img src="assets/images/hpc_platform.jpg" alt="High-performance computing platform visualization" loading="lazy"></div>
+                    <p>Platform / Data</p><h3>HPC at 1 TB/min</h3><span>Apache Spark · Python · Qt</span>
+                </article>
+                <article class="project" role="listitem">
+                    <div class="project-image"><img src="assets/images/vr_simulation.jpg" alt="Virtual reality simulation project" loading="lazy"></div>
+                    <p>Simulation / XR</p><h3>Digital twins</h3><span>Unreal · SGP4 · IK · FEA</span>
+                </article>
+                <article class="project" role="listitem">
+                    <div class="project-image"><img src="assets/images/healthapp.png" alt="Health data application interface" loading="lazy"></div>
+                    <p>Application / Health</p><h3>Data fusion app</h3><span>Next.js · FastAPI · Nginx</span>
+                </article>
+                <article class="project" role="listitem">
+                    <div class="project-image"><img src="assets/images/April-2026-Unity-2.png" alt="Unity game project scene" loading="lazy"></div>
+                    <p>Interactive / Game</p><h3>Data-driven play</h3><span>Unity · Systems design</span>
+                </article>
+                <article class="project project-archive" role="listitem">
+                    <div class="project-image"><img src="assets/images/thissite.png" alt="Previous Coding Shinobi Three.js site" loading="lazy"></div>
+                    <p>Meta / Archive</p><h3>The previous form</h3><span>Three.js · Canvas · WebGL</span>
+                    <a href="past-site.html" aria-label="Open the previous portfolio"></a>
+                </article>
+            </div>
+        </section>
 
-        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-        bloomPass.threshold = 1.5; 
-        bloomPass.strength = 1.2; 
-        bloomPass.radius = 0.8;
-        composer.addPass(bloomPass);
+        <section id="current" class="current chapter" data-scene="current" aria-labelledby="current-title">
+            <div class="current-form" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+                <div>05</div>
+            </div>
+            <div class="current-copy">
+                <p class="chapter-number">05 / Current form</p>
+                <h2 id="current-title">Still<br><em>evolving.</em></h2>
+                <p>I build across the boundary between software, data, simulation, infrastructure, and organizations—then make those parts work as one system.</p>
+                <div class="contact-actions">
+                    <a class="primary-action" href="https://github.com/Josh-Rentrope" target="_blank" rel="noopener">Continue on GitHub <span>↗</span></a>
+                    <a href="past-site.html">Visit the previous form</a>
+                </div>
+            </div>
+            <footer>
+                <span>CODING SHINOBI © 2026</span>
+                <span>ENGINEER · ARCHITECT · BUILDER</span>
+                <a href="#origin">Back to origin ↑</a>
+            </footer>
+        </section>
+    </main>
 
-        const rgbShiftPass = new ShaderPass(RGBShiftShader);
-        rgbShiftPass.uniforms['amount'].value = 0.0025; 
-        composer.addPass(rgbShiftPass);
-
-		const copyPass = new ShaderPass(CopyShader);
-		composer.addPass(copyPass);
-		
-        // --- Data ---
-        const projectData = [
-            { title: "Robust IoT Project", desc: "Internet of Things project that made future networking and software problems a cakewalk", actionText:"Blog Entry (Animation Soon)", images: ["assets/images/groupingmap.png"], link: "/posts/iot-entry.html" },
-            { title: "Unity Game Demo April 2026", desc: "Unity based experience, showcasing data driven gameplay.", images: ["assets/images/April-2026-Unity-1.png","assets/images/vr_simulation.jpg"], link: "#" },
-            { title: "This Site", desc: "Three JS with animations handled in javascript.", images: ["assets/images/thissite.png"], link: "/" },
-            { title: "High-Perf Compute", desc: "Scientific data processing handling 1 TB/min.", images: ["assets/images/hpc_platform.jpg"], link: "#" },            
-        ];
-
-        // --- DYNAMIC SCALING LOGIC ---
-        // Calculate points based on exactly how many projects exist
-        const projectSpacing = 10;
-        const helixPoints = (projectData.length * projectSpacing) + 30; // 30 adds a nice trailing tail
-        const heightStep = 1.2;
-        
-        // Dynamically set the scroll container height (approx 100vh per project + 200vh padding)
-        document.getElementById('scroll-container').style.height = `${(projectData.length * 100) + 200}vh`;
-
-        // --- Composited Text Texture ---
-        function getTexture(data) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 600; canvas.height = 300;
-            const ctx = canvas.getContext('2d');
-            const texture = new THREE.CanvasTexture(canvas);
-
-            function drawLayer(imgElement) {
-                if (imgElement) {
-                    ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                } else {
-                    ctx.fillStyle = '#0a0a0d'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                }
-
-                ctx.strokeStyle = '#00ffff'; ctx.lineWidth = 8; ctx.strokeRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#ffffff'; ctx.font = 'bold 36px "Segoe UI"'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText(data.title, canvas.width / 2, canvas.height / 2);
-                texture.needsUpdate = true; 
-            }
-
-            if (data.images && data.images.length > 0) {
-                const img = new Image(); img.crossOrigin = "Anonymous";
-                img.onload = () => drawLayer(img); img.onerror = () => drawLayer(null);
-                img.src = data.images[0];
-            } else { drawLayer(null); }
-
-            return texture;
-        }
-
-        // --- DNA Helixes ---
-        function createHelix(radius, hexColor, isMain = false, isCurved = false) {
-            const group = new THREE.Group();
-            const glowColor = new THREE.Color(hexColor).multiplyScalar(3.0);
-
-            for (let i = -20; i < helixPoints; i++) {
-                const angle = i * 0.4;
-                const y = -(i * heightStep); 
-                
-                let offsetX = 0, offsetZ = 0;
-                if (isCurved) {
-                    offsetX = Math.sin(y * 0.03) * 20; offsetZ = Math.cos(y * 0.03) * 20;
-                }
-
-                const dotMat = new THREE.MeshBasicMaterial({ color: glowColor, transparent: true, opacity: isMain ? 0.9 : 0.4, depthWrite: false, blending: THREE.AdditiveBlending });
-                const dotA = new THREE.Mesh(new THREE.SphereGeometry(isMain ? 0.15 : 0.08, 16, 16), dotMat);
-                dotA.position.set(offsetX + Math.cos(angle) * radius, y, offsetZ + Math.sin(angle) * radius);
-                group.add(dotA);
-
-                const dotB = dotA.clone();
-                dotB.position.set(offsetX + Math.cos(angle + Math.PI) * radius, y, offsetZ + Math.sin(angle + Math.PI) * radius);
-                group.add(dotB);
-
-                const rungGeo = new THREE.CylinderGeometry(0.015, 0.015, radius * 2); rungGeo.rotateZ(Math.PI / 2);
-                const rungMat = new THREE.MeshBasicMaterial({ color: glowColor, transparent: true, opacity: isMain ? 0.6 : 0.15, depthWrite: false, blending: THREE.AdditiveBlending });
-                const rung = new THREE.Mesh(rungGeo, rungMat);
-                rung.position.set(offsetX, y, offsetZ); rung.rotation.y = -angle; 
-                group.add(rung);
-
-                // STRICT PROJECT PANELS LOGIC (No looping)
-                if (isMain && i > 0 && i % projectSpacing === 0) {
-                    const dataIndex = (i / projectSpacing) - 1; // Map i=10 to index 0, i=20 to index 1, etc.
-                    
-                    if (dataIndex < projectData.length) {
-                        const data = projectData[dataIndex];
-                        const planeMat = new THREE.MeshBasicMaterial({ map: getTexture(data), side: THREE.DoubleSide });
-                        const plane = new THREE.Mesh(new THREE.PlaneGeometry(4, 2), planeMat);
-                        
-                        const planeX = Math.cos(angle) * (radius + 4);
-                        const planeZ = Math.sin(angle) * (radius + 4);
-                        plane.position.set(planeX, y, planeZ);
-                        plane.lookAt(planeX * 2, y, planeZ * 2); 
-                        
-                        plane.userData = data;
-                        group.add(plane);
-                    }
-                }
-            }
-            return group;
-        }
-
-        const mainStrandGroup = new THREE.Group();
-        const mainStrand = createHelix(3, 0x00ffff, true, false);
-        mainStrandGroup.add(mainStrand);
-        mainStrandGroup.position.set(15, 0, 0); 
-        scene.add(mainStrandGroup);
-
-        const bgGroup = new THREE.Group();
-        bgGroup.add(createHelix(2, 0x008888, false, true).translateY(0).translateX(-15).translateZ(-10));
-        bgGroup.add(createHelix(2.5, 0x225577, false, true).translateY(0).translateX(10).translateZ(-20));
-        scene.add(bgGroup);
-
-        // --- Interaction & Carousel State ---
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-        let isDragging = false, previousMouseX = 0, dragDist = 0; 
-        
-        window.activeProject = null; window.activeImageIndex = 0;
-
-        window.addEventListener('mousedown', (e) => { if(e.target.tagName !== 'CANVAS') return; isDragging = true; dragDist = 0; previousMouseX = e.clientX; });
-        window.addEventListener('mousemove', (e) => {
-            if (isDragging) { const deltaX = e.clientX - previousMouseX; mainStrandGroup.rotation.y += deltaX * 0.008; dragDist += Math.abs(deltaX); previousMouseX = e.clientX; }
-        });
-        window.addEventListener('mouseup', () => { isDragging = false; });
-        window.addEventListener('click', (event) => {
-            if (dragDist > 5) return; 
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1; mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-            raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(mainStrand.children);
-            if (intersects.length > 0 && intersects[0].object.userData.title) { openOverlay(intersects[0].object.userData); }
-        });
-
-        function openOverlay(data) {
-            window.activeProject = data; window.activeImageIndex = 0;
-            document.getElementById('proj-title').innerText = data.title; 
-            document.getElementById('proj-desc').innerText = data.desc; 
-            document.getElementById('proj-link').href = data.link;
-            document.getElementById('proj-link').innerText = data.actionText || "More Access";
-            updateCarouselImage(); document.getElementById('overlay').classList.add('active');
-        }
-
-        window.changeImage = (direction) => {
-            if (!window.activeProject || !window.activeProject.images || window.activeProject.images.length === 0) return;
-            window.activeImageIndex += direction;
-            if (window.activeImageIndex < 0) { window.activeImageIndex = window.activeProject.images.length - 1; } 
-            else if (window.activeImageIndex >= window.activeProject.images.length) { window.activeImageIndex = 0; }
-            updateCarouselImage();
-        }
-
-        function updateCarouselImage() {
-            const data = window.activeProject; const imgElement = document.getElementById('overlay-img');
-            const leftBtn = document.querySelector('.nav-btn.left'); const rightBtn = document.querySelector('.nav-btn.right');
-            
-            if (data.images && data.images.length > 0) {
-                imgElement.src = data.images[window.activeImageIndex]; imgElement.style.display = 'block';
-                if (data.images.length === 1) { leftBtn.style.display = 'none'; rightBtn.style.display = 'none'; } 
-                else { leftBtn.style.display = 'block'; rightBtn.style.display = 'block'; }
-            } else {
-                imgElement.src = 'https://via.placeholder.com/1200x600/111111/00ffff?text=NO+DATA+FOUND';
-                leftBtn.style.display = 'none'; rightBtn.style.display = 'none';
-            }
-        }
-
-        window.closeOverlay = () => { document.getElementById('overlay').classList.remove('active'); }
-
-        // --- Animation Loop ---
-        let targetCameraY = 0;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            
-            // Dynamic max depth based on exactly how long the DNA generated
-            const maxDepth = (helixPoints * heightStep) - 30; 
-            const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-            
-            targetCameraY = -(scrollPercent * maxDepth);
-            camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetCameraY, 0.05); 
-            
-            camera.position.x = 0; camera.position.z = 15; camera.lookAt(6, camera.position.y - 2, 0);
-            bgGroup.rotation.y += 0.0005;
-
-            if (!isDragging) { mainStrandGroup.rotation.y += 0.0015; }
-            composer.render();
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight); composer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
+    <noscript><div class="noscript-note">JavaScript adds the cinematic transitions. Every chapter and project remains available without it.</div></noscript>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
+    <script src="evolution.js"></script>
 </body>
 </html>
