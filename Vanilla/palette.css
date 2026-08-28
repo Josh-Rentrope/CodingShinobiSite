@@ -32,8 +32,19 @@
     -webkit-backdrop-filter: blur(2px);
 }
 
+/* The site's film-grain overlay (evolution.css .grain) sits at z-index 90 and
+   flickers via a steps() animation. With reduced-motion off it bleeds through
+   this translucent backdrop and reads as static over the menu — suppress it
+   while the palette is open. */
+body:has(.palette-root.is-open) .grain {
+    display: none;
+}
+
 .palette-panel {
     --palette-head-h: 3.4rem;
+    --stage-x: 0.33s; /* stage 1: width expand */
+    --stage-y: 0.54s; /* stage 2: height expand */
+    --ease-panel: cubic-bezier(0.76, 0, 0.24, 1); /* exaggerated ease-in-out */
     position: relative;
     width: 0; /* first open animates 0 -> full width */
     height: var(--palette-head-h); /* header row only until the second stage */
@@ -47,8 +58,8 @@
     overflow: hidden;
     opacity: 0;
     transform: translateY(-8px) scale(0.985);
-    transition: width 1.3s cubic-bezier(0.22, 0.61, 0.36, 1),
-                height 1.3s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transition: width var(--stage-x) var(--ease-panel),
+                height var(--stage-y) var(--ease-panel),
                 opacity 0.15s ease,
                 transform 0.15s ease;
 }

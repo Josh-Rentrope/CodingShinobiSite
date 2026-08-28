@@ -156,9 +156,9 @@
         gsap.set(".hero-title", { overflow: "hidden" });
         const intro = gsap.timeline({ defaults: { ease: "power4.out" } });
         intro
-            .to(".hero-title .title-line", { yPercent: 0, rotate: 0, duration: 1.35, stagger: 0.12 })
-            .from(".hero .reveal", { opacity: 0, y: 22, duration: 0.8, stagger: 0.15 }, "-=0.7")
-            .from(".scroll-cue, .hero-index", { opacity: 0, duration: 0.8 }, "-=0.45");
+            .to(".hero-title .title-line", { yPercent: 0, rotate: 0, duration: 0.15, stagger: 0.12 })
+            .from(".hero .reveal", { opacity: 0, y: 22, duration: 0.3, stagger: 0.15 }, "-=0.7")
+            .from(".scroll-cue, .hero-index", { opacity: 0, duration: 0.3 }, "-=0.45");
 
         gsap.to("[data-form-number]", {
             textContent: 5,

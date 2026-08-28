@@ -241,7 +241,10 @@ function open() {
     const head = panel.querySelector(".palette-head");
     panel.style.setProperty("--palette-head-h", `${head.offsetHeight}px`);
     root.classList.add("is-open");
-    introTimer = setTimeout(() => panel.classList.add("palette-expanded"), 320);
+    // Start stage 2 (height) only after stage 1 (width) has finished. The wait
+    // reads --stage-x from CSS so the two stay in sync when the timing is tuned.
+    const stageX = parseFloat(getComputedStyle(panel).getPropertyValue("--stage-x")) * 1000;
+    introTimer = setTimeout(() => panel.classList.add("palette-expanded"), stageX + 30);
   } else {
     root.classList.add("is-open");
     panel.classList.add("palette-reopen");
