@@ -39,17 +39,39 @@ const server = http.createServer((req, res) => {
     res.end("Forbidden");
     return;
   }
-  fs.stat(file, (err, stats) => {
-    if (err || !stats.isFile()) {
-      res.writeHead(404);
-      res.end("Not found");
-      return;
-    }
+  const respond = (file, stats) => {
     res.writeHead(200, {
       "Content-Type": MIME[path.extname(file).toLowerCase()] ?? "application/octet-stream",
       "Content-Length": stats.size,
     });
     fs.createReadStream(file).pipe(res);
+  };
+
+  fs.stat(file, (err, stats) => {
+    if (err) {
+      res.writeHead(404);
+      res.end("Not found");
+      return;
+    }
+    if (stats.isDirectory()) {
+      // Resolve clean routes like /September-2026-Recap to their index.html
+      const index = path.join(file, "index.html");
+      fs.stat(index, (err2, stats2) => {
+        if (err2 || !stats2.isFile()) {
+          res.writeHead(404);
+          res.end("Not found");
+          return;
+        }
+        respond(index, stats2);
+      });
+      return;
+    }
+    if (!stats.isFile()) {
+      res.writeHead(404);
+      res.end("Not found");
+      return;
+    }
+    respond(file, stats);
   });
 });
 

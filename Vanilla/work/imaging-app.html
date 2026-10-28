@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-dimension="clinical">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: an orthodontic 3D imaging platform where a byte-range read replaced a 31.2 MB download, and a measurement is withheld when scale can't be verified.">
+  <meta name="theme-color" content="#fafafa">
+  <title>The measurement that isn’t allowed to be wrong — Coding Shinobi</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Inter+Tight:wght@300;400;500&family=Newsreader:ital,opsz,wght@1,6..72,200..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/scrubber.css">
+</head>
+<body>
+  <a class="skip" href="#constraint">Skip to the case</a>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="read-progress" aria-hidden="true"><span></span></div>
+
+  <header class="site-header">
+    <a class="wordmark" href="../index.html" aria-label="Coding Shinobi, back to the index">Coding Shinobi</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="../index.html#act-soil">Index</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+    <p class="header-meta">Case <b>01</b></p>
+  </header>
+
+  <main>
+    <!-- ------------------------------------------------------------------
+         Hero
+         ------------------------------------------------------------------ -->
+    <section class="case-hero" data-dimension="clinical">
+      <div class="grid">
+        <p class="label case-kicker reveal">Case 01 / Clinical imaging / 2026</p>
+        <h1 class="case-title reveal" style="--d:60ms">The measurement that isn’t allowed to be wrong</h1>
+        <p class="case-lede reveal" style="--d:120ms">
+          A multi-tenant viewer for orthodontic DICOM and photogrammetry volumes. 31.2 MB per
+          study, a browser tab, and one rule: no number the system can’t stand behind.
+        </p>
+        <dl class="case-meta reveal" style="--d:180ms">
+          <div><dt>Role</dt><dd>Architecture, API, viewer</dd></div>
+          <div><dt>Stack</dt><dd>FastAPI · vtk.js · S3 · Terraform</dd></div>
+          <div><dt>Volume</dt><dd>256 × 256 × 125 float32</dd></div>
+          <div><dt>Window</dt><dd>March 2026 — present</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         01 — Constraint
+         ------------------------------------------------------------------ -->
+    <section class="case-section" id="constraint" data-dimension="clinical">
+      <div class="grid">
+        <p class="case-label label">01 / The constraint</p>
+        <div class="case-content reveal">
+          <h2>Every thumbnail asked for the whole volume.</h2>
+          <p>
+            Clinical reviewers need to look at a 3D volume plane by plane. The volume is one
+            C-ordered float32 array: 256 × 256 × 125, about 31.2 MB. The viewer loads a strip of
+            thumbnails before the reviewer touches anything.
+          </p>
+          <p>
+            The storage layer had just stopped being a local directory. Every one of those
+            thumbnails asked for the whole object. On a laptop that's a file read. Over a bucket
+            it's a network transfer, repeated, on the hot path. The request path saturated and
+            the API started returning 504s.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         02 — The call
+         ------------------------------------------------------------------ -->
+    <section class="case-section" data-dimension="clinical">
+      <div class="grid">
+        <p class="case-label label">02 / The call</p>
+        <div class="case-content reveal">
+          <h2>The planes are contiguous. Ask for one.</h2>
+          <p>
+            In a C-ordered <code>(nz, ny, nx)</code> array, plane <code>k</code> starts at
+            <code>k × nx × ny × 4</code> and runs for <code>nx × ny × 4</code> bytes. One plane is
+            256 KB. So the API stopped downloading volumes.
+          </p>
+          <p>
+            <code>Storage.get_range(ref, offset, length)</code> seeks on a local file and sends an
+            S3 <code>Range</code> header on a bucket. The viewer asks for one plane at a time.
+          </p>
+
+          <div class="case-wide">
+            <div class="panel" data-byteslice>
+              <div class="panel-head">
+                <span>Byte-range read · 256 × 256 × 125</span>
+                <span data-byteslice-readout>plane 63 / 124</span>
+              </div>
+              <svg viewBox="0 0 640 340" role="img" aria-label="A stack of 125 image planes with one range request highlighted">
+                <g data-planes></g>
+                <polygon data-highlight class="plane is-on" points=""></polygon>
+                <text x="88" y="322">nz 125 · C-ORDERED (nz, ny, nx)</text>
+                <text x="500" y="62" data-slice-label>PLANE 63</text>
+              </svg>
+              <div class="panel-control">
+                <label for="plane">Plane</label>
+                <input id="plane" type="range" min="0" max="124" value="63" step="1" data-byteslice-range>
+              </div>
+              <dl class="panel-stats">
+                <div><dt>Range request</dt><dd>256 KB</dd></div>
+                <div><dt>Offset</dt><dd data-byteslice-offset>15.75 MB</dd></div>
+                <div><dt>Whole object</dt><dd>31.25 MB</dd></div>
+              </dl>
+            </div>
+          </div>
+
+          <p class="case-note">
+            Verified byte-identical to the whole-array slice on the real volume. That's 99.2%
+            less transferred per request, and it removes the 504s because the hot path no longer
+            contains a 31 MB transfer.
+          </p>
+          <p>
+            A short range raises <code>416</code> instead of returning fewer bytes. Returning a
+            short plane would reshape into a wrong-sized image and draw the wrong anatomy. A
+            failed request is better than a plausible wrong one.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         03 — Invariant
+         ------------------------------------------------------------------ -->
+    <section class="case-section" data-dimension="clinical">
+      <div class="grid">
+        <p class="case-label label">03 / The invariant</p>
+        <div class="case-content reveal">
+          <h2>A number is a claim about the world.</h2>
+          <p>
+            Photogrammetry poses can be solved without a verified scale. A viewer that ignores
+            that will happily measure a jaw in millimetres that mean nothing. The API exposes
+            <code>scale.verified</code>. When it's false, the measurement is withheld.
+          </p>
+
+          <div class="case-wide">
+            <div class="scalecheck" data-scalecheck>
+              <div class="scalecheck-main">
+                <span class="label">Caliper · mesiodistal</span>
+                <output class="scalecheck-value" data-scalecheck-value>42.7 mm</output>
+                <span class="scalecheck-note" data-scalecheck-note>scale.verified: true</span>
+              </div>
+              <button class="toggle" type="button" aria-pressed="true" data-scalecheck-toggle>Scale verified</button>
+            </div>
+          </div>
+
+          <p>
+            The value is absent from the payload, so there's nothing for a client to render by
+            mistake. A test pins the rule, and that test is why you can trust the toggle above.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         04 — What broke
+         ------------------------------------------------------------------ -->
+    <section class="case-section" data-dimension="clinical">
+      <div class="grid">
+        <p class="case-label label">04 / What broke</p>
+        <div class="case-content reveal">
+          <h2>Three things that cost real time.</h2>
+
+          <div class="notes">
+            <div class="note">
+              <span>01</span>
+              <p>
+                <strong>The first range implementation returned fewer bytes.</strong>
+                <code>bytes[start:start+length]</code> is silently short at the end of an object.
+                The shorter buffer reshaped into a wrong-sized plane. Fixed by raising 416.
+              </p>
+            </div>
+            <div class="note">
+              <span>02</span>
+              <p>
+                <strong>Four <code>suppress(...)</code> blocks swallowed storage errors.</strong>
+                A bucket outage made jobs look fine in memory while never persisting, with nothing
+                in any log. Suppressed failures are logged now.
+              </p>
+            </div>
+            <div class="note">
+              <span>03</span>
+              <p>
+                <strong>The dev object store is <code>apps/api/.data</code>.</strong>
+                Deleting it wipes every uploaded source. It's not obvious, and it costs an
+                afternoon the first time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         05 — Evidence
+         ------------------------------------------------------------------ -->
+    <section class="case-section" data-dimension="clinical">
+      <div class="grid">
+        <p class="case-label label">05 / Evidence</p>
+        <div class="case-content reveal">
+          <h2>What's measured, and what isn't.</h2>
+          <table class="evidence">
+            <thead>
+              <tr><th scope="col">Claim</th><th scope="col">Method</th><th scope="col">State</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>31.25 MB whole object</td><td>256 × 256 × 125 × 4 bytes</td><td class="m">● measured</td></tr>
+              <tr><td>256 KB per plane</td><td>nx × ny × 4 bytes</td><td class="m">● measured</td></tr>
+              <tr><td>99.2% less transferred</td><td>Byte-compared against the whole-array slice</td><td class="m">● measured</td></tr>
+              <tr><td>416 on a short range</td><td>Regression test</td><td class="m">● measured</td></tr>
+              <tr><td>168 API and invariant tests</td><td>Suite run</td><td class="m">● measured</td></tr>
+              <tr><td>Real segmentation over a real CT</td><td>The pipeline is deployed; the model hasn't been run over a study</td><td class="u">○ unverified</td></tr>
+            </tbody>
+          </table>
+          <p class="case-note">
+            The last row stays on the page because the rule applies to this site too. The
+            plumbing isn't the result.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="case-footer" data-dimension="clinical">
+      <div class="grid case-footer-inner">
+        <a href="../index.html#act-clinical">← Back to Byte &amp; Bone</a>
+        <span>Next case — clinical trials · in progress</span>
+      </div>
+    </footer>
+  </main>
+
+  <noscript>
+    <style>
+      .reveal { opacity: 1; transform: none; }
+      .rise > span { transform: none; }
+    </style>
+  </noscript>
+
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/instruments.js"></script>
+</body>
+</html>

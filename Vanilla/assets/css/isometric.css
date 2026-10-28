@@ -1,0 +1,189 @@
+/* Isometric technical figures.
+   Palette is driven entirely by CSS custom properties so one drawing
+   works on the warm "soil" ground and the dark "physics" ground.
+   Try swapping data-iso-theme="light" / "dark" on a .iso-scene. */
+
+.iso-figure {
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  padding: clamp(10px, 1.4vw, 18px);
+}
+
+
+.iso-scene {
+  position: relative;
+  overflow: hidden;
+  --iso-top: #fffdf8;
+  --iso-left: #f0ece3;
+  --iso-right: #e2ddd2;
+  --iso-line: rgba(38, 30, 22, 0.42);
+  --iso-silhouette: rgba(38, 30, 22, 0.75);
+  --iso-detail: rgba(38, 30, 22, 0.28);
+  --iso-accent: #c2410c;
+  --iso-ground: #e8e2d7;
+  --iso-road: #d6d0c4;
+  --iso-road-line: #fdfbf6;
+  --iso-screen: #12151b;
+  --iso-window: #c8c2b6;
+  --iso-foliage-top: #d7dfcc;
+  --iso-foliage-side: #b9c6ae;
+  --iso-signal-red: #c2410c;
+  --iso-signal-amber: #d97706;
+  --iso-signal-green: #4d7c5b;
+  --iso-holo: #38bdf8;
+  --iso-packet: #3b82f6;
+}
+
+.iso-scene[data-iso-theme="dark"] {
+  --iso-top: #1f1f1f;
+  --iso-left: #181818;
+  --iso-right: #121212;
+  --iso-line: rgba(255, 255, 255, 0.24);
+  --iso-silhouette: rgba(255, 255, 255, 0.52);
+  --iso-detail: rgba(255, 255, 255, 0.16);
+  --iso-accent: #38bdf8;
+  --iso-ground: #0b0f16;
+  --iso-road: #131923;
+  --iso-road-line: #273142;
+  --iso-screen: #05070b;
+  --iso-window: #0c1119;
+  --iso-foliage-top: #1d2b24;
+  --iso-foliage-side: #14201a;
+  --iso-signal-red: #f87171;
+  --iso-signal-amber: #fbbf24;
+  --iso-signal-green: #34d399;
+  --iso-holo: #38bdf8;
+  --iso-packet: #60a5fa;
+}
+
+.iso-scene[data-iso-theme="light"] {
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+}
+.iso-scene[data-iso-theme="dark"] {
+  background: #070b11;
+}
+
+.iso-scene svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Solids: each face carries its own fill and hairline. */
+.iso-top,
+.iso-left,
+.iso-right,
+.iso-ground,
+.iso-road,
+.iso-window,
+.iso-foliage-top,
+.iso-foliage-side,
+.iso-holo-fill,
+.iso-accent-fill {
+  stroke: var(--iso-line);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.iso-top { fill: var(--iso-top); }
+.iso-left { fill: var(--iso-left); }
+.iso-right { fill: var(--iso-right); }
+.iso-ground { fill: var(--iso-ground); }
+.iso-road { fill: var(--iso-road); }
+.iso-window { fill: var(--iso-window); }
+.iso-foliage-top { fill: var(--iso-foliage-top); }
+.iso-foliage-side { fill: var(--iso-foliage-side); }
+.iso-holo-fill {
+  fill: color-mix(in srgb, var(--iso-holo) 12%, transparent);
+  stroke: var(--iso-holo);
+}
+.iso-accent-fill { fill: var(--iso-accent); stroke: var(--iso-accent); }
+
+/* Lines */
+.iso-line,
+.iso-detail,
+.iso-silhouette,
+.iso-highlight,
+.iso-accent-line,
+.iso-holo-line,
+.iso-holo-scan,
+.iso-screen-line,
+.iso-road-line {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.iso-line { stroke: var(--iso-line); stroke-width: 1; }
+.iso-detail { stroke: var(--iso-detail); stroke-width: 0.75; }
+.iso-silhouette { stroke: var(--iso-silhouette); stroke-width: 1; }
+.iso-highlight { stroke: var(--iso-top); stroke-width: 1; opacity: 0.9; }
+.iso-accent-line { stroke: var(--iso-accent); stroke-width: 1; }
+.iso-screen-line { stroke: var(--iso-line); stroke-width: 0.75; opacity: 0.8; }
+.iso-holo-line { stroke: var(--iso-holo); stroke-width: 0.9; }
+.iso-holo-scan { stroke: var(--iso-holo); stroke-width: 1.5; }
+.iso-road-line { stroke: var(--iso-road-line); stroke-width: 1; opacity: 0.65; }
+
+/* Details */
+.iso-screen-field {
+  fill: var(--iso-screen);
+  stroke: var(--iso-line);
+  stroke-width: 0.75;
+  vector-effect: non-scaling-stroke;
+}
+.iso-quiz-option {
+  fill: var(--iso-screen);
+  stroke: var(--iso-detail);
+  stroke-width: 0.75;
+  vector-effect: non-scaling-stroke;
+}
+.iso-quiz-option.is-active {
+  fill: color-mix(in srgb, var(--iso-accent) 18%, transparent);
+  stroke: var(--iso-accent);
+}
+.iso-lamp { opacity: 0.18; }
+.iso-lamp.is-on { opacity: 1; }
+.iso-lamp-red { fill: var(--iso-signal-red); }
+.iso-lamp-amber { fill: var(--iso-signal-amber); }
+.iso-lamp-green { fill: var(--iso-signal-green); }
+.iso-led {
+  fill: var(--iso-right);
+  stroke: var(--iso-line);
+  stroke-width: 0.5;
+}
+.iso-led.is-on { fill: var(--iso-accent); }
+.iso-screw { fill: var(--iso-detail); }
+.iso-wheel { fill: var(--iso-right); stroke: var(--iso-line); stroke-width: 0.75; }
+.iso-shadow {
+  fill: #000;
+  opacity: 0.18;
+  filter: blur(2px);
+}
+
+/* The screen texture is warped to the face by the SVG matrix. */
+.iso-screen-image { image-rendering: auto; }
+.iso-packet { fill: var(--iso-packet); opacity: 0.5; }
+
+.iso-scene[data-iso-screen="purple"] {
+  --iso-accent: #a855f7;
+}
+.iso-scene[data-iso-screen="purple"] .iso-screen-line {
+  stroke: color-mix(in srgb, #a855f7 60%, transparent);
+}
+.iso-scene[data-iso-screen="purple"] .iso-screen-field {
+  stroke: color-mix(in srgb, #a855f7 50%, transparent);
+}
+.iso-scene[data-iso-screen="purple"] .iso-quiz-option {
+  stroke: color-mix(in srgb, #a855f7 50%, transparent);
+}
+.iso-scene[data-iso-screen="purple"] .iso-quiz-option.is-active {
+  fill: color-mix(in srgb, #a855f7 22%, transparent);
+  stroke: #a855f7;
+}
+
+
+@media (max-width: 860px) {
+  .iso-figure { padding: 10px; }
+}

@@ -1,0 +1,104 @@
+/* Design tokens and the four dimension themes.
+   Colours are registered so they interpolate; the page changes climate,
+   not layout, as you cross a boundary. */
+
+@property --ground   { syntax: "<color>"; inherits: true; initial-value: #f4f1ea; }
+@property --panel    { syntax: "<color>"; inherits: true; initial-value: #ece7dc; }
+@property --ink      { syntax: "<color>"; inherits: true; initial-value: #161514; }
+@property --muted    { syntax: "<color>"; inherits: true; initial-value: #6b6862; }
+@property --rule     { syntax: "<color>"; inherits: true; initial-value: #d8d2c6; }
+@property --accent   { syntax: "<color>"; inherits: true; initial-value: #c2410c; }
+@property --accent-2 { syntax: "<color>"; inherits: true; initial-value: #c2410c; }
+
+:root {
+  --font-display: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --step--1: clamp(0.66rem, 0.64rem + 0.08vw, 0.74rem);
+  --step-0:  clamp(0.94rem, 0.9rem + 0.18vw, 1.06rem);
+  /* Stack lines read as copy, a touch above body size. */
+  --stack-size: calc(var(--step-0) * 1.03);
+  --step-1:  clamp(1.12rem, 1.02rem + 0.42vw, 1.42rem);
+  --step-2:  clamp(1.45rem, 1.2rem + 1.05vw, 2.25rem);
+  --step-3:  clamp(1.95rem, 1.35rem + 2.6vw, 3.75rem);
+  --step-4:  clamp(2.6rem, 1.4rem + 5.2vw, 6.2rem);
+  --step-5:  clamp(2.5rem, 0.7rem + 8.2vw, 9.4rem);
+  --step-6:  clamp(4.5rem, 1.5rem + 15vw, 17rem);
+
+  --gutter: clamp(18px, 3vw, 48px);
+  --gap: clamp(14px, 1.6vw, 24px);
+  --maxw: 1680px;
+
+  --dur: 220ms;
+  --dim-dur: 380ms;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --header-h: 54px;
+  --scrubber-h: 64px;
+}
+
+html {
+  --ground: #f4f1ea;
+  --panel: #ece7dc;
+  --ink: #161514;
+  --muted: #6b6862;
+  --rule: #d8d2c6;
+  --accent: #c2410c;
+  --accent-2: #c2410c;
+
+  background: var(--ground);
+  transition:
+    --ground var(--dim-dur) var(--ease),
+    --panel var(--dim-dur) var(--ease),
+    --ink var(--dim-dur) var(--ease),
+    --muted var(--dim-dur) var(--ease),
+    --rule var(--dim-dur) var(--ease),
+    --accent var(--dim-dur) var(--ease),
+    --accent-2 var(--dim-dur) var(--ease);
+}
+
+/* I — Grain & Soil: drafting vellum, oxide ink */
+html[data-dimension="soil"] {
+  --ground: #f4f1ea;
+  --panel: #ece7dc;
+  --ink: #161514;
+  --muted: #5f5c56;
+  --rule: #d8d2c6;
+  --accent: #c2410c;
+  --accent-2: #a8542e;
+}
+
+/* II — Frame & Physics: architectural slate, cyan, telemetry gold */
+html[data-dimension="physics"] {
+  --ground: #0f172a;
+  --panel: #16213a;
+  --ink: #e9eef6;
+  --muted: #93a4ba;
+  --rule: #2a3a52;
+  --accent: #38bdf8;
+  --accent-2: #f59e0b;
+}
+
+/* III — Byte & Bone: clinical paper, carbon ink, oxide red */
+html[data-dimension="clinical"] {
+  --ground: #fafafa;
+  --panel: #f1f1f1;
+  --ink: #111111;
+  --muted: #6e6e6e;
+  --rule: #e2e2e2;
+  --accent: #dc2626;
+  --accent-2: #dc2626;
+}
+
+/* IV — Loop & Leash: warm paper, hard black, halftone */
+html[data-dimension="loop"] {
+  --ground: #f2efe8;
+  --panel: #e7e2d7;
+  --ink: #161514;
+  --muted: #5e5b55;
+  --rule: #161514;
+  --accent: #161514;
+  --accent-2: #6b6862;
+}

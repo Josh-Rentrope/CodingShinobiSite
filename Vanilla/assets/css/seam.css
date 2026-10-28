@@ -1,0 +1,102 @@
+/* The seam between the first two acts.
+   A sticky stage holds the incoming act's opening under the outgoing act's
+   close. An SVG turbulence mask grows a hole in the outgoing layer. When it
+   finishes, the outgoing layer is inert so the incoming one is selectable. */
+
+.seam {
+  position: relative;
+  height: 150vh;
+  overflow: overflow-y;
+  background: #0f172a;
+}
+
+.seam-sticky {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.seam-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--header-h) + 5vh) var(--gutter) 9vh;
+}
+
+/* Local tokens: each layer keeps its own climate even while the page
+   document theme is mid-switch. */
+.seam-layer--in {
+  z-index: 1;
+  background: #0f172a;
+  color: #e9eef6;
+  --ink: #e9eef6;
+  --muted: #93a4ba;
+  --rule: #2a3a52;
+  --accent: #38bdf8;
+  --accent-2: #f59e0b;
+  /* The incoming era starts lower than the outgoing close, so the two
+     contents do not sit in exactly the same place during the reveal. */
+  transform: translateY(clamp(40px, 100vh, 50vh));
+}
+
+.seam-layer--out {
+  z-index: 2;
+  background: #f4f1ea;
+  color: #161514;
+  --ink: #161514;
+  --muted: #5f5c56;
+  --rule: #d8d2c6;
+  --accent: #c2410c;
+  --accent-2: #a8542e;
+  -webkit-mask: url(#seam-ink-mask);
+  mask: url(#seam-ink-mask);
+}
+
+.seam-layer--out .seam-inner{
+	margin-top: -50vh;
+}
+
+.seam-inner {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0 var(--gap);
+  align-items: center;
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+}
+
+.seam-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.seam .act-name { text-wrap: balance; }
+
+@media (max-width: 1080px) {
+  .seam .act-copy { grid-column: 3 / span 5; }
+}
+
+@media (max-width: 860px) {
+  .seam { height: 100vh; }
+  .seam-layer--in { transform: translateY(7vh); }
+  .seam-layer { padding-bottom: 12vh; }
+  .seam-inner { grid-template-columns: 1fr; }
+  .seam-inner > * { grid-column: 1 / -1 !important; grid-row: auto !important; }
+  .seam .act-numeral {
+    font-size: clamp(4rem, 24vw, 7rem);
+    margin-bottom: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seam-layer--out {
+    -webkit-mask: none !important;
+    mask: none !important;
+  }
+  .seam-layer--in { transform: none; }
+}

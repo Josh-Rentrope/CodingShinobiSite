@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The evolving portfolio of Coding Shinobi: software, systems, simulation, architecture, and leadership.">
+    <meta name="theme-color" content="#070a0d">
+    <title>Coding Shinobi — An Evolving Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="evolution.css">
+    <link rel="stylesheet" href="palette.css">
+</head>
+<body>
+    <a class="skip-link" href="#story">Skip to the story</a>
+
+    <canvas id="evolution-canvas" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <a class="wordmark" href="#origin" aria-label="Coding Shinobi, return to opening">
+            <span class="wordmark-mark" aria-hidden="true"></span>
+            <span>Coding Shinobi</span>
+        </a>
+        <nav aria-label="Story chapters">
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="chapter-nav">Chapters</button>
+            <ol id="chapter-nav" class="chapter-nav">
+                <li><a href="#lineage" data-chapter-link="lineage"><span>01</span> Lineage</a></li>
+                <li><a href="#systems" data-chapter-link="systems"><span>02</span> Systems</a></li>
+                <li><a href="#worlds" data-chapter-link="worlds"><span>03</span> Worlds</a></li>
+                <li><a href="#architecture" data-chapter-link="architecture"><span>04</span> Scale</a></li>
+                <li><a href="#current" data-chapter-link="current"><span>05</span> Now</a></li>
+            </ol>
+        </nav>
+        <div class="story-progress" aria-hidden="true"><span></span></div>
+    </header>
+
+    <main id="story">
+        <section id="origin" class="hero chapter" data-scene="origin" aria-labelledby="origin-title">
+            <div class="hero-copy">
+                <p class="eyebrow reveal">An evolving practice <span>2000s—Now</span></p>
+                <h1 id="origin-title" class="hero-title" aria-label="Skills do not replace each other. They accumulate.">
+                    <span class="title-line">Skills do not</span>
+                    <span class="title-line outline">replace each other.</span>
+                    <span class="title-line accent">They accumulate.</span>
+                </h1>
+                <p class="hero-intro reveal">From first programs and webpages to distributed platforms, simulated worlds, and technical leadership. Scroll through the traits that stayed.</p>
+            </div>
+            <div class="hero-index" aria-hidden="true">
+                <span>FORM</span><strong data-form-number>00</strong><span>ORIGIN</span>
+            </div>
+            <a class="scroll-cue" href="#lineage"><span>Begin evolution</span><i aria-hidden="true"></i></a>
+        </section>
+
+        <section id="lineage" class="lineage chapter" data-scene="lineage" aria-labelledby="lineage-title">
+            <div class="section-shell lineage-layout">
+                <div class="chapter-heading">
+                    <p class="chapter-number">01 / Lineage</p>
+                    <h2 id="lineage-title">Before depth,<br>there was movement.</h2>
+                    <p>The early work was direct: write the code, make the interface respond, ship the idea. The methods changed. The instinct to build did not.</p>
+                </div>
+
+                <div class="archive-stage">
+                    <div class="archive-caption" aria-hidden="true">
+                        <span>ARCHIVE SAMPLE</span>
+                        <span>SPRING 2026</span>
+                    </div>
+                    <div class="browser-frame">
+                        <div class="browser-chrome" aria-hidden="true">
+                            <div><i></i><i></i><i></i></div>
+                            <span>codingshinobi.com / archive</span>
+                            <b>↗</b>
+                        </div>
+                        <div class="browser-viewport">
+                            <iframe src="past-site.html" title="Interactive preview of the previous Coding Shinobi portfolio" loading="lazy" tabindex="-1"></iframe>
+                            <div class="archive-shield">
+                                <p>Previous form</p>
+                                <span>A Three.js DNA archive: scroll, bloom, raycasting, and hand-built animation.</span>
+                                <a href="past-site.html" target="_blank" rel="noopener">Explore the archive <b>↗</b></a>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="archive-note"><span>Then</span> A site was a collection of effects.<br><span>Now</span> Motion is part of the narrative.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="systems" class="systems chapter capability" data-scene="systems" aria-labelledby="systems-title">
+            <div class="sticky-scene">
+                <div class="capability-copy">
+                    <p class="chapter-number">02 / Systems</p>
+                    <h2 id="systems-title">Make it work<br>where failure is normal.</h2>
+                    <p>Applications became services. Services met unreliable networks, heterogeneous devices, high-volume data, and real operational constraints.</p>
+                    <ul class="trait-list" aria-label="Systems capabilities">
+                        <li><span>01</span> Software engineering</li>
+                        <li><span>02</span> Distributed systems</li>
+                        <li><span>03</span> Data platforms</li>
+                        <li><span>04</span> Edge resilience</li>
+                    </ul>
+                </div>
+
+                <div class="system-visual" aria-hidden="true">
+                    <div class="system-core"><span>RESILIENT<br>CORE</span></div>
+                    <div class="orbit orbit-a"><i data-label="EDGE"></i><i data-label="API"></i><i data-label="DATA"></i></div>
+                    <div class="orbit orbit-b"><i data-label="ARM"></i><i data-label="x86"></i><i data-label="GPU"></i><i data-label="HPC"></i></div>
+                    <svg viewBox="0 0 600 600" role="presentation">
+                        <circle cx="300" cy="300" r="118"></circle>
+                        <circle cx="300" cy="300" r="220"></circle>
+                        <path d="M300 80V520M80 300H520M144 144L456 456M456 144L144 456"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="evidence-strip" aria-label="Systems project evidence">
+                <article class="evidence-card">
+                    <p>FIELD SYSTEMS / 2018+</p>
+                    <h3>Distributed IoT network</h3>
+                    <p>Multi-architecture edge nodes, durable telemetry, custom overlay networking, and reproducible deployments in hostile environments.</p>
+                    <a href="posts/iot-entry.html">Read the architecture story <span>↗</span></a>
+                </article>
+                <article class="evidence-card">
+                    <p>DATA AT SCALE</p>
+                    <h3>HPC data platform</h3>
+                    <p>Self-serve analyst software and scalable pipelines processing up to 1 TB per minute while reducing annual operating cost.</p>
+                    <span class="tech-line">HPC · Spark · Python · Qt</span>
+                </article>
+            </div>
+        </section>
+
+        <section id="worlds" class="worlds chapter capability" data-scene="worlds" aria-labelledby="worlds-title">
+            <div class="worlds-pin">
+                <div class="worlds-copy">
+                    <p class="chapter-number">03 / Simulated worlds</p>
+                    <h2 id="worlds-title">Systems gained<br><em>space, motion, consequence.</em></h2>
+                    <p>Engineering crossed into real-time simulation: orbital mechanics, inverse kinematics, finite element analysis, shaders, and data-driven gameplay.</p>
+                </div>
+                <div class="world-gallery">
+                    <figure class="world-card world-card-main">
+                        <img src="assets/images/vr_simulation.jpg" alt="Virtual reality digital twin simulation">
+                        <figcaption><span>Digital twins</span><b>Unreal Engine · SGP4 · IK · FEA</b></figcaption>
+                    </figure>
+                    <figure class="world-card">
+                        <img src="assets/images/April-2026-Unity-1.png" alt="Data-driven Unity game demonstration">
+                        <figcaption><span>Interactive worlds</span><b>Unity · Data-driven gameplay</b></figcaption>
+                    </figure>
+                    <figure class="world-card">
+                        <img src="exp/game-images/sky.jpg" alt="A luminous landscape that inspired shader and atmosphere studies">
+                        <figcaption><span>Atmosphere studies</span><b>GLSL · Volumetrics · Environment</b></figcaption>
+                    </figure>
+                </div>
+            </div>
+            <p class="world-impact">Integrated simulation techniques into Unreal Engine for advanced digital twins—work that contributed to three new deals and a Phase II SBIR contract.</p>
+        </section>
+
+        <section id="architecture" class="architecture chapter capability" data-scene="architecture" aria-labelledby="architecture-title">
+            <div class="architecture-intro section-shell">
+                <p class="chapter-number">04 / Architecture & leadership</p>
+                <h2 id="architecture-title">The unit of work<br>kept getting larger.</h2>
+                <p>First a function. Then a service. Then a platform, a team, a budget, a roadmap, and the responsibility to keep them aligned.</p>
+            </div>
+
+            <div class="scale-stage section-shell">
+                <div class="scale-rings" aria-hidden="true">
+                    <div class="scale-ring ring-code"><span>CODE</span></div>
+                    <div class="scale-ring ring-system"><span>SYSTEM</span></div>
+                    <div class="scale-ring ring-platform"><span>PLATFORM</span></div>
+                    <div class="scale-ring ring-org"><span>ORGANIZATION</span></div>
+                </div>
+                <ol class="scale-copy">
+                    <li><span>01</span><div><h3>Developer / Engineer</h3><p>Ship under pressure. Improve codebases. Document the decisions.</p></div></li>
+                    <li><span>02</span><div><h3>Architect / Manager</h3><p>Choose stacks, shape solutions, unblock people, and design for change.</p></div></li>
+                    <li><span>03</span><div><h3>CTO / Director</h3><p>Balance requirements, budgets, delivery, maintenance, and teams at scale.</p></div></li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery chapter" data-scene="gallery" aria-labelledby="gallery-title">
+            <div class="gallery-heading section-shell">
+                <p class="chapter-number">Selected evidence</p>
+                <h2 id="gallery-title">Artifacts from<br>the adaptation.</h2>
+                <p>Not a complete inventory. A cross-section of problems, domains, and forms.</p>
+            </div>
+            <div class="gallery-track" role="list">
+                <article class="project" role="listitem">
+                    <div class="project-image"><img src="assets/images/groupingmap.png" alt="Sensor grouping map from the distributed IoT project" loading="lazy"></div>
+                    <p>Architecture / Edge</p><h3>Robust IoT</h3><span>Networking · Data fusion · AI</span>
+                    <a href="posts/iot-entry.html" aria-label="Read about Robust IoT"></a>
+                </article>
+                <article class="project" role="listitem">
+                    <div class="project-image"><img src="assets/images/hpc_platform.jpg" alt="High-performance computing platform visualization" loading="lazy"></div>
+                    <p>Platform / Data</p><h3>HPC at 1 TB/min</h3><span>Apache Spark · Python · Qt</span>
+                </article>
+                <article class="project" role="listitem">
+                    <div class="project-image"><img src="assets/images/vr_simulation.jpg" alt="Virtual reality simulation project" loading="lazy"></div>
+                    <p>Simulation / XR</p><h3>Digital twins</h3><span>Unreal · SGP4 · IK · FEA</span>
+                </article>
+                <article class="project" role="listitem">
+                    <div class="project-image"><img src="assets/images/healthapp.png" alt="Health data application interface" loading="lazy"></div>
+                    <p>Application / Health</p><h3>Data fusion app</h3><span>Next.js · FastAPI · Nginx</span>
+                </article>
+                <article class="project" role="listitem">
+                    <div class="project-image"><img src="assets/images/April-2026-Unity-2.png" alt="Unity game project scene" loading="lazy"></div>
+                    <p>Interactive / Game</p><h3>Data-driven play</h3><span>Unity · Systems design</span>
+                </article>
+                <article class="project project-archive" role="listitem">
+                    <div class="project-image"><img src="assets/images/thissite.png" alt="Previous Coding Shinobi Three.js site" loading="lazy"></div>
+                    <p>Meta / Archive</p><h3>The previous form</h3><span>Three.js · Canvas · WebGL</span>
+                    <a href="past-site.html" aria-label="Open the previous portfolio"></a>
+                </article>
+            </div>
+        </section>
+
+        <section id="current" class="current chapter" data-scene="current" aria-labelledby="current-title">
+            <div class="current-form" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+                <div>05</div>
+            </div>
+            <div class="current-copy">
+                <p class="chapter-number">05 / Current form</p>
+                <h2 id="current-title">Still<br><em>evolving.</em></h2>
+                <p>I build across the boundary between software, data, simulation, infrastructure, and organizations—then make those parts work as one system.</p>
+                <div class="contact-actions">
+                    <a class="primary-action" href="https://github.com/Josh-Rentrope" target="_blank" rel="noopener">Continue on GitHub <span>↗</span></a>
+                    <a href="past-site.html">Visit the previous form</a>
+                </div>
+            </div>
+            <footer>
+                <span>CODING SHINOBI © 2026</span>
+                <span>ENGINEER · ARCHITECT · BUILDER</span>
+                <a href="#origin">Back to origin ↑</a>
+            </footer>
+        </section>
+    </main>
+
+    <noscript><div class="noscript-note">JavaScript adds the cinematic transitions. Every chapter and project remains available without it.</div></noscript>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
+    <script src="evolution.js"></script>
+    <script type="module" src="palette.js"></script>
+</body>
+</html>

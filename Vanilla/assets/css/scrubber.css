@@ -1,0 +1,111 @@
+/* A horizontal index, not a scrollbar.
+   Four equal segments — one per dimension. The head moves within a segment
+   according to that dimension's progress, so the rail stays a stable map
+   even when the sections are different lengths. */
+
+.scrubber {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 95;
+  height: var(--scrubber-h);
+  padding: 0 var(--gutter);
+  background: color-mix(in srgb, var(--ground) 84%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: ew-resize;
+  touch-action: none;
+  transition: background-color var(--dim-dur) var(--ease), border-color var(--dim-dur) var(--ease);
+}
+
+.scrubber-rail {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  top: 11px;
+  height: 1px;
+  background: color-mix(in srgb, var(--rule) 80%, transparent);
+}
+
+/* Segment boundaries at 25% intervals. */
+.scrubber-rail::before {
+  content: "";
+  position: absolute;
+  inset: -3px 0;
+  background-image: repeating-linear-gradient(
+    to right,
+    color-mix(in srgb, var(--rule) 90%, transparent) 0 1px,
+    transparent 1px calc(100% / var(--act-count, 4))
+  );
+}
+
+.scrubber-fill {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 3px;
+  width: 0;
+  background: var(--accent);
+  transition: background-color var(--dim-dur) var(--ease);
+}
+
+.scrubber-head {
+  position: absolute;
+  left: 0;
+  top: -4px;
+  width: 9px;
+  height: 9px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ground) 80%, transparent);
+  transition: background-color var(--dim-dur) var(--ease);
+}
+
+.scrubber-list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--act-count, 4), 1fr);
+  height: 100%;
+  align-items: end;
+  padding-bottom: 13px;
+  margin: 0;
+}
+
+.scrubber-list a {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding-right: 14px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+.scrubber-list a:hover { color: var(--ink); }
+.scrubber-list a[aria-current="true"] { color: var(--ink); }
+
+.scrubber .t {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.scrubber .y {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 860px) {
+  .scrubber { cursor: default; }
+  .scrubber-list { padding-bottom: 15px; }
+  .scrubber .t,
+  .scrubber .y { display: none; }
+  .scrubber-list a[aria-current="true"] .t { display: inline; }
+}

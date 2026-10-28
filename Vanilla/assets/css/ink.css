@@ -1,0 +1,287 @@
+/* Ink transition study. Three engines, one stage. */
+
+body.lab { background: var(--ground); }
+
+.lab-intro {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: calc(var(--header-h) + 12vh) var(--gutter) 8vh;
+}
+.lab-intro h1 {
+  margin: 12px 0 22px;
+  max-width: 12ch;
+  font-size: var(--step-4);
+  font-weight: 300;
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+}
+.lab-lede {
+  max-width: 54ch;
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--ink) 78%, transparent);
+  text-wrap: pretty;
+}
+.lab-note {
+  margin-top: 20px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------------
+   The scroll track
+   ------------------------------------------------------------------ */
+
+.lab-track { position: relative; height: 320vh; }
+
+.lab-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.lab-stage {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  background: #0f172a;
+}
+
+.lab-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--header-h) + 5vh) var(--gutter) 12vh;
+}
+.lab-panel--b {
+  z-index: 1;
+  background: #0f172a;
+  color: #e9eef6;
+}
+.lab-panel--a {
+  z-index: 2;
+  background: #f4f1ea;
+  color: #161514;
+}
+
+.lab-panel-inner { max-width: 760px; }
+
+.lab-panel h2 {
+  margin: 12px 0 22px;
+  font-size: clamp(2.8rem, 6.4vw, 6.4rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+.lab-panel p {
+  max-width: 44ch;
+  font-size: var(--step-1);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.lab-panel .label {
+  color: inherit;
+  opacity: 0.55;
+}
+
+.lab-receipt {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 470px;
+  margin-top: 32px;
+  padding-top: 12px;
+  border-top: 1px solid currentColor;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.lab-receipt em {
+  font-style: normal;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.lab-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* ------------------------------------------------------------------
+   SVG mask — a circle displaced by turbulence, used as a hole.
+   ------------------------------------------------------------------ */
+
+.lab-stage[data-engine="webgl"] .lab-canvas { display: block; }
+.lab-stage[data-engine="webgl"] .lab-panel { background: transparent; }
+
+.lab-stage[data-engine="svg"] .lab-panel--a {
+  -webkit-mask: url(#lab-ink-mask);
+  mask: url(#lab-ink-mask);
+}
+
+.lab-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------
+   Controls
+   ------------------------------------------------------------------ */
+
+.lab-controls {
+  position: absolute;
+  top: calc(var(--header-h) + 18px);
+  right: var(--gutter);
+  z-index: 60;
+  width: 298px;
+  padding: 14px;
+  background: color-mix(in srgb, var(--ground) 88%, transparent);
+  border: 1px solid var(--rule);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.lab-seg {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 14px;
+}
+.lab-seg button {
+  padding: 9px 6px;
+  border: 0;
+  background: var(--ground);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.lab-seg button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--ground);
+}
+
+.lab-row {
+  display: none;
+  grid-template-columns: 62px 1fr 38px;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+.lab-controls[data-engine="svg"] .only-svg,
+.lab-controls[data-engine="webgl"] .only-webgl { display: grid; }
+
+.lab-row label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.lab-row input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.lab-row output {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-align: right;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.lab-foot span:first-child { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------------
+   Notes
+   ------------------------------------------------------------------ */
+
+.lab-notes { padding: 14vh 0 18vh; border-top: 1px solid var(--rule); }
+.lab-notes .grid { row-gap: 40px; }
+.lab-note-col { grid-column: span 4; }
+.lab-note-col h2 {
+  margin: 10px 0 14px;
+  font-size: var(--step-2);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+.lab-note-col p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--ink) 80%, transparent);
+}
+.lab-note-col code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  padding: 0.08em 0.3em;
+}
+
+/* ------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------ */
+
+@media (max-width: 1040px) {
+  .lab-note-col { grid-column: span 6; }
+  .lab-controls { width: 264px; }
+}
+
+@media (max-width: 860px) {
+  .lab-panel { padding-bottom: 42vh; }
+  .lab-panel h2 { font-size: clamp(2.4rem, 11vw, 4rem); }
+  .lab-panel p { font-size: 15px; }
+
+  .lab-controls {
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    width: auto;
+    padding: 10px;
+  }
+  .lab-seg { margin-bottom: 8px; }
+  .lab-row { grid-template-columns: 56px 1fr 34px; padding: 2px 0; }
+  .lab-foot { margin-top: 6px; padding-top: 6px; }
+  .lab-note-col { grid-column: 1 / -1; }
+  .lab-notes { padding-bottom: 10vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-stage .lab-panel--a {
+    -webkit-mask: none !important;
+    mask: none !important;
+  }
+  .lab-canvas { display: none !important; }
+}

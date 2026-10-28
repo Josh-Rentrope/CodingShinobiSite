@@ -1,242 +1,702 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-dimension="soil">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The evolving portfolio of Coding Shinobi: software, systems, simulation, architecture, and leadership.">
-    <meta name="theme-color" content="#070a0d">
-    <title>Coding Shinobi — An Evolving Practice</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="evolution.css">
-    <link rel="stylesheet" href="palette.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Coding Shinobi — Bar Raiser & Team Praiser. Over twelve years building high-performing teams, mission-critical platforms, simulation worlds, and verified AI architectures.">
+  <meta name="theme-color" content="#f4f1ea">
+  <title>Coding Shinobi — Portfolio and Presentation</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Inter+Tight:wght@300;400;500&family=Newsreader:ital,opsz,wght@1,6..72,200..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="stylesheet" href="assets/css/scrubber.css">
+  <link rel="stylesheet" href="assets/css/seam.css">
+  <link rel="stylesheet" href="assets/css/flagships.css">
+  <link rel="stylesheet" href="assets/css/early.css">
+  <link rel="stylesheet" href="assets/css/isometric.css">
 </head>
 <body>
-    <a class="skip-link" href="#story">Skip to the story</a>
+  <a class="skip" href="#flagships">Skip to selected work</a>
+  <div class="grain" aria-hidden="true"></div>
 
-    <canvas id="evolution-canvas" aria-hidden="true"></canvas>
-    <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="Coding Shinobi, back to the opening">Coding Shinobi</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#flagships">Index</a>
+      <a href="work/imaging-app.html">Work</a>
+      <a href="mailto:josh@infodaollc.com">Contact</a>
+    </nav>
+    <p class="header-meta">Covering <b>2014—2026</b></p>
+  </header>
 
-    <header class="site-header">
-        <a class="wordmark" href="#origin" aria-label="Coding Shinobi, return to opening">
-            <span class="wordmark-mark" aria-hidden="true"></span>
-            <span>Coding Shinobi</span>
-        </a>
-        <nav aria-label="Story chapters">
-            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="chapter-nav">Chapters</button>
-            <ol id="chapter-nav" class="chapter-nav">
-                <li><a href="#lineage" data-chapter-link="lineage"><span>01</span> Lineage</a></li>
-                <li><a href="#systems" data-chapter-link="systems"><span>02</span> Systems</a></li>
-                <li><a href="#worlds" data-chapter-link="worlds"><span>03</span> Worlds</a></li>
-                <li><a href="#architecture" data-chapter-link="architecture"><span>04</span> Scale</a></li>
-                <li><a href="#current" data-chapter-link="current"><span>05</span> Now</a></li>
-            </ol>
-        </nav>
-        <div class="story-progress" aria-hidden="true"><span></span></div>
-    </header>
+  <main>
+    <!-- ------------------------------------------------------------------
+         Opening
+         ------------------------------------------------------------------ -->
+    <section class="hero" id="top" data-dimension="soil">
+		<div class="hero-parallax" aria-hidden="true" data-hero-parallax>
+		  <!-- Layer 1: Slow background coordinate reticle -->
+		  <svg class="parallax-layer" data-depth="0.12" viewBox="0 0 600 600" fill="none">
+			<circle cx="300" cy="300" r="220" stroke="currentColor" stroke-width="0.75" stroke-dasharray="4 6" opacity="0.25"/>
+			<circle cx="300" cy="300" r="140" stroke="currentColor" stroke-width="0.75" opacity="0.18"/>
+			<path d="M80 300H520M300 80V520" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+		  </svg>
 
-    <main id="story">
-        <section id="origin" class="hero chapter" data-scene="origin" aria-labelledby="origin-title">
-            <div class="hero-copy">
-                <p class="eyebrow reveal">An evolving practice <span>2000s—Now</span></p>
-                <h1 id="origin-title" class="hero-title" aria-label="Skills do not replace each other. They accumulate.">
-                    <span class="title-line">Skills do not</span>
-                    <span class="title-line outline">replace each other.</span>
-                    <span class="title-line accent">They accumulate.</span>
-                </h1>
-                <p class="hero-intro reveal">From first programs and webpages to distributed platforms, simulated worlds, and technical leadership. Scroll through the traits that stayed.</p>
-            </div>
-            <div class="hero-index" aria-hidden="true">
-                <span>FORM</span><strong data-form-number>00</strong><span>ORIGIN</span>
-            </div>
-            <a class="scroll-cue" href="#lineage"><span>Begin evolution</span><i aria-hidden="true"></i></a>
-        </section>
+		  <!-- Layer 2: Mid-depth isometric slice planes (nod to CT slices + AR twins) -->
+		  <svg class="parallax-layer" data-depth="0.28" viewBox="0 0 600 600" fill="none">
+			<g stroke="currentColor" stroke-width="1" opacity="0.32">
+			  <polygon points="300,150 460,230 300,310 140,230" />
+			  <polygon points="300,210 460,290 300,370 140,290" stroke-dasharray="3 3" />
+			  <polygon points="300,270 460,350 300,430 140,350" />
+			</g>
+		  </svg>
 
-        <section id="lineage" class="lineage chapter" data-scene="lineage" aria-labelledby="lineage-title">
-            <div class="section-shell lineage-layout">
-                <div class="chapter-heading">
-                    <p class="chapter-number">01 / Lineage</p>
-                    <h2 id="lineage-title">Before depth,<br>there was movement.</h2>
-                    <p>The early work was direct: write the code, make the interface respond, ship the idea. The methods changed. The instinct to build did not.</p>
+		  <!-- Layer 3: Foreground telemetry ticks -->
+		  <div class="parallax-layer parallax-hud" data-depth="0.45">
+			<span>SYS.VERIFIED // 2014–2026</span>
+			<span>SCALE: 1:1 DETERMINISTIC</span>
+		  </div>
+		</div>
+      <div class="grid">
+        <p class="label hero-kicker reveal">Coding Shinobi — portfolio and presentation of 2014–2026</p>
+
+        <h1 class="hero-title">
+          <span class="rise" style="--i:0"><span>Bar Raiser &amp; Team Praiser</span></span>
+          <span class="rise" style="--i:1"><span></span></span>
+        </h1>
+
+        <p class="hero-sub reveal" style="--d:360ms">
+          Over twelve years across multiple domains including: medical, geospatial, sensors and simulations, VR/AR/XR, and agent loops with AI/ML Pipelines.
+          <br/><br/>
+          Partnering with and building high performing teams that love what they do.
+        </p>
+
+        <div class="hero-side reveal" style="--d:440ms">
+          <ol class="dim-index">
+            <li><a href="#act-soil"><span>Early Days</span><span class="y">2014–20</span></a></li>
+            <li><a href="#act-physics-body"><span>Teams and Platforms</span><span class="y">2018–24</span></a></li>
+            <li><a href="#act-clinical"><span>Augmenting Orgs</span><span class="y">2022–26</span></a></li>
+            <li><a href="#act-loop"><span>AI Done Right</span><span class="y">2025–26</span></a></li>
+          </ol>
+        </div>
+
+        <a class="scroll-cue" href="#flagships"><span>Scroll to selected work</span><i aria-hidden="true"></i></a>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         Selected work — the flagship five
+         ------------------------------------------------------------------ -->
+    <section class="flagships" id="flagships" data-dimension="soil" aria-labelledby="flagships-title">
+      <div class="grid flagships-head">
+        <p class="label">Selected work</p>
+        <h2 id="flagships-title">Five I'd show you first.</h2>
+        <p class="flagships-intro">
+          Surgical imaging that loads in a blink without ever guessing a measurement. Half a million
+          clinical trials mapped for human discovery. High-throughput analyst pipelines paired with
+          shared Unreal worlds. Playable interactive prototypes, and forty federal services unified
+          under one roof. Different domains, same heartbeat: elevate the team, protect the user, and
+          build systems you can trust.
+        </p>
+        <p class="flagships-count" aria-hidden="true">Five cases</p>
+      </div>
+
+      <div class="flag-list" data-flag-list>
+        <div class="flag-card" role="button" tabindex="0" data-case="imaging-app" data-teaser="Instant 3D surgical clarity—streaming only the exact slice a clinician needs, with built-in scale verification." style="--card-accent:#b91c1c">
+          <div class="flag-media">
+            <img src="assets/img/bone-viewer.webp" alt="Bone Viewer 3D workspace with a segmented volume, structure list, and pipeline controls" width="1871" height="891" loading="lazy">
+            <span class="flag-tab">Augmenting Orgs</span>
+          </div>
+          <div class="flag-copy">
+			  <p class="label">Clinical imaging</p>
+			  <h3>Orthopedic 3D imaging</h3>
+			  <p>Streaming 3D surgical scans in real time while providing AI/ML analytics on structures.</p>
+			  <div class="flag-receipt"><span>Live demo available</span></div>
+			  <span class="flag-open">Open <span aria-hidden="true">→</span></span>
+			</div>
+          <div class="flag-pop" aria-hidden="true"><b>Orthopedic 3D imaging</b><span>3D clarity — with pipelines available for doctors and researchers.</span></div>
+        </div>
+
+        <div class="flag-card" role="button" tabindex="0" data-case="trials" data-teaser="607,160 clinical studies mapped. Plain-English search backed by strict, hallucination-free database queries." style="--card-accent:#dc2626">
+          <div class="flag-media">
+            <img src="assets/img/trials.webp" alt="Map-based clinical trials search interface" width="1600" height="662" loading="lazy">
+            <span class="flag-tab">AI Done Right</span>
+          </div>
+          <div class="flag-copy">
+            <p class="label">Clinical data</p>
+            <h3>Clinical trials discovery</h3>
+            <p>Connecting patients and researchers to 607,160 real studies using AI that is structurally incapable of hallucinating.</p>
+            <div class="flag-receipt"><span>607,160 studies mapped</span><span>● zero hallucination</span></div>
+            <span class="flag-open">Open <span aria-hidden="true">→</span></span>
+          </div>
+          <div class="flag-pop" aria-hidden="true"><b>Clinical trials discovery</b><span>607,160 studies mapped. Natural language search backed by strict database truth.</span></div>
+        </div>
+
+        <div class="flag-card" role="button" tabindex="0" data-case="hpc" data-teaser="Automating 1 TB/min data pipelines for scientific analysts and visualizing 10,000+ live entities in Unreal." style="--card-accent:#0e7490">
+          <div class="flag-media">
+            <img src="assets/img/twin.webp" alt="Networked simulation environment" width="711" height="474" loading="lazy">
+            <span class="flag-tab">Teams and Platforms</span>
+          </div>
+          <div class="flag-copy">
+            <p class="label">Throughput &amp; simulation</p>
+            <h3>High-velocity physics &amp; digital twins</h3>
+            <p>Turning hours of manual data wrangling into a 1 TB/min automated pipeline—and a 10,000-object Unreal simulation.</p>
+            <div class="flag-receipt"><span>64-process HPC · 1 TB/min</span><span>● zero setup errors</span></div>
+            <span class="flag-open">Open <span aria-hidden="true">→</span></span>
+          </div>
+          <div class="flag-pop" aria-hidden="true"><b>High-velocity physics &amp; digital twins</b><span>1 TB/min automated analyst pipelines paired with a 10,000-object Unreal twin.</span></div>
+        </div>
+
+        <div class="flag-card" role="button" tabindex="0" data-case="interactive" data-teaser="From tactical card games in Unity to immersive XR simulation worlds in Unreal." style="--card-accent:#0e7490">
+          <div class="flag-media">
+            <img src="assets/img/unity-ccg.webp" alt="Collectible card game prototype built in Unity" width="1571" height="886" loading="lazy">
+            <span class="flag-tab">Teams and Platforms</span>
+          </div>
+          <div class="flag-copy">
+            <p class="label">Interactive</p>
+            <h3>Interactive Unity/Unreal Experiences</h3>
+            <p>Designing tactile game systems in Unity and coaching engineering teams to bring scientific simulations into XR.</p>
+            <div class="flag-receipt"><span>CCG Architecture + XR Sims</span><span>● shipped</span></div>
+            <span class="flag-open">Open <span aria-hidden="true">→</span></span>
+          </div>
+          <div class="flag-pop" aria-hidden="true"><b>Interactive Unity/Unreal Experiences</b><span>From tactical card games in Unity to immersive XR simulation worlds in Unreal.</span></div>
+        </div>
+
+        <div class="flag-card" role="button" tabindex="0" data-case="govcloud" data-teaser="Unifying 40 fragmented microservices into one governed architecture—slashing pipeline failures from 25% to 3%." style="--card-accent:#161514">
+          <div class="flag-media flag-media--board">
+            <div class="medallion" aria-hidden="true"><span>Gold</span><span>Silver</span><span>Bronze</span></div>
+            <span class="flag-tab">AI Done Right</span>
+          </div>
+          <div class="flag-copy">
+			  <p class="label">Platform Architecture</p>
+			  <h3>Forty services, one medallion</h3>
+			  <p>Unifying 40 fragmented federal services and 100+ relational tables into one governed Medallion platform.</p>
+			  <div class="flag-receipt"><span>40+ services · 100+ tables</span><span>● 4× delivery velocity</span></div>
+			  <span class="flag-open">Open <span aria-hidden="true">→</span></span>
+			</div>
+          <div class="flag-pop" aria-hidden="true"><b>Forty services, one medallion</b><span>Unifying 40 services and cutting pipeline failures from 25% down to 3%.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         I — Early Days
+         ------------------------------------------------------------------ -->
+    <section class="act" id="act-soil" data-dimension="soil" aria-labelledby="early-title">
+      <div class="act-head">
+        <div class="grid">
+          <div class="act-copy reveal">
+            <p class="label">2014—2020</p>
+            <h2 class="act-name" id="early-title">Early Days</h2>
+            <p class="act-thesis">Where the foundation was forged: self-hosted live video before it was a commodity, multi-tenant logistics, edge hardware, and mentoring my first engineers.</p>
+          </div>
+        </div>
+      </div>
+
+      <section class="early-carousel" data-carousel aria-label="Early systems carousel">
+        <div class="early-sticky">
+          <div class="early-track" data-carousel-track>
+            <article class="early-panel">
+              <div class="early-media">
+                <div class="iso-figure">
+                  <div class="iso-scene" data-iso-scene="streaming" data-iso-theme="light" data-iso-duration="9" data-iso-params='{"clients":4,"packets":4,"speed":3}' role="img" aria-label="Isometric computers streaming to a central server, with live feeds on each screen"></div>
                 </div>
-
-                <div class="archive-stage">
-                    <div class="archive-caption" aria-hidden="true">
-                        <span>ARCHIVE SAMPLE</span>
-                        <span>SPRING 2026</span>
-                    </div>
-                    <div class="browser-frame">
-                        <div class="browser-chrome" aria-hidden="true">
-                            <div><i></i><i></i><i></i></div>
-                            <span>codingshinobi.com / archive</span>
-                            <b>↗</b>
-                        </div>
-                        <div class="browser-viewport">
-                            <iframe src="past-site.html" title="Interactive preview of the previous Coding Shinobi portfolio" loading="lazy" tabindex="-1"></iframe>
-                            <div class="archive-shield">
-                                <p>Previous form</p>
-                                <span>A Three.js DNA archive: scroll, bloom, raycasting, and hand-built animation.</span>
-                                <a href="past-site.html" target="_blank" rel="noopener">Explore the archive <b>↗</b></a>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="archive-note"><span>Then</span> A site was a collection of effects.<br><span>Now</span> Motion is part of the narrative.</p>
+              </div>
+              <div class="early-copy">
+                <p class="label">Live video</p>
+                <h3 class="chapter-title">The Streaming Server (2014)</h3>
+                <p class="chapter-body">Long before off-the-shelf streaming APIs, I built a multi-tenant live video platform from scratch—combining Nginx RTMP routing, real-time Tornado chat, and custom Django portals.</p>
+                <div class="receipt">
+                  <p class="receipt-value">Multi-tenant RTMP &amp; real-time chat</p>
+                  <span class="receipt-state">● self-hosted</span>
                 </div>
-            </div>
-        </section>
+                <p class="chapter-caption">Nginx RTMP · Tornado · Django · PostgreSQL · OpenCV · TensorFlow</p>
+              </div>
+            </article>
 
-        <section id="systems" class="systems chapter capability" data-scene="systems" aria-labelledby="systems-title">
-            <div class="sticky-scene">
-                <div class="capability-copy">
-                    <p class="chapter-number">02 / Systems</p>
-                    <h2 id="systems-title">Make it work<br>where failure is normal.</h2>
-                    <p>Applications became services. Services met unreliable networks, heterogeneous devices, high-volume data, and real operational constraints.</p>
-                    <ul class="trait-list" aria-label="Systems capabilities">
-                        <li><span>01</span> Software engineering</li>
-                        <li><span>02</span> Distributed systems</li>
-                        <li><span>03</span> Data platforms</li>
-                        <li><span>04</span> Edge resilience</li>
-                    </ul>
+            <article class="early-panel">
+              <div class="early-media">
+                <div class="iso-figure">
+                  <div class="iso-scene" data-iso-scene="logistics" data-iso-theme="light" data-iso-duration="12" data-iso-params='{"trees":4,"lightGreen":0.52,"clearX":1.4,"endFront":9}' role="img" aria-label="Isometric intersection with traffic lights, trees, and a truck that stops and continues"></div>
                 </div>
-
-                <div class="system-visual" aria-hidden="true">
-                    <div class="system-core"><span>RESILIENT<br>CORE</span></div>
-                    <div class="orbit orbit-a"><i data-label="EDGE"></i><i data-label="API"></i><i data-label="DATA"></i></div>
-                    <div class="orbit orbit-b"><i data-label="ARM"></i><i data-label="x86"></i><i data-label="GPU"></i><i data-label="HPC"></i></div>
-                    <svg viewBox="0 0 600 600" role="presentation">
-                        <circle cx="300" cy="300" r="118"></circle>
-                        <circle cx="300" cy="300" r="220"></circle>
-                        <path d="M300 80V520M80 300H520M144 144L456 456M456 144L144 456"></path>
-                    </svg>
+              </div>
+              <div class="early-copy">
+                <p class="label">Platform</p>
+                <h3 class="chapter-title">The Logistics Platform (2016)</h3>
+                <p class="chapter-body">A complete operations backbone running two separate logistics companies from a single deployment—featuring custom map dispatch, live GPS fleet tracking, and a companion mobile app for drivers on the road.</p>
+                <div class="receipt">
+                  <p class="receipt-value">2 companies · 1 unified deployment</p>
+                  <span class="receipt-state">● shipped</span>
                 </div>
-            </div>
+                <p class="chapter-caption">Django · Tornado · PostgreSQL · OSM · Ionic · scikit-learn</p>
+              </div>
+            </article>
 
-            <div class="evidence-strip" aria-label="Systems project evidence">
-                <article class="evidence-card">
-                    <p>FIELD SYSTEMS / 2018+</p>
-                    <h3>Distributed IoT network</h3>
-                    <p>Multi-architecture edge nodes, durable telemetry, custom overlay networking, and reproducible deployments in hostile environments.</p>
-                    <a href="posts/iot-entry.html">Read the architecture story <span>↗</span></a>
-                </article>
-                <article class="evidence-card">
-                    <p>DATA AT SCALE</p>
-                    <h3>HPC data platform</h3>
-                    <p>Self-serve analyst software and scalable pipelines processing up to 1 TB per minute while reducing annual operating cost.</p>
-                    <span class="tech-line">HPC · Spark · Python · Qt</span>
-                </article>
-            </div>
-        </section>
-
-        <section id="worlds" class="worlds chapter capability" data-scene="worlds" aria-labelledby="worlds-title">
-            <div class="worlds-pin">
-                <div class="worlds-copy">
-                    <p class="chapter-number">03 / Simulated worlds</p>
-                    <h2 id="worlds-title">Systems gained<br><em>space, motion, consequence.</em></h2>
-                    <p>Engineering crossed into real-time simulation: orbital mechanics, inverse kinematics, finite element analysis, shaders, and data-driven gameplay.</p>
+            <article class="early-panel">
+              <div class="early-media">
+                <div class="iso-figure">
+                  <div class="iso-scene" data-iso-scene="course" data-iso-theme="light" data-iso-duration="10" data-iso-params='{"options":4}' data-iso-screen="purple" role="img" aria-label="Isometric desk with a purple webform and quizlet"></div>
                 </div>
-                <div class="world-gallery">
-                    <figure class="world-card world-card-main">
-                        <img src="assets/images/vr_simulation.jpg" alt="Virtual reality digital twin simulation">
-                        <figcaption><span>Digital twins</span><b>Unreal Engine · SGP4 · IK · FEA</b></figcaption>
-                    </figure>
-                    <figure class="world-card">
-                        <img src="assets/images/April-2026-Unity-1.png" alt="Data-driven Unity game demonstration">
-                        <figcaption><span>Interactive worlds</span><b>Unity · Data-driven gameplay</b></figcaption>
-                    </figure>
-                    <figure class="world-card">
-                        <img src="exp/game-images/sky.jpg" alt="A luminous landscape that inspired shader and atmosphere studies">
-                        <figcaption><span>Atmosphere studies</span><b>GLSL · Volumetrics · Environment</b></figcaption>
-                    </figure>
+              </div>
+              <div class="early-copy">
+                <p class="label">Mentorship &amp; Architecture</p>
+                <h3 class="chapter-title">The Course Platform &amp; Zero-Downtime Migrator (2018)</h3>
+                <p class="chapter-body">Co-built an education CRM alongside a junior developer I was mentoring. When the business pivoted to a C#/.NET stack, I engineered the live migration engine that transitioned every user cleanly without a minute of downtime.</p>
+                <div class="receipt">
+                  <p class="receipt-value">Zero-downtime stack migration</p>
+                  <span class="receipt-state">● mentored &amp; built</span>
                 </div>
-            </div>
-            <p class="world-impact">Integrated simulation techniques into Unreal Engine for advanced digital twins—work that contributed to three new deals and a Phase II SBIR contract.</p>
-        </section>
+                <p class="chapter-caption">Django · PostgreSQL · C# / ASP.NET · RazorPages</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
 
-        <section id="architecture" class="architecture chapter capability" data-scene="architecture" aria-labelledby="architecture-title">
-            <div class="architecture-intro section-shell">
-                <p class="chapter-number">04 / Architecture & leadership</p>
-                <h2 id="architecture-title">The unit of work<br>kept getting larger.</h2>
-                <p>First a function. Then a service. Then a platform, a team, a budget, a roadmap, and the responsibility to keep them aligned.</p>
+      <section class="ledger" aria-labelledby="ledger-title">
+        <div class="grid ledger-head">
+          <p class="label">Honorable mentions</p>
+          <h2 id="ledger-title">Also from the early years.</h2>
+        </div>
+        <ol class="ledger-list">
+          <li class="ledger-row">
+            <span class="ledger-year">2016—2017</span>
+            <div class="ledger-copy">
+              <h3>Edge-computed dashcam telemetry</h3>
+              <p>Fused radar, camera vision, and inertial sensors directly on a Raspberry Pi for real-time driver safety analytics—engineered in multi-threaded C++ to run completely offline at the edge.</p>
             </div>
+            <span class="ledger-stack">C++ · OpenCV · TensorFlow · IPC · Raspberry Pi</span>
+          </li>
+          <li class="ledger-row">
+            <span class="ledger-year">2018</span>
+            <div class="ledger-copy">
+              <h3>GeoPackage RTE reference implementation</h3>
+              <p>Built the living reference implementation for an emerging geospatial routing standard in 3D terrain, presenting it directly to the standards committee.</p>
+            </div>
+            <span class="ledger-stack">React · Cesium · Leaflet</span>
+          </li>
+          <li class="ledger-row">
+            <span class="ledger-year">2019—2022</span>
+            <div class="ledger-copy">
+              <h3>3D CT bone deformation pipelines</h3>
+              <p>Created custom 3D medical volume labeling tools and trained deep-learning segmentation pipelines to help clinical researchers track complex bone deformations.</p>
+            </div>
+            <span class="ledger-stack">Python · VTK · TensorFlow · PyTorch · MONAI · ONNX</span>
+          </li>
+          <li class="ledger-row">
+            <span class="ledger-year">2020—2022</span>
+            <div class="ledger-copy">
+              <h3>Air traffic control training simulation</h3>
+              <p>Real-time, multi-user airspace simulations that synchronized live controller sessions and adapted training scenarios to each student's weak spots.</p>
+            </div>
+            <span class="ledger-stack">React · Redis · Python</span>
+          </li>
+        </ol>
+      </section>
+    </section>
 
-            <div class="scale-stage section-shell">
-                <div class="scale-rings" aria-hidden="true">
-                    <div class="scale-ring ring-code"><span>CODE</span></div>
-                    <div class="scale-ring ring-system"><span>SYSTEM</span></div>
-                    <div class="scale-ring ring-platform"><span>PLATFORM</span></div>
-                    <div class="scale-ring ring-org"><span>ORGANIZATION</span></div>
-                </div>
-                <ol class="scale-copy">
-                    <li><span>01</span><div><h3>Developer / Engineer</h3><p>Ship under pressure. Improve codebases. Document the decisions.</p></div></li>
-                    <li><span>02</span><div><h3>Architect / Manager</h3><p>Choose stacks, shape solutions, unblock people, and design for change.</p></div></li>
-                    <li><span>03</span><div><h3>CTO / Director</h3><p>Balance requirements, budgets, delivery, maintenance, and teams at scale.</p></div></li>
-                </ol>
-            </div>
-        </section>
+    <!-- ------------------------------------------------------------------
+         II — Teams and Platforms
+         ------------------------------------------------------------------ -->
+    <section class="act" id="act-physics" data-dimension="physics" aria-labelledby="physics-title">
+      <section class="seam" data-seam data-from="soil" data-to="physics" data-dimension="soil" aria-label="Transition from Early Days to Teams and Platforms">
+        <div class="seam-sticky">
 
-        <section id="gallery" class="gallery chapter" data-scene="gallery" aria-labelledby="gallery-title">
-            <div class="gallery-heading section-shell">
-                <p class="chapter-number">Selected evidence</p>
-                <h2 id="gallery-title">Artifacts from<br>the adaptation.</h2>
-                <p>Not a complete inventory. A cross-section of problems, domains, and forms.</p>
+          <div class="seam-layer seam-layer--in" data-seam-in>
+            <div class="seam-inner">
+              <div class="act-copy" style="margin:0 -10vw;">
+                <p class="label">2018—2024</p>
+                <h2 class="act-name" id="physics-title">Teams and Platforms</h2><br/>
+                <p class="act-thesis" style="max-width:100vw">From building my own team of ten; <br/>
+                  &emsp; a fast-paced collaboration with eighty members of an org, <br/>
+                  &emsp;&emsp; upgrading the workflows of twelve scientific analysts, <br/>
+                  &emsp;&emsp;&emsp; and becoming a bar raiser that provided technical-creative advice.</p>
+              </div>
             </div>
-            <div class="gallery-track" role="list">
-                <article class="project" role="listitem">
-                    <div class="project-image"><img src="assets/images/groupingmap.png" alt="Sensor grouping map from the distributed IoT project" loading="lazy"></div>
-                    <p>Architecture / Edge</p><h3>Robust IoT</h3><span>Networking · Data fusion · AI</span>
-                    <a href="posts/iot-entry.html" aria-label="Read about Robust IoT"></a>
-                </article>
-                <article class="project" role="listitem">
-                    <div class="project-image"><img src="assets/images/hpc_platform.jpg" alt="High-performance computing platform visualization" loading="lazy"></div>
-                    <p>Platform / Data</p><h3>HPC at 1 TB/min</h3><span>Apache Spark · Python · Qt</span>
-                </article>
-                <article class="project" role="listitem">
-                    <div class="project-image"><img src="assets/images/vr_simulation.jpg" alt="Virtual reality simulation project" loading="lazy"></div>
-                    <p>Simulation / XR</p><h3>Digital twins</h3><span>Unreal · SGP4 · IK · FEA</span>
-                </article>
-                <article class="project" role="listitem">
-                    <div class="project-image"><img src="assets/images/healthapp.png" alt="Health data application interface" loading="lazy"></div>
-                    <p>Application / Health</p><h3>Data fusion app</h3><span>Next.js · FastAPI · Nginx</span>
-                </article>
-                <article class="project" role="listitem">
-                    <div class="project-image"><img src="assets/images/April-2026-Unity-2.png" alt="Unity game project scene" loading="lazy"></div>
-                    <p>Interactive / Game</p><h3>Data-driven play</h3><span>Unity · Systems design</span>
-                </article>
-                <article class="project project-archive" role="listitem">
-                    <div class="project-image"><img src="assets/images/thissite.png" alt="Previous Coding Shinobi Three.js site" loading="lazy"></div>
-                    <p>Meta / Archive</p><h3>The previous form</h3><span>Three.js · Canvas · WebGL</span>
-                    <a href="past-site.html" aria-label="Open the previous portfolio"></a>
-                </article>
-            </div>
-        </section>
+          </div>
 
-        <section id="current" class="current chapter" data-scene="current" aria-labelledby="current-title">
-            <div class="current-form" aria-hidden="true">
-                <span></span><span></span><span></span><span></span><span></span>
-                <div>05</div>
+          <div class="seam-layer seam-layer--out" data-seam-out>
+            <div class="seam-inner">
+              <div class="act-copy">
+                <h2 class="act-name">Early systems built the learn-it-all foundation.</h2>
+                <h5 class="act-thesis">But solo technical mastery was never the endgame—multiplying the people around me was.</h5>
+              </div>
             </div>
-            <div class="current-copy">
-                <p class="chapter-number">05 / Current form</p>
-                <h2 id="current-title">Still<br><em>evolving.</em></h2>
-                <p>I build across the boundary between software, data, simulation, infrastructure, and organizations—then make those parts work as one system.</p>
-                <div class="contact-actions">
-                    <a class="primary-action" href="https://github.com/Josh-Rentrope" target="_blank" rel="noopener">Continue on GitHub <span>↗</span></a>
-                    <a href="past-site.html">Visit the previous form</a>
-                </div>
-            </div>
-            <footer>
-                <span>CODING SHINOBI © 2026</span>
-                <span>ENGINEER · ARCHITECT · BUILDER</span>
-                <a href="#origin">Back to origin ↑</a>
-            </footer>
-        </section>
-    </main>
+          </div>
 
-    <noscript><div class="noscript-note">JavaScript adds the cinematic transitions. Every chapter and project remains available without it.</div></noscript>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
-    <script src="evolution.js"></script>
-    <script type="module" src="palette.js"></script>
+          <svg class="seam-defs" width="0" height="0" aria-hidden="true" focusable="false">
+            <defs>
+              <filter id="seam-warp" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">
+                <feTurbulence id="seam-turbulence" type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="3" seed="4" result="noise"/>
+                <feDisplacementMap id="seam-displace" in="SourceGraphic" in2="noise" scale="70" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+              <mask id="seam-ink-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900">
+                <rect id="seam-mask-bg" width="1440" height="900" fill="white"/>
+                <circle id="seam-ink-circle" cx="720" cy="648" r="0" fill="black" filter="url(#seam-warp)"/>
+              </mask>
+            </defs>
+          </svg>
+
+        </div>
+      </section>
+
+      <article class="chapter chapter--flip" id="act-physics-body">
+        <div class="grid">
+          <figure class="chapter-figure reveal">
+            <div class="iso-figure">
+              <div class="iso-scene" data-iso-scene="ar-city" data-iso-theme="dark" data-iso-duration="14" data-iso-params='{"buildings":6}' role="img" aria-label="Isometric New York street block that shifts between holographic and solid views"></div>
+            </div>
+          </figure>
+
+          <div class="chapter-copy reveal" style="--d:100ms">
+            <p class="label">Cross-Org Alignment</p>
+            <h3 class="chapter-title">AR city twins at scale</h3>
+            <p class="chapter-body">Embedded within a ten-person strike team inside an eighty-person defense and geospatial program, bridging the gap between independently built AR hardware and world-scale simulation engines. The real breakthrough wasn't just aligning coordinate math—it was aligning competing engineering cultures into one shared standard.</p>
+            <div class="receipt">
+              <p class="receipt-value">10-person team · 80-person program</p>
+              <span class="receipt-state">● aligned &amp; shipped</span>
+            </div>
+            <p class="chapter-stack">React · Cesium · Unity · Java / Spring</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter">
+        <div class="grid">
+          <figure class="chapter-figure reveal">
+            <div class="plate">
+              <img src="assets/img/twin.webp" alt="Virtual reality digital twin simulation" width="711" height="474" loading="lazy">
+            </div>
+            <figcaption class="plate-caption"><span>Networked digital twin</span><span>Archive</span></figcaption>
+          </figure>
+
+          <div class="chapter-copy reveal" style="--d:100ms">
+            <p class="label">Human-Centered Automation</p>
+            <h3 class="chapter-title">Empowering the analysts' floor</h3>
+            <p class="chapter-body">Twelve scientific analysts were burning hours hand-wrangling massive 900 GB simulation files, where a single typo could ruin a run. I pulled up a chair right beside them, listened to their pain points, and engineered a 64-process automation suite that ingested 1 TB/min and wiped out setup errors completely—freeing the team to focus on actual science, and paving the way for a live Unreal digital twin.</p>
+            <div class="receipt">
+              <p class="receipt-value">12 analysts freed · 1 TB/min throughput</p>
+              <span class="receipt-state">● zero setup errors</span>
+            </div>
+            <p class="chapter-stack">Python · Spark · Qt · HDF5 · Unreal Engine · C++</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter chapter--flip">
+        <div class="grid">
+          <figure class="chapter-figure reveal">
+            <div class="plate">
+              <img src="assets/img/unity-ccg.webp" alt="Collectible card game prototype built in Unity" width="1571" height="886" loading="lazy">
+            </div>
+            <figcaption class="plate-caption"><span>Unity CCG prototype</span><span>Screenshot</span></figcaption>
+          </figure>
+
+          <div class="chapter-copy reveal" style="--d:100ms">
+            <p class="label">Technical-Creative Advisory</p>
+            <h3 class="chapter-title">Interactive Unity/Unreal Experiences</h3>
+            <p class="chapter-body">Acted as a technical-creative bar raiser for client engineering teams—coaching them on how to translate rigid scientific simulations into intuitive, tactile XR experiences, while sharpening complex state-machine and interaction patterns through playable Unity prototypes.</p>
+            <div class="receipt">
+              <p class="receipt-value">Client teams upskilled · Playable XR</p>
+              <span class="receipt-state">● built &amp; mentored</span>
+            </div>
+            <p class="chapter-stack">Unity · C# · Unreal Engine · C++</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter chapter--text">
+        <div class="grid">
+          <div class="chapter-copy reveal" style="--d:100ms">
+            <p class="label">Live Operations</p>
+            <h3 class="chapter-title">Sixteen cameras, one living memory</h3>
+            <p class="chapter-body">Venue operations teams were drowning in sixteen simultaneous video feeds with no way to scrub back and connect the dots. I architected a distributed computer-vision pipeline that indexed every detection across space and time—turning chaotic live footage into an instant, searchable timeline.</p>
+            <div class="receipt">
+              <p class="receipt-value">16 live feeds · real-time spatial index</p>
+              <span class="receipt-state">● production scale</span>
+            </div>
+            <p class="chapter-stack">Python · Kubernetes · Kafka · Redis · OpenCV · ffmpeg</p>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         III — Augmenting Orgs
+         ------------------------------------------------------------------ -->
+		 
+		 
+    <section class="act" id="act-clinical" data-dimension="clinical" aria-labelledby="clinical-title">
+		<!-- <section class="seam" data-seam data-from="physics" data-to="clinical" data-dimension="physics" aria-label="Transition from Teams and Platforms to Argmenting Orgs"> -->
+        <!-- <div class="seam-sticky"> -->
+
+          <!-- <div class="seam-layer seam-layer--in" data-seam-in> -->
+            <!-- <div class="seam-inner"> -->
+              <!-- <div class="act-copy" style="margin:0 -10vw;"> -->
+                <!-- <p class="label">2018—2024</p> -->
+                <!-- <h2 class="act-name" id="physics-title">Teams and Platforms</h2><br/> -->
+                <!-- <p class="act-thesis" style="max-width:100vw">From building my own team of ten; <br/> -->
+                  <!-- &emsp; a fast-paced collaboration with eighty members of an org, <br/> -->
+                  <!-- &emsp;&emsp; upgrading the workflows of twelve scientific analysts, <br/> -->
+                  <!-- &emsp;&emsp;&emsp; and becoming a bar raiser that provided technical-creative advice.</p> -->
+              <!-- </div> -->
+            <!-- </div> -->
+          <!-- </div> -->
+
+          <!-- <div class="seam-layer seam-layer--out" data-seam-out> -->
+            <!-- <div class="seam-inner"> -->
+              <!-- <div class="act-copy"> -->
+                <!-- <h2 class="act-name">Early systems built the learn-it-all foundation.</h2> -->
+                <!-- <h5 class="act-thesis">But solo technical mastery was never the endgame—multiplying the people around me was.</h5> -->
+              <!-- </div> -->
+            <!-- </div> -->
+          <!-- </div> -->
+
+          <!-- <svg class="seam-defs" width="0" height="0" aria-hidden="true" focusable="false"> -->
+            <!-- <defs> -->
+              <!-- <filter id="seam-warp" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB"> -->
+                <!-- <feTurbulence id="seam-turbulence" type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="3" seed="4" result="noise"/> -->
+                <!-- <feDisplacementMap id="seam-displace" in="SourceGraphic" in2="noise" scale="70" xChannelSelector="R" yChannelSelector="G"/> -->
+              <!-- </filter> -->
+              <!-- <mask id="seam-ink-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"> -->
+                <!-- <rect id="seam-mask-bg" width="1440" height="900" fill="white"/> -->
+                <!-- <circle id="seam-ink-circle" cx="720" cy="648" r="0" fill="black" filter="url(#seam-warp)"/> -->
+              <!-- </mask> -->
+            <!-- </defs> -->
+          <!-- </svg> -->
+
+        <!-- </div> -->
+      <!-- </section> -->
+      <div class="act-head">
+        <div class="grid">
+          <div class="act-copy reveal">
+            <p class="label">2022—2026</p>
+            <h2 class="act-name" id="clinical-title">Augmenting Orgs</h2>
+            <p class="act-thesis">Stepping into high-stakes clinical, enterprise, and legal environments—where speed changes lives, but unverified data is never an option.</p>
+          </div>
+        </div>
+      </div>
+
+      <article class="chapter">
+        <div class="grid">
+          <figure class="chapter-figure reveal">
+            <div class="plate">
+              <img src="assets/img/bone-viewer.webp" alt="Bone Viewer 3D workspace with a segmented volume, structure list, and pipeline controls" width="1871" height="891" loading="lazy">
+            </div>
+            <figcaption class="plate-caption"><span>Bone Viewer · 3D workspace</span><span>Screenshot</span></figcaption>
+          </figure>
+			<div class="chapter-copy reveal" style="--d:100ms">
+			  <p class="label">Clinical imaging</p>
+			  <h3 class="chapter-title">Precision orthopedic 3D imaging</h3>
+			  <p class="chapter-body">Surgeons and Orthopedists have always been looking into safer and secure ways of integrating Machine Learning into practices. I re-architected the clinical viewer to allow for compliant transmission and auditable AI/ML pipelines for various tasks.</p>
+			  <div class="receipt">
+				<p class="receipt-value">Real-time slice streaming · Verified voxel scale</p>
+				<span class="receipt-state">● 168 invariant tests</span>
+			  </div>
+			  <p class="chapter-stack">FastAPI · vtk.js · S3 · Terraform · 168 tests</p>
+			</div>
+        </div>
+      </article>
+
+      <article class="chapter chapter--flip">
+        <div class="grid">
+          <figure class="chapter-figure reveal">
+            <div class="plate">
+              <img src="assets/img/trials.webp" alt="Interface for searching clinical trials" width="1600" height="662" loading="lazy">
+            </div>
+            <figcaption class="plate-caption"><span>Clinical trials discovery</span><span>Archive</span></figcaption>
+          </figure>
+
+          <div class="chapter-copy reveal" style="--d:100ms">
+            <p class="label">Healthcare Discovery</p>
+            <h3 class="chapter-title">Mapping 607,160 clinical trials</h3>
+            <p class="chapter-body">Finding a life-saving clinical trial shouldn't require a degree in database query syntax. I mapped over 607,000 global studies and 3.5 million medical facilities into an interactive geospatial platform—letting patients and clinicians ask complex eligibility questions in plain English while guaranteeing every single result is backed by a verified clinical record.</p>
+            <div class="receipt">
+              <p class="receipt-value">607,160 studies · 3.5M facilities mapped</p>
+              <span class="receipt-state">● verified records</span>
+            </div>
+            <p class="chapter-stack">Next.js · FastAPI · PostgreSQL / PostGIS · Clerk</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter chapter--text">
+        <div class="grid">
+          <div class="chapter-copy reveal" style="--d:100ms">
+            <p class="label">Enterprise Governance</p>
+            <h3 class="chapter-title">Petabyte-scale legal discovery</h3>
+            <p class="chapter-body">At a Fortune 500 financial institution, legal-hold discovery across a petabyte of sensitive records was bottlenecked by rigid legacy infrastructure. Working closely with security and release teams, I redesigned the sharded storage layout and Microsoft Entra RBAC governance—accelerating case reconstruction and cutting our deployment cycle from three months down to four weeks.</p>
+            <div class="receipt">
+              <p class="receipt-value">1 PB governed · 3 months → 1 month delivery</p>
+              <span class="receipt-state">● enterprise production</span>
+            </div>
+            <p class="chapter-stack">C# / .NET · Blazor · OpenShift · Kubernetes · Entra ID · Purview</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         IV — AI Done Right
+         ------------------------------------------------------------------ -->
+    <section class="act" id="act-loop" data-dimension="loop" aria-labelledby="loop-title">
+      <div class="act-head">
+        <div class="grid">
+          <div class="act-copy reveal">
+            <p class="label">2025—2026</p>
+            <h2 class="act-name" id="loop-title">AI Done Right</h2>
+            <p class="act-thesis">Pioneering verification-first AI architectures—where deterministic truth auditing, multi-tenant security, and zero-trust guardrails are built into the foundation, not bolted on after a failure.</p>
+          </div>
+        </div>
+      </div>
+
+      <article class="chapter chapter--text">
+        <div class="grid">
+          <div class="chapter-copy reveal" style="--d:100ms">
+            <p class="label">Architectural First</p>
+            <h3 class="chapter-title">The Deterministic Truthiness Auditor</h3>
+            <p class="chapter-body">While much of the industry was shipping raw LLM wrappers and hoping for the best, I architected one of the first multi-tenant financial AI engines with built-in deterministic verification. Every AI proposal is intercepted and audited against strict financial rule engines, tenant security boundaries, and Medallion data lineage before an analyst ever sees a single number.</p>
+            <div class="receipt">
+              <p class="receipt-value">100% deterministic verification · Multi-tenant RBAC</p>
+              <span class="receipt-state">● zero unverified outputs</span>
+            </div>
+            <p class="chapter-stack">Azure Functions · DuckDB · Parquet · Azure SQL · Deterministic Rule Engine</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter chapter--text">
+        <div class="grid">
+          <div class="chapter-copy reveal" style="--d:100ms">
+            <p class="label">Zero-Trust Grounding</p>
+            <h3 class="chapter-title">Architecting Out Hallucinations</h3>
+            <p class="chapter-body">In healthcare and finance, a "mostly accurate" chatbot is a liability. I designed a zero-trust agent architecture where the model is stripped of free-text generation privileges for factual claims. Instead, it operates strictly through parameterized, schema-locked SQL and geospatial tools—making it structurally impossible to invent a clinical trial, fabricate a metric, or leak cross-tenant data.</p>
+            <div class="receipt">
+              <p class="receipt-value">Schema-locked tool execution · Zero free-text fabrication</p>
+              <span class="receipt-state">● security by design</span>
+            </div>
+            <p class="chapter-stack">FastAPI · PostgreSQL / PostGIS · JSON Schema Guards · Agentic Orchestration</p>
+          </div>
+        </div>
+      </article>
+
+      <section class="lessons" aria-labelledby="lessons-title">
+        <div class="grid">
+          <p class="label">The Blueprint</p>
+          <h2 id="lessons-title">How we build AI that enterprises actually trust.</h2>
+          <ol class="lessons-list">
+            <li><b>Let AI propose; let deterministic code dispose.</b> Never let a probabilistic model be the final authority. Every output passes through a hard, mathematical rule gate before a human ever sees it.</li>
+            <li><b>Security is the architecture, not a prompt.</b> Prompt engineering is not a security boundary. Enforce tenant isolation, RBAC, and parameterized tool execution at the infrastructure layer so hallucinations and data leaks are structurally impossible.</li>
+            <li><b>Design the escape hatch first.</b> A flashy demo isn't a production system. We track drift, measure validation rejections in real time, and fail safely back to human workflows when confidence drops.</li>
+            <li><b>Cryptographic-grade audit trails.</b> Every automated action logs what data was touched, which rule validated it, and which human approved the threshold—turning black-box AI into an auditable asset.</li>
+          </ol>
+        </div>
+      </section>
+
+      <article class="chapter chapter--text">
+        <div class="grid">
+          <div class="chapter-copy reveal" style="--d:100ms">
+            <p class="label">Executive Enablement</p>
+            <h3 class="chapter-title">Practical AI Agents &amp; Built-In Guardrails</h3>
+            <p class="chapter-body">Great architecture only scales when leaders understand how to wield it. I was commissioned to design and teach a 15-episode executive curriculum that demystifies agentic workflows—showing non-technical leaders how to spot high-leverage automation, enforce human-in-the-loop security, and build audit-ready AI governance from day one.</p>
+            <div class="receipt">
+              <p class="receipt-value">15-episode executive series · Governance &amp; Architecture</p>
+              <span class="receipt-state">● commissioned &amp; shipped</span>
+            </div>
+            <p class="chapter-stack">AI Governance · Agentic Workflows · Security Architecture · Executive Advisory</p>
+            <a class="course-cta" href="mailto:josh@infodaollc.com?subject=Governed%20automation%20course">Request the curriculum outline →</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ------------------------------------------------------------------
+         Close
+         ------------------------------------------------------------------ -->
+    <section class="end" id="contact" data-dimension="soil" aria-labelledby="end-title">
+      <div class="grid">
+        <h2 class="end-title reveal" id="end-title">Great systems start with <em>the people</em> who build them.</h2>
+        <p class="end-copy reveal" style="--d:80ms">
+          Whether we are aligning an eighty-person engineering org, shaving hours off an analyst's
+          day, or putting hard mathematical guardrails around enterprise AI—I build teams and
+          platforms that hold up under pressure and love what they do.
+        </p>
+        <div class="end-contact reveal" style="--d:140ms">
+          <a href="mailto:josh@infodaollc.com">josh@infodaollc.com</a>
+          <a href="https://github.com/Josh-Rentrope" rel="noopener">GitHub ↗</a>
+          <span class="spacer"></span>
+          <span class="muted">V1 — October 2026</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="scrubber" aria-label="Career index">
+    <div class="scrubber-rail" aria-hidden="true">
+      <span class="scrubber-fill"></span>
+      <span class="scrubber-head"></span>
+    </div>
+    <ol class="scrubber-list">
+      <li><a href="#act-soil"><span class="t">Early Days</span><span class="y">2014–20</span></a></li>
+      <li><a href="#act-physics-body"><span class="t">Teams and Platforms</span><span class="y">2018–24</span></a></li>
+      <li><a href="#act-clinical"><span class="t">Augmenting Orgs</span><span class="y">2022–26</span></a></li>
+      <li><a href="#act-loop"><span class="t">AI Done Right</span><span class="y">2025–26</span></a></li>
+    </ol>
+  </nav>
+
+  <dialog class="case-dialog" id="case-dialog" aria-labelledby="case-dialog-title">
+    <div class="case-dialog-shell">
+      <button class="case-dialog-close" type="button" data-dialog-close aria-label="Close details">×</button>
+
+      <div class="case-dialog-body">
+        <div class="case-media">
+          <div class="case-media-stage" data-media-stage></div>
+          <div class="case-media-controls">
+            <button type="button" data-media-prev aria-label="Previous slide">←</button>
+            <span data-media-count aria-live="polite">1 / 2</span>
+            <button type="button" data-media-next aria-label="Next slide">→</button>
+          </div>
+          <div class="case-media-dots" data-media-dots></div>
+        </div>
+
+        <div class="case-info">
+          <p class="label" data-case-kicker></p>
+          <h2 id="case-dialog-title" data-case-title></h2>
+          <div data-case-body></div>
+          <p class="label case-skills-label">Skills</p>
+          <p class="case-stack" data-case-stack></p>
+          <div class="case-metrics">
+            <p class="label case-metrics-label">Metrics</p>
+            <dl class="case-receipts" data-case-receipts></dl>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-dialog-footer">
+        <div>
+          <p class="label" data-case-year></p>
+          <p class="case-dialog-name" data-case-name></p>
+        </div>
+        <a data-case-link href="#" target="_blank" rel="noopener" hidden></a>
+      </div>
+    </div>
+  </dialog>
+
+  <noscript>
+    <style>
+      .reveal { opacity: 1; transform: none; }
+      .rise > span { transform: none; }
+    </style>
+  </noscript>
+
+  <script src="assets/js/seam.js"></script>
+  <script src="assets/js/flagships.js"></script>
+  <script src="assets/js/isometric.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/carousel.js"></script>
 </body>
 </html>
