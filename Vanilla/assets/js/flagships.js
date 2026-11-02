@@ -244,39 +244,238 @@ function stepMedia(delta) {
 
 /* ------------------------------------------------------------------
    FLIP open / close
+
+   A card is a rotated box inside a perspective container, so its four
+   corners land in a trapezoid on screen. The modal is a different aspect
+   ratio, so a single scale factor can never put the corners on top of
+   each other. We measure where the card's corners actually are, then
+   solve the four-point homography that carries the modal's corners onto
+   them. That matrix is the first keyframe of the flight.
    ------------------------------------------------------------------ */
+
+const IDENTITY_3D = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)";
+
+function matrixOf(value) {
+  if (!value || value === "none") return new DOMMatrix();
+  try {
+    return new DOMMatrix(value);
+  } catch (error) {
+    return new DOMMatrix();
+  }
+}
+
+/* Computed transform-origin and perspective-origin arrive as px, but a
+   percentage fallback costs nothing and keeps this honest in browsers
+   that keep the percentage. */
+function lengthPair(value, width, height) {
+  const parts = String(value || "").trim().split(/\s+/);
+  const pick = (part, base) => {
+    const number = parseFloat(part);
+    if (!Number.isFinite(number)) return base / 2;
+    return /%$/.test(part) ? (base * number) / 100 : number;
+  };
+  return [pick(parts[0], width), pick(parts[1] || "50%", height)];
+}
+
+function cornersOfQuad(quad) {
+  const xs = quad.map((point) => point.x);
+  const ys = quad.map((point) => point.y);
+  const left = Math.min(...xs);
+  const top = Math.min(...ys);
+  return {
+    left,
+    top,
+    right: Math.max(...xs),
+    bottom: Math.max(...ys),
+    width: Math.max(...xs) - left,
+    height: Math.max(...ys) - top,
+  };
+}
+
+function cornersOfRect(rect) {
+  return [
+    { x: rect.left, y: rect.top },
+    { x: rect.right, y: rect.top },
+    { x: rect.right, y: rect.bottom },
+    { x: rect.left, y: rect.bottom },
+  ];
+}
+
+/* The nearest ancestor carrying a real perspective(). */
+function perspectiveOf(element) {
+  for (let node = element; node && node !== document.documentElement; node = node.parentElement) {
+    const style = getComputedStyle(node);
+    const depth = parseFloat(style.perspective);
+    if (style.perspective === "none" || !(depth > 0)) continue;
+    const rect = node.getBoundingClientRect();
+    const [originX, originY] = lengthPair(style.perspectiveOrigin, rect.width, rect.height);
+    return {
+      node,
+      depth,
+      originX: rect.left + originX,
+      originY: rect.top + originY,
+    };
+  }
+  return null;
+}
+
+/* Where the card's corners really are, perspective included. Falls back
+   to the plain bounding box whenever the projection can't be trusted. */
+function projectedCorners(card) {
+  const width = card.offsetWidth;
+  const height = card.offsetHeight;
+  const parent = card.offsetParent;
+  if (!width || !height || !parent) return null;
+
+  const parentStyle = getComputedStyle(parent);
+  const parentRect = parent.getBoundingClientRect();
+  const layoutLeft =
+    parentRect.left + (parseFloat(parentStyle.borderLeftWidth) || 0) + card.offsetLeft;
+  const layoutTop =
+    parentRect.top + (parseFloat(parentStyle.borderTopWidth) || 0) + card.offsetTop;
+
+  const style = getComputedStyle(card);
+  const matrix = matrixOf(style.transform);
+  const [originX, originY] = lengthPair(style.transformOrigin, width, height);
+  const originPageX = layoutLeft + originX;
+  const originPageY = layoutTop + originY;
+
+  // A perspective further up the tree would mean extra transform layers
+  // between the card and the projection, so we don't guess past it.
+  const lens = perspectiveOf(card.parentElement);
+  const project = Boolean(lens) && lens.node === parent;
+
+  const local = [
+    [0, 0],
+    [width, 0],
+    [width, height],
+    [0, height],
+  ];
+
+  const points = [];
+  for (const [x, y] of local) {
+    const dx = x - originX;
+    const dy = y - originY;
+    const offsetX = matrix.m11 * dx + matrix.m21 * dy + matrix.m41;
+    const offsetY = matrix.m12 * dx + matrix.m22 * dy + matrix.m42;
+    const offsetZ = matrix.m13 * dx + matrix.m23 * dy + matrix.m43;
+    const pageX = originPageX + offsetX;
+    const pageY = originPageY + offsetY;
+
+    if (!project) {
+      points.push({ x: pageX, y: pageY });
+      continue;
+    }
+    const denominator = lens.depth - offsetZ;
+    if (!(denominator > 1)) return null;
+    const k = lens.depth / denominator;
+    points.push({
+      x: lens.originX + (pageX - lens.originX) * k,
+      y: lens.originY + (pageY - lens.originY) * k,
+    });
+  }
+  return points;
+}
+
+function cardCorners(card) {
+  const quad = projectedCorners(card);
+  if (quad && quad.every((point) => Number.isFinite(point.x) && Number.isFinite(point.y))) {
+    return quad;
+  }
+  return cornersOfRect(card.getBoundingClientRect());
+}
+
+/* The scale the modal needs to sit inside the card box. Width and height
+   are separate numbers on purpose: one shared factor is what let the
+   corners drift apart in the first place. */
+function flightScale(fromRect, toRect) {
+  return {
+    x: toRect.width ? fromRect.width / toRect.width : 1,
+    y: toRect.height ? fromRect.height / toRect.height : 1,
+  };
+}
+
+/* Four point pairs, eight unknowns (a b c d e f g h), Gaussian
+   elimination with partial pivoting. Returns null when degenerate. */
+function solveHomography(source, target) {
+  const rows = [];
+  for (let i = 0; i < 4; i += 1) {
+    const { x, y } = source[i];
+    const { x: u, y: v } = target[i];
+    rows.push([x, 0, y, 0, 1, 0, -x * u, -y * u, u]);
+    rows.push([0, x, 0, y, 0, 1, -x * v, -y * v, v]);
+  }
+
+  for (let column = 0; column < 8; column += 1) {
+    let pivot = column;
+    for (let row = column + 1; row < 8; row += 1) {
+      if (Math.abs(rows[row][column]) > Math.abs(rows[pivot][column])) pivot = row;
+    }
+    if (Math.abs(rows[pivot][column]) < 1e-9) return null;
+    if (pivot !== column) {
+      const swap = rows[column];
+      rows[column] = rows[pivot];
+      rows[pivot] = swap;
+    }
+    const lead = rows[column][column];
+    for (let j = column; j <= 8; j += 1) rows[column][j] /= lead;
+    for (let row = 0; row < 8; row += 1) {
+      if (row === column) continue;
+      const factor = rows[row][column];
+      if (!factor) continue;
+      for (let j = column; j <= 8; j += 1) rows[row][j] -= factor * rows[column][j];
+    }
+  }
+  return rows.map((row) => row[8]);
+}
+
+function round(value) {
+  return Math.abs(value) < 1e-6 ? 0 : Number(value.toFixed(6));
+}
+
+/* Fallback for the rare unsolvable case: centre-to-centre with the two
+   axis scales. Same idea, no rotation in the projection. */
+function fallbackFlight(quad, dialogRect) {
+  const box = cornersOfQuad(quad);
+  const scale = flightScale(box, dialogRect);
+  const dx = box.left + box.width / 2 - (dialogRect.left + dialogRect.width / 2);
+  const dy = box.top + box.height / 2 - (dialogRect.top + dialogRect.height / 2);
+  return `translate3d(${round(dx)}px, ${round(dy)}px, 0) scale(${round(scale.x)}, ${round(scale.y)})`;
+}
+
+/* The start-of-flight transform: the modal's corners onto the card's. */
+function flightTransform(dialogRect) {
+  const quad = cardCorners(lastCard);
+  const centreX = dialogRect.left + dialogRect.width / 2;
+  const centreY = dialogRect.top + dialogRect.height / 2;
+  const source = cornersOfRect(dialogRect).map((point) => ({
+    x: point.x - centreX,
+    y: point.y - centreY,
+  }));
+  const target = quad.map((point) => ({ x: point.x - centreX, y: point.y - centreY }));
+
+  const solved = solveHomography(source, target);
+  if (!solved) return fallbackFlight(quad, dialogRect);
+
+  const [a, b, c, d, e, f, g, h] = solved;
+  const values = [a, b, 0, g, c, d, 0, h, 0, 0, 1, 0, e, f, 0, 1].map(round);
+  return `matrix3d(${values.join(", ")})`;
+}
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 let cardState = null;
 let sourceOpacity = "1";
 let openAnim = null;
+let openFade = null;
 let closeAnim = null;
+let closeFade = null;
 let cardAnim = null;
 let isClosing = false;
 let pendingClose = false;
 
 function readCard(card) {
-  return {
-    rect: card.getBoundingClientRect(),
-    rx: parseFloat(card.style.getPropertyValue("--rx")) || 0,
-    ry: parseFloat(card.style.getPropertyValue("--ry")) || 0,
-    opacity: getComputedStyle(card).opacity,
-  };
+  return { opacity: getComputedStyle(card).opacity };
 }
-
-function flipTransform(state, dialogRect) {
-  const scale = Math.max(0.08, state.rect.width / dialogRect.width);
-  const dx =
-    state.rect.left + state.rect.width / 2 -
-    (dialogRect.left + dialogRect.width / 2);
-  const dy =
-    state.rect.top + state.rect.height / 2 -
-    (dialogRect.top + dialogRect.height / 2);
-  return `perspective(1500px) translate3d(${dx}px, ${dy}px, 0) rotateX(${state.rx}deg) rotateY(${state.ry}deg) scale(${scale})`;
-}
-
-const dialogRest =
-  "perspective(1500px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) scale(1)";
 
 function resetDialogMotion() {
   dialog.style.transform = "";
@@ -288,19 +487,37 @@ function resetDialogMotion() {
 function animateOpen() {
   if (reduceMotion.matches) return;
 
+  // Measured here, after the dialog is open and the scroll lock has
+  // reflowed the page, so the flight starts where the card is *now*.
   const dialogRect = dialog.getBoundingClientRect();
+  const start = flightTransform(dialogRect);
   dialog.style.willChange = "transform, opacity";
 
-  cardAnim = lastCard.animate(
-    [{ opacity: cardState.opacity }, { opacity: 0 }],
-    { duration: 360, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "forwards" }
+  // One flight, two curves. The corners ride the transform; the strength
+  // rides the opacity. At full strength the opening frames read as the
+  // modal's content squeezed into the card's box, so the modal comes up
+  // while the card goes down and only reaches full strength once the
+  // corners have settled on their layout position.
+  openFade = dialog.animate(
+    [{ opacity: 0 }, { opacity: 1 }],
+    {
+      duration: 400,
+      delay: 80,
+      easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+      fill: "both",
+    }
   );
 
+  // The card holds for a beat, then hands over to the arriving modal.
+  cardAnim = lastCard.animate(
+    [{ opacity: cardState.opacity }, { opacity: 0 }],
+    { duration: 220, delay: 90, easing: "cubic-bezier(0.33, 1, 0.68, 1)", fill: "forwards" }
+  );
+
+  // Transform only: an opacity keyframe here would sit on the same
+  // property as the fade above and win on composite order.
   openAnim = dialog.animate(
-    [
-      { transform: flipTransform(cardState, dialogRect), opacity: 0.25 },
-      { transform: dialogRest, opacity: 1 },
-    ],
+    [{ transform: start }, { transform: IDENTITY_3D }],
     { duration: 560, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "forwards" }
   );
 
@@ -309,6 +526,10 @@ function animateOpen() {
       const finished = openAnim;
       openAnim = null;
       if (finished) finished.cancel();
+      if (openFade) {
+        openFade.cancel();
+        openFade = null;
+      }
       resetDialogMotion();
       if (pendingClose) {
         pendingClose = false;
@@ -326,9 +547,17 @@ function openCase(id, card) {
     openAnim.cancel();
     openAnim = null;
   }
+  if (openFade) {
+    openFade.cancel();
+    openFade = null;
+  }
   if (closeAnim) {
     closeAnim.cancel();
     closeAnim = null;
+  }
+  if (closeFade) {
+    closeFade.cancel();
+    closeFade = null;
   }
   if (cardAnim) {
     cardAnim.cancel();
@@ -414,25 +643,47 @@ function closeCase() {
   dialog.classList.remove("is-open");
 
   const dialogRect = dialog.getBoundingClientRect();
-  const state = readCard(lastCard);
+  const target = flightTransform(dialogRect);
   const previousCardAnim = cardAnim;
+  const previousCloseFade = closeFade;
 
+  // Out the same way: the geometry heads back to the card while the modal
+  // loses its strength, so the swapped aspect ratio never reads as a jump.
+  closeFade = dialog.animate(
+    [{ opacity: 1 }, { opacity: 0 }],
+    { duration: 260, delay: 60, easing: "cubic-bezier(0.4, 0, 0.2, 1)", fill: "forwards" }
+  );
+  if (previousCloseFade) previousCloseFade.cancel();
+
+  // The card comes back late, while the modal is still covering it. The
+  // backwards fill keeps it invisible through the delay instead of letting
+  // its layout opacity show for a fifth of a second.
   cardAnim = lastCard.animate(
     [{ opacity: 0 }, { opacity: sourceOpacity }],
-    { duration: 420, easing: "cubic-bezier(0.4, 0, 0.2, 1)", fill: "forwards" }
+    {
+      duration: 260,
+      delay: 160,
+      easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+      fill: "both",
+    }
   );
   if (previousCardAnim) previousCardAnim.cancel();
 
   closeAnim = dialog.animate(
-    [
-      { transform: "none", opacity: 1 },
-      { transform: flipTransform(state, dialogRect), opacity: 0.2 },
-    ],
+    [{ transform: IDENTITY_3D }, { transform: target }],
     { duration: 420, easing: "cubic-bezier(0.4, 0, 0.2, 1)", fill: "forwards" }
   );
 
   closeAnim.finished
-    .then(() => dialog.close())
+    .then(() => {
+      // Leaving the fade filled in would keep opacity at zero for the next
+      // open, so it goes before the dialog leaves the top layer.
+      if (closeFade) {
+        closeFade.cancel();
+        closeFade = null;
+      }
+      dialog.close();
+    })
     .catch(() => dialog.close());
 }
 
@@ -481,9 +732,17 @@ dialog.addEventListener("close", () => {
     openAnim.cancel();
     openAnim = null;
   }
+  if (openFade) {
+    openFade.cancel();
+    openFade = null;
+  }
   if (closeAnim) {
     closeAnim.cancel();
     closeAnim = null;
+  }
+  if (closeFade) {
+    closeFade.cancel();
+    closeFade = null;
   }
   if (cardAnim) {
     cardAnim.cancel();
