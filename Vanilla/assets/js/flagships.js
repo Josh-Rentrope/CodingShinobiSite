@@ -39,7 +39,7 @@ const CASES = {
       ["Zero", "hallucinated studies", "guaranteed"],
     ],
     stack: "Next.js · FastAPI · PostgreSQL / PostGIS · Clerk",
-    demo: "https://trials.codingshinobi.org/",
+    demo: "https://trials.do.codingshinobi.org/",
     media: [
       { img: "assets/img/trials.webp", alt: "Map-based clinical trials search interface" },
       { board: "receipts" },
@@ -106,6 +106,18 @@ const CASES = {
     ],
   },
 };
+
+/* Recap pages live in a subfolder and declare <html data-asset-root="../">,
+   so media paths keep resolving. The live pages declare nothing and the
+   prefix stays empty. */
+const FLAGSHIP_ASSET_ROOT = document.documentElement.dataset.assetRoot || "";
+if (FLAGSHIP_ASSET_ROOT) {
+  for (const entry of Object.values(CASES)) {
+    for (const item of entry.media || []) {
+      if (item.img) item.img = FLAGSHIP_ASSET_ROOT + item.img;
+    }
+  }
+}
 
 /* ------------------------------------------------------------------
    3D carousel
